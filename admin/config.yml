@@ -32,8 +32,8 @@ collections:
               - label: Imagen
                 name: image
                 widget: image
-                media_folder: assets/servicios
-                public_folder: assets/servicios
+                media_folder: /assets/servicios
+                public_folder: /assets/servicios
           - label: "Marcas (marquee)"
             name: brands
             widget: list
