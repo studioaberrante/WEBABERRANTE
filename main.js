@@ -197,6 +197,15 @@ function initHeroScroll() {
         currentImg = img;
         drawImage(img);
       }
+
+      // Fade out hero in last 10% of scroll to blend into next section
+      const fadeStart = 0.9;
+      if (self.progress >= fadeStart) {
+        const t = (self.progress - fadeStart) / (1 - fadeStart);
+        canvas.style.opacity = 1 - t;
+      } else {
+        canvas.style.opacity = 1;
+      }
     }
   });
 }
