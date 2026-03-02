@@ -91,7 +91,7 @@ async function loadContent() {
 })();
 
 /* ---- CONFIG ---- */
-const TOTAL_FRAMES = 181;
+const TOTAL_FRAMES = 295;
 const FRAMES_DIR   = 'videobannerfoto/';
 
 function framePath(n) {
