@@ -1,0 +1,62 @@
+backend:
+  name: github
+  repo: studioaberrante/WEBABERRANTE
+  branch: main
+  auth_type: pkce
+  app_id: REEMPLAZAR_CON_TU_CLIENT_ID
+
+media_folder: "assets/servicios"
+public_folder: "assets/servicios"
+
+collections:
+  - name: "site"
+    label: "Sitio Web"
+    files:
+      - label: "Contenido del Sitio"
+        name: "content"
+        file: "content/site.json"
+        format: json
+        fields:
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - label: "Texto pequeño (eyebrow)"
+                name: "eyebrow"
+                widget: "string"
+                hint: "Ej: Studio Aberrante — AI Studio"
+
+          - label: "Servicios"
+            name: "services"
+            widget: "list"
+            allow_add: false
+            allow_delete: false
+            summary: "{{fields.num}} — {{fields.name}}"
+            fields:
+              - label: "Número"
+                name: "num"
+                widget: "string"
+              - label: "Nombre del servicio"
+                name: "name"
+                widget: "string"
+              - label: "Descripción"
+                name: "desc"
+                widget: "text"
+              - label: "Imagen"
+                name: "image"
+                widget: "image"
+                media_folder: "assets/servicios"
+                public_folder: "assets/servicios"
+
+          - label: "Marcas (marquee)"
+            name: "brands"
+            widget: "list"
+            field:
+              label: "Marca"
+              name: "brand"
+              widget: "string"
+
+          - label: "Texto Manifiesto"
+            name: "manifesto"
+            widget: "text"
+            hint: "Usa salto de línea para separar las dos frases."

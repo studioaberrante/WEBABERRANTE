@@ -1,0 +1,48 @@
+{
+  "hero": {
+    "eyebrow": "Studio Aberrante — AI Studio"
+  },
+  "services": [
+    {
+      "num": "01",
+      "name": "Campañas Publicitarias con IA",
+      "desc": "Spots, lanzamientos, storytelling cinematográfico y piezas de alto impacto sin producción tradicional.",
+      "image": "assets/servicios/campanas-ia.png"
+    },
+    {
+      "num": "02",
+      "name": "Clonación Digital Humana",
+      "desc": "Replica digital de una persona real para generar contenido constante sin grabación física.",
+      "image": "assets/servicios/campana-ia2.png"
+    },
+    {
+      "num": "03",
+      "name": "Avatares & Influencers IA",
+      "desc": "Identidades digitales hiperrealistas con personalidad definida. Rostro de marca o influencer virtual.",
+      "image": "assets/servicios/influencer-ia.png"
+    },
+    {
+      "num": "04",
+      "name": "Contenido UGC para Marcas",
+      "desc": "Videos lifestyle optimizados para ads y redes. Estética orgánica, producidos con sistemas IA.",
+      "image": "assets/servicios/contenido-ugc.png"
+    },
+    {
+      "num": "05",
+      "name": "Podcast & Autoridad Digital",
+      "desc": "Formato estudio con avatar o clon digital. Posicionamiento experto y contenido recurrente.",
+      "image": "assets/servicios/podcast-ia.png"
+    },
+    {
+      "num": "06",
+      "name": "Producción Cinematográfica IA",
+      "desc": "Cortometrajes narrativos con estética cinematográfica para storytelling y posicionamiento de marca.",
+      "image": "assets/servicios/cortometrajes.png"
+    }
+  ],
+  "brands": [
+    "NEXORA", "VANTUM", "ORBIQ", "LUMEN CO.", "STRATEK",
+    "AXION", "VELO", "PRISM", "ALTRIX", "KOREX"
+  ],
+  "manifesto": "Vivimos en la era donde lo imposible es el punto de partida.\nEn Aberrante, no imitamos la realidad — la reinventamos."
+}

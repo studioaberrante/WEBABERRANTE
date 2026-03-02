@@ -5,6 +5,61 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ---- CONTENT LOADER ---- */
+async function loadContent() {
+  let data;
+  try {
+    const res = await fetch('content/site.json');
+    if (!res.ok) throw new Error('fetch failed');
+    data = await res.json();
+  } catch (e) {
+    console.warn('Could not load content/site.json, using static HTML.', e);
+    return;
+  }
+
+  // Hero eyebrow
+  const eyebrow = document.getElementById('heroEyebrow');
+  if (eyebrow && data.hero?.eyebrow) {
+    eyebrow.textContent = data.hero.eyebrow;
+  }
+
+  // Services
+  const serviceItems = document.querySelectorAll('.service-item');
+  if (data.services) {
+    data.services.forEach((svc, i) => {
+      const item = serviceItems[i];
+      if (!item) return;
+      const img  = item.querySelector('.service-img');
+      const num  = item.querySelector('.service-num');
+      const name = item.querySelector('.service-name');
+      const desc = item.querySelector('.service-desc');
+      if (img)  { img.src = svc.image; img.alt = svc.name; }
+      if (num)  num.textContent = svc.num;
+      if (name) name.textContent = svc.name;
+      if (desc) desc.textContent = svc.desc;
+    });
+  }
+
+  // Brands marquee — two copies for seamless loop
+  const track = document.getElementById('brandsTrack');
+  if (track && data.brands?.length) {
+    const buildSet = () => data.brands.map(b =>
+      `<span class="brand-item">${b}</span><span class="brand-sep">·</span>`
+    ).join('');
+    track.innerHTML = buildSet() + buildSet();
+  }
+
+  // Manifesto
+  const manifesto = document.getElementById('manifestoText');
+  if (manifesto && data.manifesto) {
+    manifesto.innerHTML = data.manifesto
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .join('<br>\n        ');
+  }
+}
+
 /* ---- HERO WORD CYCLING ---- */
 (function initWordCycle() {
   const words    = ['Human', 'Traditional', 'Physical', 'Natural', 'Real'];
@@ -103,14 +158,16 @@ function preloadFrame(index) {
 }
 
 /* ---- BOOTSTRAP ---- */
-// Load first frame → show → init scroll
-preloadFrame(0).then((img) => {
-  if (img) {
-    currentImg = img;
-    drawImage(img);
-  }
-  initHeroScroll();
-  initEntranceAnimations();
+// Load content first, then frames → so GSAP measures DOM after hydration
+loadContent().then(() => {
+  preloadFrame(0).then((img) => {
+    if (img) {
+      currentImg = img;
+      drawImage(img);
+    }
+    initHeroScroll();
+    initEntranceAnimations();
+  });
 });
 
 // Preload rest in background (priority: first half first)
