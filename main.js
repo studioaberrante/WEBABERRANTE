@@ -105,8 +105,8 @@ const ctx    = canvas.getContext('2d');
 let currentImg = null;
 
 function resizeCanvas() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width  = canvas.offsetWidth  || window.innerWidth;
+  canvas.height = canvas.offsetHeight || window.innerHeight;
   if (currentImg) drawImage(currentImg);
 }
 
