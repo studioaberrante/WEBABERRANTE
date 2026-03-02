@@ -95,7 +95,7 @@ const TOTAL_FRAMES = 295;
 const FRAMES_DIR   = 'videobannerfoto/';
 
 function framePath(n) {
-  return FRAMES_DIR + 'ezgif-frame-' + String(n).padStart(3, '0') + '.jpg';
+  return FRAMES_DIR + 'ezgif-frame-' + String(n).padStart(3, '0') + '.webp';
 }
 
 /* ---- CANVAS SETUP ---- */
