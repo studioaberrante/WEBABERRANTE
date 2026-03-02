@@ -1,6 +1,6 @@
 {
   "hero": {
-    "eyebrow": "Studio Aberrante — AI Studio"
+    "eyebrow": "Studio Aberrante — AI Studio "
   },
   "services": [
     {
@@ -41,8 +41,16 @@
     }
   ],
   "brands": [
-    "NEXORA", "VANTUM", "ORBIQ", "LUMEN CO.", "STRATEK",
-    "AXION", "VELO", "PRISM", "ALTRIX", "KOREX"
+    "NEXORA",
+    "VANTUM",
+    "ORBIQ",
+    "LUMEN CO.",
+    "STRATEK",
+    "AXION",
+    "VELO",
+    "PRISM",
+    "ALTRIX",
+    "KOREX"
   ],
   "manifesto": "Vivimos en la era donde lo imposible es el punto de partida.\nEn Aberrante, no imitamos la realidad — la reinventamos."
 }
