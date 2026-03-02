@@ -3,7 +3,7 @@ backend:
   repo: studioaberrante/WEBABERRANTE
   branch: main
   auth_type: pkce
-  app_id: REEMPLAZAR_CON_TU_CLIENT_ID
+  app_id: 0v23li4C51S2ZEGcu0DU
 
 media_folder: "assets/servicios"
 public_folder: "assets/servicios"
