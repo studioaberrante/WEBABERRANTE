@@ -181,21 +181,37 @@ loadContent().then(() => {
 
 /* ---- HERO SCROLL ANIMATION ---- */
 function initHeroScroll() {
+  const vh = window.innerHeight;
+  const PIN_FRAME = 225; // tongue + ABERRANTE tattoo visible — pin releases here
+  const pinEnd = vh * 0.85;
+
+  // Pin hero — releases when tongue frame (225) is reached
   ScrollTrigger.create({
     trigger: '#hero',
     start: 'top top',
-    end: '+=160%',        // pin duration = 1.6x viewport height
+    end: '+=85%',
     pin: true,
-    scrub: 0.5,
-    onUpdate: (self) => {
-      const idx = Math.min(TOTAL_FRAMES - 1, Math.floor(self.progress * TOTAL_FRAMES));
-      const img = frames[idx];
-      if (img) {
-        currentImg = img;
-        drawImage(img);
-      }
-    }
   });
+
+  // Two-phase animation:
+  // Phase 1 (pin): frames 0–225 map over the 85vh pin scroll distance
+  // Phase 2 (slide): frames 225–295 play as hero naturally scrolls off screen (100vh)
+  const updateFrame = () => {
+    const scrollY = window.scrollY;
+    let idx;
+    if (scrollY <= pinEnd) {
+      idx = Math.floor((scrollY / pinEnd) * PIN_FRAME);
+    } else {
+      const postProgress = Math.min(1, (scrollY - pinEnd) / vh);
+      idx = PIN_FRAME + Math.floor(postProgress * (TOTAL_FRAMES - PIN_FRAME));
+    }
+    idx = Math.min(TOTAL_FRAMES - 1, idx);
+    const img = frames[idx];
+    if (img) { currentImg = img; drawImage(img); }
+  };
+
+  window.addEventListener('scroll', updateFrame, { passive: true });
+  updateFrame(); // sync on init
 }
 
 /* ---- ENTRANCE ANIMATIONS ---- */
