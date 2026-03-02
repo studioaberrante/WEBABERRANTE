@@ -184,19 +184,16 @@ function initHeroScroll() {
   ScrollTrigger.create({
     trigger: '#hero',
     start: 'top top',
-    end: '+=160%',        // pin duration = 1.6x viewport height (unpin at ~second 8)
+    end: '+=160%',        // pin duration = 1.6x viewport height
     pin: true,
-    scrub: 0.5,           // smooth scrub
+    scrub: 0.5,
     onUpdate: (self) => {
-      // Map progress to frames 0–237 (second 0–8 of 9.9s video)
-      const PLAY_FRAMES = 238;
-      const idx = Math.min(PLAY_FRAMES - 1, Math.floor(self.progress * PLAY_FRAMES));
+      const idx = Math.min(TOTAL_FRAMES - 1, Math.floor(self.progress * TOTAL_FRAMES));
       const img = frames[idx];
       if (img) {
         currentImg = img;
         drawImage(img);
       }
-
     }
   });
 }
