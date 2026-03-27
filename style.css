@@ -733,26 +733,38 @@ a {
 
 .avatares-promo-strip {
   margin: 0 -48px;
+  overflow: hidden;
 }
 
 .avatares-promo-photos {
   display: flex;
   gap: 6px;
-  overflow: hidden;
+  width: max-content;
+  animation: avatares-marquee 28s linear infinite;
+}
+
+.avatares-promo-photos:hover {
+  animation-play-state: paused;
 }
 
 .avatares-promo-photos img {
-  flex: 1;
+  width: 280px;
   height: 380px;
+  flex-shrink: 0;
   object-fit: cover;
   object-position: center top;
   filter: grayscale(20%);
-  transition: filter 0.5s ease, flex 0.5s ease;
+  transition: filter 0.4s ease, transform 0.4s ease;
 }
 
 .avatares-promo-photos img:hover {
-  flex: 2.5;
   filter: grayscale(0%);
+  transform: scale(1.03);
+}
+
+@keyframes avatares-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* ============================================
@@ -902,9 +914,11 @@ a {
 
   .avatares-promo-photos {
     gap: 4px;
+    animation-duration: 20s;
   }
 
   .avatares-promo-photos img {
+    width: 180px;
     height: 240px;
   }
 
