@@ -659,3 +659,614 @@ a {
     align-items: flex-start;
   }
 }
+
+/* ============================================
+   AVATARES PROMO (index)
+   ============================================ */
+.avatares-promo {
+  padding: 120px 48px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.avatares-promo-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+  margin-bottom: 72px;
+}
+
+.avatares-promo-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 6vw, 100px);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  margin-top: 20px;
+}
+
+.avatares-promo-right {
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  padding-bottom: 8px;
+}
+
+.avatares-promo-desc {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-mid);
+  letter-spacing: -0.01em;
+}
+
+.avatares-promo-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 6px;
+  transition: border-color 0.25s ease, opacity 0.25s ease;
+}
+
+.avatares-promo-cta:hover {
+  border-color: white;
+  opacity: 0.75;
+}
+
+.avatares-promo-arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.avatares-promo-cta:hover .avatares-promo-arrow {
+  transform: translate(3px, -3px);
+}
+
+.avatares-promo-strip {
+  margin: 0 -48px;
+}
+
+.avatares-promo-photos {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.avatares-promo-photos img {
+  flex: 1;
+  height: 380px;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(20%);
+  transition: filter 0.5s ease, flex 0.5s ease;
+}
+
+.avatares-promo-photos img:hover {
+  flex: 2.5;
+  filter: grayscale(0%);
+}
+
+/* ============================================
+   AVATARES PAGE — Circular Gallery
+   ============================================ */
+.av-page {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.av-gallery-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 80px 16px;
+  overflow: hidden;
+}
+
+.av-gallery {
+  position: relative;
+  width: min(700px, 90vw);
+  aspect-ratio: 1;
+}
+
+.av-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  padding: 20%;
+}
+
+.av-center-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 5vw, 64px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.av-center-hint {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Flip card */
+.av-card {
+  position: absolute;
+  width: 88px;
+  height: 120px;
+  border-radius: 10px;
+  perspective: 1000px;
+  transition: z-index 0s;
+}
+
+.av-card:hover {
+  z-index: 20;
+}
+
+.av-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.7);
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.av-card:hover .av-card-inner {
+  transform: rotateY(180deg) scale(1.12);
+}
+
+.av-card-front,
+.av-card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.av-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.07);
+  display: block;
+}
+
+.av-card-back {
+  background: var(--bg-2);
+  border: 1px solid rgba(255,255,255,0.1);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.av-card-back h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 5px;
+  letter-spacing: 0.02em;
+}
+
+.av-card-back p {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .avatares-promo {
+    padding: 80px 24px 0;
+  }
+
+  .avatares-promo-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 48px;
+  }
+
+  .avatares-promo-right {
+    max-width: 100%;
+  }
+
+  .avatares-promo-strip {
+    margin: 0 -24px;
+  }
+
+  .avatares-promo-photos {
+    gap: 4px;
+  }
+
+  .avatares-promo-photos img {
+    height: 240px;
+  }
+
+  .av-card {
+    width: 68px;
+    height: 92px;
+  }
+}
+
+/* ============================================
+   AVATARES — BENEFITS SECTION
+   ============================================ */
+.av-benefits {
+  padding: 120px 48px;
+  border-top: 1px solid var(--border);
+}
+
+.av-benefits-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 80px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.av-benefits-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 5.5vw, 88px);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-align: right;
+}
+
+.av-benefits-intro {
+  max-width: 340px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-mid);
+  padding-bottom: 8px;
+}
+
+.av-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.av-benefit-item {
+  padding: 48px 40px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: background 0.3s ease;
+}
+
+.av-benefit-item:hover {
+  background: var(--bg-2);
+}
+
+.av-benefit-num {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.av-benefit-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.av-benefit-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(24px, 2.5vw, 36px);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.av-benefit-desc {
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-mid);
+  max-width: 360px;
+}
+
+/* ============================================
+   AVATAR DETALLE PAGE
+   ============================================ */
+.avd-page {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.avd-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  padding-top: var(--header-h);
+}
+
+.avd-photo-col {
+  position: relative;
+  overflow: hidden;
+}
+
+.avd-photo-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: grayscale(8%);
+}
+
+.avd-info-col {
+  padding: 72px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid var(--border);
+}
+
+.avd-type {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.avd-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 7vw, 110px);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  margin-bottom: 32px;
+}
+
+.avd-bio {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-mid);
+  margin-bottom: 40px;
+  max-width: 420px;
+}
+
+.avd-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.avd-stat {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.avd-stat:nth-child(odd) {
+  padding-right: 24px;
+  border-right: 1px solid var(--border);
+}
+
+.avd-stat:nth-child(even) {
+  padding-left: 24px;
+}
+
+.avd-stat-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.avd-stat-value {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.avd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.avd-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.avd-tag:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.avd-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 6px;
+  transition: border-color 0.25s, opacity 0.25s;
+  text-decoration: none;
+}
+
+.avd-cta:hover {
+  border-color: white;
+  opacity: 0.75;
+}
+
+/* Gallery section */
+.avd-gallery {
+  padding: 80px 48px 120px;
+  border-top: 1px solid var(--border);
+}
+
+.avd-gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+
+.avd-gallery-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 3.5vw, 56px);
+  line-height: 0.9;
+}
+
+.avd-gallery-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.avd-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.avd-gallery-item {
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.avd-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.avd-gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.avd-gallery-placeholder {
+  aspect-ratio: 3/4;
+  border: 1px dashed rgba(255,255,255,0.1);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: default;
+}
+
+.avd-gallery-placeholder span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.avd-gallery-placeholder .avd-plus {
+  font-size: 24px;
+  color: rgba(255,255,255,0.1);
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .avd-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .avd-photo-col {
+    height: 60vw;
+    max-height: 520px;
+  }
+
+  .avd-info-col {
+    padding: 48px 32px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .avd-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .av-benefits {
+    padding: 80px 24px;
+  }
+
+  .av-benefits-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .av-benefits-title {
+    text-align: left;
+  }
+
+  .av-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .avd-gallery {
+    padding: 60px 24px 80px;
+  }
+
+  .avd-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .avd-info-col {
+    padding: 40px 24px;
+  }
+}

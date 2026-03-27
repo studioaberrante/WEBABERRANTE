@@ -294,7 +294,7 @@ function initEntranceAnimations() {
     }
   });
 
-  gsap.fromTo('.section-label', {
+  gsap.fromTo('.services-header .section-label', {
     opacity: 0
   }, {
     opacity: 1,
@@ -303,6 +303,63 @@ function initEntranceAnimations() {
     scrollTrigger: {
       trigger: '.services-header',
       start: 'top 82%',
+    }
+  });
+
+  // Avatares promo section
+  gsap.fromTo('.avatares-promo-header .section-label', {
+    opacity: 0
+  }, {
+    opacity: 1,
+    duration: 0.8,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.avatares-promo',
+      start: 'top 82%',
+    }
+  });
+
+  gsap.fromTo('.avatares-promo-title', {
+    y: 30,
+    opacity: 0
+  }, {
+    y: 0,
+    opacity: 1,
+    duration: 1,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.avatares-promo',
+      start: 'top 80%',
+    }
+  });
+
+  gsap.fromTo('.avatares-promo-desc, .avatares-promo-cta', {
+    y: 20,
+    opacity: 0
+  }, {
+    y: 0,
+    opacity: 1,
+    duration: 0.8,
+    ease: 'power3.out',
+    delay: 0.15,
+    scrollTrigger: {
+      trigger: '.avatares-promo',
+      start: 'top 78%',
+    }
+  });
+
+  gsap.fromTo('.avatares-promo-photos img', {
+    y: 40,
+    opacity: 0
+  }, {
+    y: 0,
+    opacity: 1,
+    duration: 0.7,
+    ease: 'power3.out',
+    stagger: 0.06,
+    scrollTrigger: {
+      trigger: '.avatares-promo-strip',
+      start: 'top 88%',
     }
   });
 

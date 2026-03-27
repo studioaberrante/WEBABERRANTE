@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avatar — Studio Aberrante</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body class="avd-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header-logo">
+      <a href="index.html">
+        <img src="logo negro.png" alt="Studio Aberrante" class="logo-img" style="filter:invert(1);opacity:0.85;">
+      </a>
+    </div>
+    <nav class="header-nav" style="gap:24px;">
+      <a href="avatares.html" style="color:rgba(255,255,255,0.45);">← Stock</a>
+      <a href="index.html#contacto" style="color:rgba(255,255,255,0.45);">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <div class="avd-hero" id="avdHero">
+    <div class="avd-photo-col">
+      <img class="avd-photo-main" id="avdPhoto" src="" alt="">
+    </div>
+    <div class="avd-info-col">
+      <p class="avd-type" id="avdType"></p>
+      <h1 class="avd-name" id="avdName"></h1>
+      <p class="avd-bio" id="avdBio"></p>
+      <div class="avd-stats" id="avdStats"></div>
+      <div class="avd-tags" id="avdTags"></div>
+      <a href="https://wa.me/56975294979" target="_blank" rel="noopener noreferrer" class="avd-cta">
+        Usar este avatar ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- GALERÍA -->
+  <section class="avd-gallery">
+    <div class="avd-gallery-header">
+      <h2 class="avd-gallery-title">Aplicaciones</h2>
+      <span class="avd-gallery-note">Próximamente más contenido</span>
+    </div>
+    <div class="avd-gallery-grid" id="avdGalleryGrid"></div>
+  </section>
+
+  <script>
+    const DB = {
+      valentina: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Valentina',
+        img: 'assets/avatares/valentina.jpg',
+        bio: 'Valentina proyecta elegancia sin esfuerzo. Su presencia equilibra autoridad y calidez, ideal para marcas que buscan aspiracionalidad con autenticidad. Trabaja especialmente bien en contenido de lujo, moda y lifestyle premium.',
+        stats: [
+          { label: 'Altura', value: '1.72 m' },
+          { label: 'Complexión', value: 'Atlética' },
+          { label: 'Ojos', value: 'Verde esmeralda' },
+          { label: 'Cabello', value: 'Castaño oscuro liso' },
+          { label: 'Tono de piel', value: 'Medio' },
+          { label: 'Personalidad', value: 'Sofisticada · Directa · Aspiracional' },
+        ],
+        tags: ['Lujo', 'Cosmética', 'Lifestyle Premium', 'Marca Personal', 'Moda'],
+      },
+      josefa: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Josefa',
+        img: 'assets/avatares/gabriela.jpg',
+        bio: 'Josefa conecta de inmediato. Su calidez natural genera confianza y cercanía, perfecta para marcas que quieren parecer auténticas y humanas. Su estilo es accesible sin perder elegancia.',
+        stats: [
+          { label: 'Altura', value: '1.68 m' },
+          { label: 'Complexión', value: 'Curvilínea' },
+          { label: 'Ojos', value: 'Café oscuro' },
+          { label: 'Cabello', value: 'Negro largo ondulado' },
+          { label: 'Tono de piel', value: 'Moreno cálido' },
+          { label: 'Personalidad', value: 'Cercana · Auténtica · Empática' },
+        ],
+        tags: ['Lifestyle', 'Wellness', 'Educación', 'Contenido UGC', 'Marcas Latinas'],
+      },
+      camila: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Camila',
+        img: 'assets/avatares/camila.jpg',
+        bio: 'Camila es la cara de la creatividad sin límites. Su energía joven y su expresividad la hacen perfecta para proyectos que buscan frescura, arte y conexión con audiencias modernas.',
+        stats: [
+          { label: 'Altura', value: '1.70 m' },
+          { label: 'Complexión', value: 'Delgada' },
+          { label: 'Ojos', value: 'Azul grisáceo' },
+          { label: 'Cabello', value: 'Rubio ceniza liso' },
+          { label: 'Tono de piel', value: 'Claro' },
+          { label: 'Personalidad', value: 'Creativa · Libre · Artística' },
+        ],
+        tags: ['Moda', 'Arte', 'Música', 'Startups Creativas', 'Lifestyle Joven'],
+      },
+      luciana: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Luciana',
+        img: 'assets/avatares/luciana.jpg',
+        bio: 'Luciana transmite profesionalismo y confianza desde el primer instante. Su perfil versátil la hace apta para sectores exigentes que necesitan credibilidad sin sacrificar calidez humana.',
+        stats: [
+          { label: 'Altura', value: '1.65 m' },
+          { label: 'Complexión', value: 'Media' },
+          { label: 'Ojos', value: 'Marrón avellana' },
+          { label: 'Cabello', value: 'Castaño medio natural' },
+          { label: 'Tono de piel', value: 'Medio oliva' },
+          { label: 'Personalidad', value: 'Profesional · Confiable · Accesible' },
+        ],
+        tags: ['Finanzas', 'Educación', 'Salud', 'Servicios Profesionales', 'Corporate'],
+      },
+      sofia: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Sofía',
+        img: 'assets/avatares/sofia.jpg',
+        bio: 'Sofía combina delicadeza y magnetismo. Su presencia genera atención inmediata y se adapta tanto a contenidos editoriales de alto impacto como a campañas de belleza y bienestar.',
+        stats: [
+          { label: 'Altura', value: '1.69 m' },
+          { label: 'Complexión', value: 'Delgada' },
+          { label: 'Ojos', value: 'Verde claro' },
+          { label: 'Cabello', value: 'Rubio oscuro con ondas suaves' },
+          { label: 'Tono de piel', value: 'Claro rosado' },
+          { label: 'Personalidad', value: 'Delicada · Expresiva · Magnética' },
+        ],
+        tags: ['Belleza', 'Cosmética', 'Moda Editorial', 'Influencer Digital', 'Skincare'],
+      },
+      daniela: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Daniela',
+        img: 'assets/avatares/daniela.jpg',
+        bio: 'Daniela rompe esquemas. Su energía urbana y actitud disruptiva la posicionan perfectamente en sectores que buscan innovación y una imagen que desafíe lo convencional.',
+        stats: [
+          { label: 'Altura', value: '1.71 m' },
+          { label: 'Complexión', value: 'Atlética' },
+          { label: 'Ojos', value: 'Oscuro intenso' },
+          { label: 'Cabello', value: 'Negro corto y estructurado' },
+          { label: 'Tono de piel', value: 'Moreno' },
+          { label: 'Personalidad', value: 'Urbana · Moderna · Disruptiva' },
+        ],
+        tags: ['Tecnología', 'Fitness', 'Moda Urbana', 'Emprendimiento', 'Gaming'],
+      },
+      fernanda: {
+        tipo: 'Avatar Digital Femenina',
+        nombre: 'Fernanda',
+        img: 'assets/avatares/fernanda.jpg',
+        bio: 'Fernanda irradia energía positiva y cercanía. Es la voz que las marcas necesitan cuando quieren generar comunidad, fidelidad y conversaciones reales con su audiencia.',
+        stats: [
+          { label: 'Altura', value: '1.67 m' },
+          { label: 'Complexión', value: 'Media' },
+          { label: 'Ojos', value: 'Café dorado' },
+          { label: 'Cabello', value: 'Castaño claro con reflejos' },
+          { label: 'Tono de piel', value: 'Medio bronceado' },
+          { label: 'Personalidad', value: 'Carismática · Enérgica · Cercana' },
+        ],
+        tags: ['Turismo', 'Gastronomía', 'Entretenimiento', 'Redes Sociales', 'E-commerce'],
+      },
+      mateo: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Mateo',
+        img: 'assets/avatares/mateo.jpg',
+        bio: 'Mateo proyecta modernidad y seguridad. Versátil por naturaleza, se adapta desde campañas de moda masculina hasta contenido de lifestyle y fitness con igual eficiencia.',
+        stats: [
+          { label: 'Altura', value: '1.80 m' },
+          { label: 'Complexión', value: 'Atlética' },
+          { label: 'Ojos', value: 'Marrón oscuro' },
+          { label: 'Cabello', value: 'Negro corto' },
+          { label: 'Tono de piel', value: 'Medio' },
+          { label: 'Personalidad', value: 'Moderno · Seguro · Versátil' },
+        ],
+        tags: ['Moda Masculina', 'Lifestyle', 'Fitness', 'Marca Personal', 'Grooming'],
+      },
+      sebastian: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Sebastián',
+        img: 'assets/avatares/sebastian.jpg',
+        bio: 'Sebastián es la definición de autoridad corporativa. Su perfil ejecutivo genera confianza instantánea, ideal para marcas del sector financiero, legal o tecnológico que buscan credibilidad.',
+        stats: [
+          { label: 'Altura', value: '1.78 m' },
+          { label: 'Complexión', value: 'Fornida' },
+          { label: 'Ojos', value: 'Azul acero' },
+          { label: 'Cabello', value: 'Castaño oscuro' },
+          { label: 'Tono de piel', value: 'Claro' },
+          { label: 'Personalidad', value: 'Ejecutivo · Serio · Confiable' },
+        ],
+        tags: ['Finanzas', 'Legal', 'Tecnología', 'Liderazgo Corporativo', 'Consultoría'],
+      },
+      andres: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Andrés',
+        img: 'assets/avatares/andres.jpg',
+        bio: 'Andrés combina carisma y presencia dominante. Su perfil aspiracional lo posiciona perfectamente en sectores premium donde el impacto visual y la personalidad son determinantes.',
+        stats: [
+          { label: 'Altura', value: '1.82 m' },
+          { label: 'Complexión', value: 'Atlética' },
+          { label: 'Ojos', value: 'Oscuro profundo' },
+          { label: 'Cabello', value: 'Negro corto estructurado' },
+          { label: 'Tono de piel', value: 'Moreno' },
+          { label: 'Personalidad', value: 'Carismático · Dominante · Aspiracional' },
+        ],
+        tags: ['Lujo', 'Automóviles', 'Deportes', 'Marca Personal Premium', 'Real Estate'],
+      },
+      diego: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Diego',
+        img: 'assets/avatares/diego.jpg',
+        bio: 'Diego representa la generación digital: auténtico, espontáneo y con una energía que conecta naturalmente con audiencias jóvenes. Perfecto para marcas que quieren romper la distancia con su comunidad.',
+        stats: [
+          { label: 'Altura', value: '1.75 m' },
+          { label: 'Complexión', value: 'Delgada' },
+          { label: 'Ojos', value: 'Marrón claro' },
+          { label: 'Cabello', value: 'Castaño claro, rizado' },
+          { label: 'Tono de piel', value: 'Claro' },
+          { label: 'Personalidad', value: 'Joven · Espontáneo · Auténtico' },
+        ],
+        tags: ['Gaming', 'Tecnología', 'Startups', 'Contenido Joven', 'Educación Online'],
+      },
+      emilio: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Emilio',
+        img: 'assets/avatares/emilio.jpg',
+        bio: 'Emilio transmite inteligencia y sofisticación. Su perfil elegante e intelectual lo convierte en la elección ideal para marcas de alto perfil que buscan asociarse con excelencia y criterio.',
+        stats: [
+          { label: 'Altura', value: '1.79 m' },
+          { label: 'Complexión', value: 'Fornida' },
+          { label: 'Ojos', value: 'Verde oscuro' },
+          { label: 'Cabello', value: 'Castaño oscuro' },
+          { label: 'Tono de piel', value: 'Medio' },
+          { label: 'Personalidad', value: 'Elegante · Intelectual · Sofisticado' },
+        ],
+        tags: ['Editorial', 'Arquitectura', 'Arte', 'Consultoría Premium', 'Diseño'],
+      },
+      rodrigo: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Rodrigo',
+        img: 'assets/avatares/rodrigo.jpg',
+        bio: 'Rodrigo inspira con su presencia. Su energía física y determinación lo hacen el embajador perfecto para marcas que quieren transmitir fuerza, disciplina y resultados concretos.',
+        stats: [
+          { label: 'Altura', value: '1.81 m' },
+          { label: 'Complexión', value: 'Atlética' },
+          { label: 'Ojos', value: 'Café oscuro' },
+          { label: 'Cabello', value: 'Castaño medio' },
+          { label: 'Tono de piel', value: 'Moreno bronceado' },
+          { label: 'Personalidad', value: 'Fuerte · Determinado · Inspirador' },
+        ],
+        tags: ['Fitness', 'Motivación', 'Deporte', 'Suplementos', 'Salud'],
+      },
+      felipe: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Felipe',
+        img: 'assets/avatares/felipe.jpg',
+        bio: 'Felipe es accesible y genuino. Su carácter fresco y amigable genera afinidad inmediata, ideal para marcas que quieren comunicar sin distancia y conectar con el día a día de sus clientes.',
+        stats: [
+          { label: 'Altura', value: '1.76 m' },
+          { label: 'Complexión', value: 'Delgada' },
+          { label: 'Ojos', value: 'Azul verdoso' },
+          { label: 'Cabello', value: 'Rubio oscuro' },
+          { label: 'Tono de piel', value: 'Claro' },
+          { label: 'Personalidad', value: 'Fresco · Accesible · Amigable' },
+        ],
+        tags: ['Retail', 'Educación', 'Lifestyle Casual', 'PYMEs', 'Servicios'],
+      },
+      nicolas: {
+        tipo: 'Avatar Digital Masculino',
+        nombre: 'Nicolás',
+        img: 'assets/avatares/nicolas.jpg',
+        bio: 'Nicolás es el avatar más versátil del catálogo. Su capacidad de adaptación lo hace funcional en múltiples industrias y formatos, desde contenido social hasta presentaciones corporativas de alto nivel.',
+        stats: [
+          { label: 'Altura', value: '1.77 m' },
+          { label: 'Complexión', value: 'Media' },
+          { label: 'Ojos', value: 'Oscuro' },
+          { label: 'Cabello', value: 'Negro natural' },
+          { label: 'Tono de piel', value: 'Moreno medio' },
+          { label: 'Personalidad', value: 'Versátil · Expresivo · Adaptable' },
+        ],
+        tags: ['Marketing', 'Ventas', 'Contenido Social', 'Múltiples Industrias', 'Agencias'],
+      },
+    };
+
+    function render() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const av = DB[id];
+
+      if (!av) {
+        window.location.href = 'avatares.html';
+        return;
+      }
+
+      document.title = `${av.nombre} — Studio Aberrante`;
+
+      document.getElementById('avdPhoto').src = av.img;
+      document.getElementById('avdPhoto').alt = av.nombre;
+      document.getElementById('avdType').textContent = av.tipo;
+      document.getElementById('avdName').textContent = av.nombre;
+      document.getElementById('avdBio').textContent = av.bio;
+
+      const statsEl = document.getElementById('avdStats');
+      av.stats.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'avd-stat';
+        div.innerHTML = `<p class="avd-stat-label">${s.label}</p><p class="avd-stat-value">${s.value}</p>`;
+        statsEl.appendChild(div);
+      });
+
+      const tagsEl = document.getElementById('avdTags');
+      av.tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'avd-tag';
+        span.textContent = t;
+        tagsEl.appendChild(span);
+      });
+
+      // Gallery: 1 foto real + 3 placeholders
+      const gridEl = document.getElementById('avdGalleryGrid');
+
+      const mainItem = document.createElement('div');
+      mainItem.className = 'avd-gallery-item';
+      mainItem.innerHTML = `<img src="${av.img}" alt="${av.nombre}" loading="lazy">`;
+      gridEl.appendChild(mainItem);
+
+      for (let i = 0; i < 3; i++) {
+        const ph = document.createElement('div');
+        ph.className = 'avd-gallery-placeholder';
+        ph.innerHTML = `<span class="avd-plus">+</span><span>Próximamente</span>`;
+        gridEl.appendChild(ph);
+      }
+    }
+
+    render();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avatares Digitales — Studio Aberrante</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body class="av-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header-logo">
+      <a href="index.html">
+        <img src="logo negro.png" alt="Studio Aberrante" class="logo-img" style="filter:invert(1);opacity:0.85;">
+      </a>
+    </div>
+    <nav class="header-nav" style="gap:24px;">
+      <a href="index.html" style="color:rgba(255,255,255,0.45);">← Volver</a>
+      <a href="index.html#contacto" style="color:rgba(255,255,255,0.45);">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- GALERÍA CIRCULAR -->
+  <div class="av-gallery-wrap">
+    <div class="av-gallery" id="avGallery">
+      <div class="av-center">
+        <h1 class="av-center-title">Stock de<br>Avatares<br>Digitales</h1>
+        <p class="av-center-hint">Click para explorar</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFICIOS -->
+  <section class="av-benefits">
+    <div class="av-benefits-header">
+      <div>
+        <p class="section-label">¿Para qué sirven?</p>
+      </div>
+      <h2 class="av-benefits-title">Tu marca<br>necesita<br>un rostro.</h2>
+    </div>
+    <div class="av-benefits-intro" style="margin-bottom:64px; max-width:560px;">
+      <p style="font-size:15px;font-weight:300;line-height:1.7;color:var(--text-mid);">
+        Sabemos que muchos tienen algo importante que decir pero no quieren — o no pueden — aparecer en cámara. Los avatares digitales de Aberrante son la solución: identidades hiperrealistas listas para hablar por ti.
+      </p>
+    </div>
+    <div class="av-benefits-grid">
+
+      <div class="av-benefit-item">
+        <span class="av-benefit-num">01</span>
+        <div class="av-benefit-icon">🙈</div>
+        <h3 class="av-benefit-title">No quiero aparecer en cámara</h3>
+        <p class="av-benefit-desc">Muchos emprendedores y dueños de negocios evitan el video por timidez, privacidad o simplemente porque no se sienten cómodos. Un avatar habla por ti con total profesionalismo — sin que aparezca tu rostro.</p>
+      </div>
+
+      <div class="av-benefit-item">
+        <span class="av-benefit-num">02</span>
+        <div class="av-benefit-icon">✦</div>
+        <h3 class="av-benefit-title">Construye tu marca personal</h3>
+        <p class="av-benefit-desc">La autoridad digital se construye con presencia constante. Un avatar con identidad definida te permite publicar contenido todos los días, mantener coherencia visual y posicionarte como referente — sin agotarte.</p>
+      </div>
+
+      <div class="av-benefit-item">
+        <span class="av-benefit-num">03</span>
+        <div class="av-benefit-icon">🏢</div>
+        <h3 class="av-benefit-title">El rostro humano de tu empresa</h3>
+        <p class="av-benefit-desc">Las marcas que comunican con un rostro generan más confianza. Sin necesidad de contratar modelos, actores ni organizar sesiones de fotos, tu empresa tiene una cara reconocible y profesional desde el primer día.</p>
+      </div>
+
+      <div class="av-benefit-item">
+        <span class="av-benefit-num">04</span>
+        <div class="av-benefit-icon">∞</div>
+        <h3 class="av-benefit-title">Contenido ilimitado, sin excusas</h3>
+        <p class="av-benefit-desc">"No tuve tiempo", "no me arreglé", "no tenía a nadie que me filmara". Con un avatar digital, esas excusas desaparecen. Genera videos, reels, stories y presentaciones cuando quieras, en el formato que necesites.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    const avatares = [
+      { id: 'valentina', img: 'assets/avatares/valentina.jpg', name: 'Valentina', desc: 'Avatar femenino elegante y sofisticado' },
+      { id: 'josefa',    img: 'assets/avatares/gabriela.jpg',  name: 'Josefa',    desc: 'Presencia cálida y profesional' },
+      { id: 'camila',    img: 'assets/avatares/camila.jpg',    name: 'Camila',    desc: 'Estilo moderno y expresivo' },
+      { id: 'luciana',   img: 'assets/avatares/luciana.jpg',   name: 'Luciana',   desc: 'Actitud dinámica y versátil' },
+      { id: 'sofia',     img: 'assets/avatares/sofia.jpg',     name: 'Sofía',     desc: 'Delicadeza con personalidad fuerte' },
+      { id: 'daniela',   img: 'assets/avatares/daniela.jpg',   name: 'Daniela',   desc: 'Look urbano y contemporáneo' },
+      { id: 'fernanda',  img: 'assets/avatares/fernanda.jpg',  name: 'Fernanda',  desc: 'Confianza y carisma natural' },
+      { id: 'mateo',     img: 'assets/avatares/mateo.jpg',     name: 'Mateo',     desc: 'Masculinidad moderna y atractiva' },
+      { id: 'sebastian', img: 'assets/avatares/sebastian.jpg', name: 'Sebastián', desc: 'Estilo ejecutivo con actitud' },
+      { id: 'andres',    img: 'assets/avatares/andres.jpg',    name: 'Andrés',    desc: 'Carismático y de presencia sólida' },
+      { id: 'diego',     img: 'assets/avatares/diego.jpg',     name: 'Diego',     desc: 'Perfil juvenil y enérgico' },
+      { id: 'emilio',    img: 'assets/avatares/emilio.jpg',    name: 'Emilio',    desc: 'Elegancia masculina contemporánea' },
+      { id: 'rodrigo',   img: 'assets/avatares/rodrigo.jpg',   name: 'Rodrigo',   desc: 'Fuerza y determinación visual' },
+      { id: 'felipe',    img: 'assets/avatares/felipe.jpg',    name: 'Felipe',    desc: 'Look fresco y accesible' },
+      { id: 'nicolas',   img: 'assets/avatares/nicolas.jpg',   name: 'Nicolás',   desc: 'Versatilidad en cada expresión' },
+    ];
+
+    const gallery = document.getElementById('avGallery');
+    let rotation = 0;
+    let rafId;
+    let isPaused = false;
+
+    function buildCards() {
+      avatares.forEach((av) => {
+        const card = document.createElement('div');
+        card.className = 'av-card';
+        card.style.cursor = 'pointer';
+
+        card.innerHTML = `
+          <div class="av-card-inner">
+            <div class="av-card-front">
+              <img src="${av.img}" alt="${av.name}" loading="lazy">
+            </div>
+            <div class="av-card-back">
+              <h3>${av.name}</h3>
+              <p>${av.desc}</p>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('mouseenter', () => { isPaused = true; });
+        card.addEventListener('mouseleave', () => { isPaused = false; });
+        card.addEventListener('click', () => {
+          window.location.href = `avatar-detalle.html?id=${av.id}`;
+        });
+
+        gallery.appendChild(card);
+      });
+    }
+
+    function positionCards() {
+      const size = gallery.offsetWidth;
+      const radius = size * 0.38;
+      const cx = size / 2;
+      const cy = size / 2;
+      const cards = gallery.querySelectorAll('.av-card');
+
+      cards.forEach((card, i) => {
+        const angle = (i / avatares.length) * 2 * Math.PI - Math.PI / 2 + rotation;
+        const x = cx + radius * Math.cos(angle);
+        const y = cy + radius * Math.sin(angle);
+        const rotateDeg = (angle + Math.PI / 2) * (180 / Math.PI);
+
+        card.style.left = x + 'px';
+        card.style.top = y + 'px';
+        card.style.transform = `translate(-50%, -50%) rotate(${rotateDeg}deg)`;
+      });
+    }
+
+    function animate() {
+      if (!isPaused) rotation += 0.003;
+      positionCards();
+      rafId = requestAnimationFrame(animate);
+    }
+
+    buildCards();
+    positionCards();
+    animate();
+
+    window.addEventListener('resize', positionCards);
+  </script>
+
+</body>
+</html>
