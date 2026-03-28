@@ -893,6 +893,60 @@ a {
   font-weight: 300;
 }
 
+/* Epic golden card — Josefa */
+@keyframes epic-glow {
+  0%   { box-shadow: 0 0 8px 2px rgba(212,175,55,0.6), 0 0 18px 4px rgba(212,175,55,0.3); }
+  50%  { box-shadow: 0 0 16px 4px rgba(255,215,0,0.9), 0 0 32px 8px rgba(212,175,55,0.5); }
+  100% { box-shadow: 0 0 8px 2px rgba(212,175,55,0.6), 0 0 18px 4px rgba(212,175,55,0.3); }
+}
+@keyframes epic-border-spin {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.av-card--epic {
+  z-index: 5;
+}
+
+.av-card--epic .av-card-inner {
+  border-radius: 8px;
+}
+
+.av-card--epic::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    #b8860b, #ffd700, #fffacd, #ffd700, #daa520, #ffd700, #b8860b
+  );
+  background-size: 200% 100%;
+  animation: epic-border-spin 2.5s linear infinite, epic-glow 2.5s ease-in-out infinite;
+  z-index: -1;
+}
+
+.av-card--epic .av-card-front img {
+  border-radius: 7px;
+}
+
+.av-epic-badge {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #b8860b, #ffd700, #daa520);
+  color: #000;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 20px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 @media (max-width: 768px) {
   .avatares-promo {
     padding: 80px 24px 0;

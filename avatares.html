@@ -107,13 +107,17 @@
     function buildCards() {
       avatares.forEach((av) => {
         const card = document.createElement('div');
-        card.className = 'av-card';
+        card.className = 'av-card' + (av.id === 'josefa' ? ' av-card--epic' : '');
         card.style.cursor = 'pointer';
 
+        const epicBadge = av.id === 'josefa'
+          ? '<span class="av-epic-badge">✦ Caso de éxito</span>'
+          : '';
         card.innerHTML = `
           <div class="av-card-inner">
             <div class="av-card-front">
               <img src="${av.img}" alt="${av.name}" loading="lazy">
+              ${epicBadge}
             </div>
             <div class="av-card-back">
               <h3>${av.name}</h3>
