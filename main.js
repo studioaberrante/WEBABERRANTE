@@ -90,6 +90,30 @@ async function loadContent() {
   setInterval(nextWord, 2400);
 })();
 
+/* ---- LOADER ---- */
+(function initLoader() {
+  const loader = document.getElementById('loader');
+  const fill   = document.getElementById('loaderBarFill');
+  let progress = 0;
+
+  const interval = setInterval(() => {
+    progress = Math.min(progress + Math.random() * 18, 90);
+    fill.style.width = progress + '%';
+  }, 120);
+
+  function hideLoader() {
+    clearInterval(interval);
+    fill.style.width = '100%';
+    setTimeout(() => loader.classList.add('hidden'), 300);
+  }
+
+  if (document.readyState === 'complete') {
+    setTimeout(hideLoader, 600);
+  } else {
+    window.addEventListener('load', () => setTimeout(hideLoader, 400));
+  }
+})();
+
 /* ---- BOOTSTRAP ---- */
 loadContent().then(() => {
   initEntranceAnimations();
