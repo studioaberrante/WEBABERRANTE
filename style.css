@@ -89,6 +89,16 @@ a {
   transition: width 0.1s linear;
 }
 
+.loader-text {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: rgba(255,255,255,0.35);
+  animation: loader-fade-in 0.8s ease 0.4s forwards;
+  opacity: 0;
+}
+
 /* ============================================
    HEADER
    ============================================ */
