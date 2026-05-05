@@ -92,26 +92,38 @@ async function loadContent() {
 
 /* ---- LOADER ---- */
 (function initLoader() {
-  const loader = document.getElementById('loader');
-  const fill   = document.getElementById('loaderBarFill');
-  let progress = 0;
+  const loader  = document.getElementById('loader');
+  const fill    = document.getElementById('loaderBarFill');
+  let progress  = 0;
+  let hidden    = false;
 
   const interval = setInterval(() => {
-    progress = Math.min(progress + Math.random() * 18, 90);
+    progress = Math.min(progress + Math.random() * 12, 88);
     fill.style.width = progress + '%';
-  }, 120);
+  }, 150);
 
   function hideLoader() {
+    if (hidden) return;
+    hidden = true;
     clearInterval(interval);
     fill.style.width = '100%';
     setTimeout(() => loader.classList.add('hidden'), 300);
   }
 
-  if (document.readyState === 'complete') {
-    setTimeout(hideLoader, 600);
-  } else {
-    window.addEventListener('load', () => setTimeout(hideLoader, 400));
-  }
+  // Espera a que el video de Vimeo empiece a reproducirse
+  window.addEventListener('load', () => {
+    const iframe = document.querySelector('.hero-video-wrap iframe');
+    if (iframe && typeof Vimeo !== 'undefined') {
+      const player = new Vimeo.Player(iframe);
+      const timeout = setTimeout(hideLoader, 8000); // máximo 8s de espera
+      player.on('play', () => {
+        clearTimeout(timeout);
+        setTimeout(hideLoader, 200);
+      });
+    } else {
+      setTimeout(hideLoader, 1000);
+    }
+  });
 })();
 
 /* ---- BOOTSTRAP ---- */
