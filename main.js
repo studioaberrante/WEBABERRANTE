@@ -131,198 +131,108 @@ loadContent().then(() => {
   initEntranceAnimations();
 });
 
+/* ---- PORTFOLIO MODAL ---- */
+(function initPortfolioModal() {
+  const modal   = document.getElementById('portfolioModal');
+  const iframe  = document.getElementById('portfolioModalIframe');
+  const btnClose = document.getElementById('portfolioModalClose');
+
+  document.getElementById('portfolioGrid').addEventListener('click', (e) => {
+    const item = e.target.closest('.portfolio-item');
+    if (!item) return;
+    const vimeoId = item.dataset.vimeo;
+    if (!vimeoId) return;
+    iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&badge=0&autopause=0`;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  function closeModal() {
+    modal.classList.remove('open');
+    iframe.src = '';
+    document.body.style.overflow = '';
+  }
+
+  btnClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+})();
+
 /* ---- ENTRANCE ANIMATIONS ---- */
 function initEntranceAnimations() {
 
   // Hero text
   gsap.fromTo('.hero-eyebrow', {
-    y: 16,
-    opacity: 0
+    y: 16, opacity: 0
   }, {
-    y: 0,
-    opacity: 1,
-    duration: 1,
-    ease: 'power3.out',
-    delay: 0.3
+    y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.3
   });
 
   gsap.fromTo('.hero-title', {
-    y: 40,
-    opacity: 0
+    y: 40, opacity: 0
   }, {
-    y: 0,
-    opacity: 1,
-    duration: 1.2,
-    ease: 'power3.out',
-    delay: 0.45
+    y: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.45
   });
 
   gsap.fromTo('.scroll-hint', {
     opacity: 0
   }, {
-    opacity: 1,
-    duration: 1,
-    ease: 'power2.out',
-    delay: 1.1
+    opacity: 1, duration: 1, ease: 'power2.out', delay: 1.1
   });
 
-  // Logo flotante
   gsap.fromTo('.hero-logo-float', {
-    x: 20,
-    opacity: 0
+    x: 20, opacity: 0
   }, {
-    x: 0,
-    opacity: 1,
-    duration: 1.2,
-    ease: 'power3.out',
-    delay: 0.6
+    x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.6
   });
 
-  // Services items
-  gsap.utils.toArray('.service-item').forEach((el, i) => {
+  // Portfolio header
+  gsap.fromTo('.portfolio-header .section-label', {
+    opacity: 0
+  }, {
+    opacity: 1, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: '.portfolio-header', start: 'top 82%' }
+  });
+
+  gsap.fromTo('.portfolio-title', {
+    y: 30, opacity: 0
+  }, {
+    y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.portfolio-header', start: 'top 82%' }
+  });
+
+  // Portfolio items
+  gsap.utils.toArray('.portfolio-item').forEach((el, i) => {
     gsap.fromTo(el, {
-      y: 50,
-      opacity: 0
+      y: 40, opacity: 0
     }, {
-      y: 0,
-      opacity: 1,
-      duration: 0.75,
-      ease: 'power3.out',
-      delay: (i % 3) * 0.08,
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 88%',
-      }
+      y: 0, opacity: 1, duration: 0.75, ease: 'power3.out',
+      delay: (i % 2) * 0.1,
+      scrollTrigger: { trigger: el, start: 'top 88%' }
     });
-  });
-
-  // Services header
-  gsap.fromTo('.services-title', {
-    y: 30,
-    opacity: 0
-  }, {
-    y: 0,
-    opacity: 1,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.services-header',
-      start: 'top 82%',
-    }
-  });
-
-  gsap.fromTo('.services-header .section-label', {
-    opacity: 0
-  }, {
-    opacity: 1,
-    duration: 0.8,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.services-header',
-      start: 'top 82%',
-    }
-  });
-
-  // Avatares promo section
-  gsap.fromTo('.avatares-promo-header .section-label', {
-    opacity: 0
-  }, {
-    opacity: 1,
-    duration: 0.8,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.avatares-promo',
-      start: 'top 82%',
-    }
-  });
-
-  gsap.fromTo('.avatares-promo-title', {
-    y: 30,
-    opacity: 0
-  }, {
-    y: 0,
-    opacity: 1,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.avatares-promo',
-      start: 'top 80%',
-    }
-  });
-
-  gsap.fromTo('.avatares-promo-desc, .avatares-promo-cta', {
-    y: 20,
-    opacity: 0
-  }, {
-    y: 0,
-    opacity: 1,
-    duration: 0.8,
-    ease: 'power3.out',
-    delay: 0.15,
-    scrollTrigger: {
-      trigger: '.avatares-promo',
-      start: 'top 78%',
-    }
-  });
-
-  gsap.fromTo('.avatares-promo-photos img', {
-    y: 40,
-    opacity: 0
-  }, {
-    y: 0,
-    opacity: 1,
-    duration: 0.7,
-    ease: 'power3.out',
-    stagger: 0.06,
-    scrollTrigger: {
-      trigger: '.avatares-promo-strip',
-      start: 'top 88%',
-    }
   });
 
   // Manifesto
   gsap.fromTo('.manifesto-text', {
-    y: 30,
-    opacity: 0
+    y: 30, opacity: 0
   }, {
-    y: 0,
-    opacity: 1,
-    duration: 1.2,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.manifesto',
-      start: 'top 78%',
-    }
+    y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+    scrollTrigger: { trigger: '.manifesto', start: 'top 78%' }
   });
 
-  // Footer title
+  // Footer
   gsap.fromTo('.footer-title', {
-    y: 40,
-    opacity: 0
+    y: 40, opacity: 0
   }, {
-    y: 0,
-    opacity: 1,
-    duration: 1.2,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.footer',
-      start: 'top 80%',
-    }
+    y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+    scrollTrigger: { trigger: '.footer', start: 'top 80%' }
   });
 
   gsap.fromTo('.footer-cta', {
-    y: 20,
-    opacity: 0
+    y: 20, opacity: 0
   }, {
-    y: 0,
-    opacity: 1,
-    duration: 0.9,
-    ease: 'power3.out',
-    delay: 0.2,
-    scrollTrigger: {
-      trigger: '.footer',
-      start: 'top 80%',
-    }
+    y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.2,
+    scrollTrigger: { trigger: '.footer', start: 'top 80%' }
   });
 }
 

@@ -366,14 +366,14 @@ a {
 }
 
 /* ============================================
-   SERVICES
+   PORTFOLIO
    ============================================ */
-.services {
+.portfolio {
   padding: 120px 48px 100px;
   background: var(--bg);
 }
 
-.services-header {
+.portfolio-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -390,7 +390,7 @@ a {
   color: var(--text-muted);
 }
 
-.services-title {
+.portfolio-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(52px, 6vw, 100px);
   line-height: 0.9;
@@ -398,145 +398,130 @@ a {
   text-align: right;
 }
 
-/* Collage Grid */
-.services-grid {
+.portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 420px 340px 300px;
-  grid-template-areas:
-    "one one two"
-    "three four four"
-    "five five six";
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
 }
 
-/* Card layout */
-.service-item {
-  position: relative;
-  overflow: hidden;
+.portfolio-item {
   cursor: pointer;
-  border-radius: 2px;
 }
 
-.service-item:nth-child(1) { grid-area: one; }
-.service-item:nth-child(2) { grid-area: two; }
-.service-item:nth-child(3) { grid-area: three; }
-.service-item:nth-child(4) { grid-area: four; }
-.service-item:nth-child(5) { grid-area: five; }
-.service-item:nth-child(6) { grid-area: six; }
+.portfolio-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease;
+}
 
-/* Image inside card */
-.service-img-wrap {
+.portfolio-item:hover .portfolio-thumb {
+  border-color: rgba(255,255,255,0.2);
+}
+
+.portfolio-thumb img {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-}
-
-.service-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
 }
 
-.service-item:hover .service-img {
-  transform: scale(1.07);
+.portfolio-item:hover .portfolio-thumb img {
+  transform: scale(1.04);
 }
 
-/* Dark overlay on image */
-.service-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.82) 0%,
-    rgba(0,0,0,0.25) 50%,
-    rgba(0,0,0,0.05) 100%
-  );
-  transition: background 0.4s ease;
-}
-
-.service-item:hover .service-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.88) 0%,
-    rgba(0,0,0,0.35) 55%,
-    rgba(0,0,0,0.08) 100%
-  );
-}
-
-/* Text on top of image */
-.service-text {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 28px 32px;
+.portfolio-play {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease, background 0.3s ease;
   z-index: 2;
 }
 
-.service-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
+.portfolio-item:hover .portfolio-play {
+  border-color: rgba(255,255,255,0.8);
+  color: #fff;
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.08);
 }
 
-.service-num {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.5);
+.portfolio-info {
+  padding: 16px 4px 28px;
+  border-bottom: 1px solid var(--border);
 }
 
-.service-arrow {
+.portfolio-name {
   font-size: 15px;
-  color: rgba(255,255,255,0.5);
-  transition: transform 0.35s ease, color 0.35s ease;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.portfolio-tag {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Modal */
+.portfolio-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.portfolio-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.portfolio-modal-close {
+  position: absolute;
+  top: 28px;
+  right: 36px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s ease;
   line-height: 1;
 }
 
-.service-item:hover .service-arrow {
-  transform: translate(4px, -4px);
-  color: white;
-}
-
-.service-name {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+.portfolio-modal-close:hover {
   color: #fff;
-  margin-bottom: 8px;
 }
 
-.service-desc {
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.55);
-  font-weight: 300;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.4s ease;
-  opacity: 0;
+.portfolio-modal-video {
+  width: min(90vw, 1200px);
+  aspect-ratio: 16 / 9;
 }
 
-.service-item:hover .service-desc {
-  max-height: 80px;
-  opacity: 1;
-}
-
-.services-more-row {
-  margin-top: 48px;
-  text-align: center;
-}
-
-.services-more {
-  font-size: 13px;
-  font-style: italic;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
+.portfolio-modal-video iframe {
+  width: 100%;
+  height: 100%;
 }
 
 /* ============================================
@@ -726,112 +711,6 @@ a {
   }
 }
 
-/* ============================================
-   AVATARES PROMO (index)
-   ============================================ */
-.avatares-promo {
-  padding: 120px 48px 0;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  overflow: hidden;
-}
-
-.avatares-promo-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 48px;
-  margin-bottom: 72px;
-}
-
-.avatares-promo-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(52px, 6vw, 100px);
-  line-height: 0.9;
-  letter-spacing: 0.01em;
-  margin-top: 20px;
-}
-
-.avatares-promo-right {
-  max-width: 380px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 32px;
-  padding-bottom: 8px;
-}
-
-.avatares-promo-desc {
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 1.65;
-  color: var(--text-mid);
-  letter-spacing: -0.01em;
-}
-
-.avatares-promo-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text);
-  border-bottom: 1px solid rgba(255,255,255,0.3);
-  padding-bottom: 6px;
-  transition: border-color 0.25s ease, opacity 0.25s ease;
-}
-
-.avatares-promo-cta:hover {
-  border-color: white;
-  opacity: 0.75;
-}
-
-.avatares-promo-arrow {
-  font-size: 16px;
-  transition: transform 0.3s ease;
-}
-
-.avatares-promo-cta:hover .avatares-promo-arrow {
-  transform: translate(3px, -3px);
-}
-
-.avatares-promo-strip {
-  margin: 0 -48px;
-  overflow: hidden;
-}
-
-.avatares-promo-photos {
-  display: flex;
-  gap: 6px;
-  width: max-content;
-  animation: avatares-marquee 28s linear infinite;
-}
-
-.avatares-promo-photos:hover {
-  animation-play-state: paused;
-}
-
-.avatares-promo-photos img {
-  width: 280px;
-  height: 380px;
-  flex-shrink: 0;
-  object-fit: cover;
-  object-position: center top;
-  filter: grayscale(20%);
-  transition: filter 0.4s ease, transform 0.4s ease;
-}
-
-.avatares-promo-photos img:hover {
-  filter: grayscale(0%);
-  transform: scale(1.03);
-}
-
-@keyframes avatares-marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 
 /* ============================================
    AVATARES PAGE — Circular Gallery
