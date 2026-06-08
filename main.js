@@ -134,15 +134,18 @@ async function loadContent() {
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    const data = new URLSearchParams(new FormData(form)).toString();
-    fetch('/', {
+    fetch('https://formspree.io/f/xdavzogz', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: data
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
     })
-    .then(() => {
-      form.style.display = 'none';
-      success.classList.add('visible');
+    .then(res => {
+      if (res.ok) {
+        form.style.display = 'none';
+        success.classList.add('visible');
+      } else {
+        throw new Error();
+      }
     })
     .catch(() => {
       alert('Hubo un problema al enviar. Escríbenos directamente a Contacto@studioaberrante.com');
