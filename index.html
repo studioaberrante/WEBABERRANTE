@@ -199,7 +199,7 @@
     <div class="footer-content">
       <h2 class="footer-title">¿Listo para lo<br>imposible?</h2>
 
-      <form class="contacto-form" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <form class="contacto-form" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="contactoForm">
         <input type="hidden" name="form-name" value="contacto">
         <input type="hidden" name="bot-field">
 
@@ -229,6 +229,9 @@
           <span class="contacto-btn-arrow">↗</span>
         </button>
       </form>
+      <div class="contacto-success" id="contactoSuccess">
+        <p class="contacto-success-msg">Mensaje recibido. Nos ponemos en contacto pronto.</p>
+      </div>
 
       <div class="footer-links">
         <a href="https://wa.me/56943997681" target="_blank" rel="noopener noreferrer" class="footer-cta">

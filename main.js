@@ -126,6 +126,30 @@ async function loadContent() {
   });
 })();
 
+/* ---- FORMULARIO CONTACTO ---- */
+(function initContactoForm() {
+  const form    = document.getElementById('contactoForm');
+  const success = document.getElementById('contactoSuccess');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = new URLSearchParams(new FormData(form)).toString();
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: data
+    })
+    .then(() => {
+      form.style.display = 'none';
+      success.classList.add('visible');
+    })
+    .catch(() => {
+      alert('Hubo un problema al enviar. Escríbenos directamente a Contacto@studioaberrante.com');
+    });
+  });
+})();
+
 /* ---- BOOTSTRAP ---- */
 loadContent().then(() => {
   initEntranceAnimations();
