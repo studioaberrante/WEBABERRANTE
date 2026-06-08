@@ -212,6 +212,31 @@ function initEntranceAnimations() {
     });
   });
 
+  // Nosotros
+  gsap.fromTo('.nosotros-header .section-label', {
+    opacity: 0
+  }, {
+    opacity: 1, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: '.nosotros-header', start: 'top 82%' }
+  });
+
+  gsap.fromTo('.nosotros-title', {
+    y: 30, opacity: 0
+  }, {
+    y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.nosotros-header', start: 'top 82%' }
+  });
+
+  gsap.utils.toArray('.nosotros-item').forEach((el, i) => {
+    gsap.fromTo(el, {
+      y: 40, opacity: 0
+    }, {
+      y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+      delay: i * 0.15,
+      scrollTrigger: { trigger: '.nosotros-grid', start: 'top 82%' }
+    });
+  });
+
   // Manifesto
   gsap.fromTo('.manifesto-text', {
     y: 30, opacity: 0

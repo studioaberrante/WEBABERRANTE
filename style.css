@@ -525,6 +525,101 @@ a {
 }
 
 /* ============================================
+   NOSOTROS
+   ============================================ */
+.nosotros {
+  padding: 120px 48px 100px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.nosotros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 80px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.nosotros-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 6vw, 100px);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-align: right;
+}
+
+.nosotros-grid {
+  display: flex;
+  gap: 80px;
+  justify-content: center;
+}
+
+.nosotros-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.nosotros-foto {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.nosotros-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: none;
+}
+
+.nosotros-img[src]:not([src=""]) {
+  display: block;
+}
+
+.nosotros-img[src]:not([src=""]) ~ .nosotros-placeholder {
+  display: none;
+}
+
+.nosotros-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: rgba(255,255,255,0.15);
+  background: var(--bg-2);
+  letter-spacing: 0.05em;
+}
+
+.nosotros-nombre {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.nosotros-cargo {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ============================================
    MANIFESTO
    ============================================ */
 .manifesto {
