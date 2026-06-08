@@ -659,6 +659,93 @@ a {
   margin-bottom: 48px;
 }
 
+/* Formulario de contacto */
+.contacto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 720px;
+  margin-bottom: 64px;
+}
+
+.contacto-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.contacto-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contacto-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.contacto-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding: 12px 0;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.contacto-input::placeholder {
+  color: rgba(255,255,255,0.2);
+}
+
+.contacto-input:focus {
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+.contacto-textarea {
+  resize: none;
+  height: 110px;
+}
+
+.contacto-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  background: #fff;
+  color: #080808;
+  border: none;
+  padding: 14px 28px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+.contacto-btn:hover {
+  opacity: 0.85;
+}
+
+.contacto-btn-arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.contacto-btn:hover .contacto-btn-arrow {
+  transform: translate(3px, -3px);
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
