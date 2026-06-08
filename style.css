@@ -437,6 +437,22 @@ a {
   transform: scale(1.04);
 }
 
+.portfolio-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  transition: background 0.4s ease;
+  z-index: 1;
+}
+
+.portfolio-item:hover .portfolio-thumb-overlay {
+  background: rgba(0,0,0,0.5);
+}
+
+.portfolio-play {
+  z-index: 2;
+}
+
 .portfolio-play {
   width: 52px;
   height: 52px;

@@ -158,6 +158,25 @@ loadContent().then(() => {
   initEntranceAnimations();
 });
 
+/* ---- PORTFOLIO THUMBNAILS ---- */
+(function loadPortfolioThumbnails() {
+  document.querySelectorAll('.portfolio-item[data-vimeo]').forEach(item => {
+    const id  = item.dataset.vimeo;
+    const img = item.querySelector('.portfolio-thumb-img');
+    if (!id || !img) return;
+    fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.thumbnail_url) {
+          // Pedir versión más grande reemplazando dimensiones
+          img.src = data.thumbnail_url.replace(/_\d+x\d+/, '_1280x720');
+          img.style.display = 'block';
+        }
+      })
+      .catch(() => {});
+  });
+})();
+
 /* ---- PORTFOLIO MODAL ---- */
 (function initPortfolioModal() {
   const modal   = document.getElementById('portfolioModal');
