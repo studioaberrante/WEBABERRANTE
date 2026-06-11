@@ -109,7 +109,9 @@ async function loadContent() {
     const iframe = document.querySelector('.hero-video-wrap iframe');
     if (iframe && typeof Vimeo !== 'undefined') {
       const player = new Vimeo.Player(iframe);
-      const timeout = setTimeout(hideLoader, 8000); // máximo 8s de espera
+      // Tope de seguridad: si el autoplay está bloqueado (ej: modo bajo
+      // consumo en iPhone) el video nunca parte y hay que entrar igual
+      const timeout = setTimeout(hideLoader, 20000);
       player.on('play', () => {
         clearTimeout(timeout);
         setTimeout(hideLoader, 200);
