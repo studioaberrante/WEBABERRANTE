@@ -45,7 +45,7 @@ async function loadContent() {
   if (track && data.brands?.length) {
     const renderBrand = (b) => {
       if (typeof b === 'string') return `<span class="brand-item">${b}</span>`;
-      if (b.logo) return `<img class="brand-logo" src="${b.logo}" alt="${b.name}">`;
+      if (b.logo) return `<img class="brand-logo" src="${b.logo}" alt="${b.name}" fetchpriority="high" decoding="async">`;
       return `<span class="brand-item">${b.name}</span>`;
     };
     const buildSet = () => data.brands.map(b =>
