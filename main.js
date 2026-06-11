@@ -43,10 +43,16 @@ async function loadContent() {
   // Brands marquee — two copies for seamless loop
   const track = document.getElementById('brandsTrack');
   if (track && data.brands?.length) {
+    const renderBrand = (b) => {
+      if (typeof b === 'string') return `<span class="brand-item">${b}</span>`;
+      if (b.logo) return `<img class="brand-logo" src="${b.logo}" alt="${b.name}">`;
+      return `<span class="brand-item">${b.name}</span>`;
+    };
     const buildSet = () => data.brands.map(b =>
-      `<span class="brand-item">${b}</span><span class="brand-sep">·</span>`
+      renderBrand(b) + '<span class="brand-sep">·</span>'
     ).join('');
-    track.innerHTML = buildSet() + buildSet();
+    // 4 copias para que el loop sea continuo con pocas marcas
+    track.innerHTML = buildSet() + buildSet() + buildSet() + buildSet();
   }
 
   // Manifesto
@@ -306,6 +312,27 @@ function initEntranceAnimations() {
     scrollTrigger: { trigger: '.footer', start: 'top 80%' }
   });
 }
+
+/* ---- MENÚ MÓVIL ---- */
+(function initMobileNav() {
+  const toggle = document.getElementById('navToggle');
+  const nav    = document.getElementById('headerNav');
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+})();
 
 /* ---- HEADER SCROLL STATE ---- */
 const header = document.getElementById('header');

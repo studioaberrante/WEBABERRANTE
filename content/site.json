@@ -41,16 +41,11 @@
     }
   ],
   "brands": [
-    "NEXORA",
-    "VANTUM",
-    "ORBIQ",
-    "LUMEN CO.",
-    "STRATEK",
-    "AXION",
-    "VELO",
-    "PRISM",
-    "ALTRIX",
-    "KOREX"
+    { "name": "Claro", "logo": "assets/marcas/claro-wordmark.svg" },
+    { "name": "Nike", "logo": "assets/marcas/nike.svg" },
+    { "name": "SALCOBRAND" },
+    { "name": "THE CANDLE SHOP" },
+    { "name": "HYPNOS" }
   ],
   "manifesto": "Vivimos en la era donde lo imposible es el punto de partida.\nEn Aberrante no imitamos la realidad. La reinventamos."
 }
