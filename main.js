@@ -40,20 +40,8 @@ async function loadContent() {
     });
   }
 
-  // Brands marquee — two copies for seamless loop
-  const track = document.getElementById('brandsTrack');
-  if (track && data.brands?.length) {
-    const renderBrand = (b) => {
-      if (typeof b === 'string') return `<span class="brand-item">${b}</span>`;
-      if (b.logo) return `<img class="brand-logo" src="${b.logo}" alt="${b.name}" fetchpriority="high" decoding="async">`;
-      return `<span class="brand-item">${b.name}</span>`;
-    };
-    const buildSet = () => data.brands.map(b =>
-      renderBrand(b) + '<span class="brand-sep">·</span>'
-    ).join('');
-    // 4 copias para que el loop sea continuo con pocas marcas
-    track.innerHTML = buildSet() + buildSet() + buildSet() + buildSet();
-  }
+  // Brands marquee: estático en el HTML — no depende de site.json
+  // (en conexiones lentas el fetch dejaba la franja vacía)
 
   // Manifesto
   const manifesto = document.getElementById('manifestoText');
