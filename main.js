@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 async function loadContent() {
   let data;
   try {
-    const res = await fetch('content/site.json');
+    const res = await fetch('content/site.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('fetch failed');
     data = await res.json();
   } catch (e) {
