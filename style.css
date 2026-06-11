@@ -411,6 +411,11 @@ a {
   height: 30px;
 }
 
+.brand-logo[src*="global66"] {
+  filter: brightness(0) invert(1);
+  height: 20px;
+}
+
 .brand-logo:hover {
   opacity: 0.9;
 }

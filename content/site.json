@@ -46,7 +46,8 @@
     { "name": "Salcobrand", "logo": "assets/marcas/salcobrand.webp" },
     { "name": "The Candle Shop", "logo": "assets/marcas/candleshop.webp" },
     { "name": "Hypnos", "logo": "assets/marcas/hypnos.webp" },
-    { "name": "Preunic", "logo": "assets/marcas/preunic.png" }
+    { "name": "Preunic", "logo": "assets/marcas/preunic.png" },
+    { "name": "Global66", "logo": "assets/marcas/global66.png" }
   ],
   "manifesto": "Vivimos en la era donde lo imposible es el punto de partida.\nEn Aberrante no imitamos la realidad. La reinventamos."
 }
