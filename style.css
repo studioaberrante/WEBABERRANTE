@@ -393,6 +393,24 @@ a {
   height: 18px;
 }
 
+.brand-logo[src*="preunic"] {
+  filter: brightness(0) invert(1);
+  height: 20px;
+}
+
+.brand-logo[src*="salcobrand"] {
+  filter: grayscale(1) brightness(1.25);
+  height: 34px;
+}
+
+.brand-logo[src*="hypnos"] {
+  height: 26px;
+}
+
+.brand-logo[src*="candleshop"] {
+  height: 30px;
+}
+
 .brand-logo:hover {
   opacity: 0.9;
 }
