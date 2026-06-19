@@ -180,17 +180,17 @@ async function loadContent() {
     setTimeout(() => loader.classList.add('hidden'), 300);
   }
 
-  // Ocultar al ANTES de: el video arranca, la página carga, o un tope corto.
-  // Antes esperaba hasta 20s al video → "cuesta entrar / no se ve el video".
+  // Se oculta APENAS el video del hero empieza a reproducirse → sin pantalla negra.
+  // Tope de seguridad solo por si el autoplay está bloqueado.
   const iframe = document.querySelector('.hero-video-wrap iframe');
   if (iframe && typeof Vimeo !== 'undefined') {
     try {
       const player = new Vimeo.Player(iframe);
-      player.on('play', () => setTimeout(hideLoader, 150));
-    } catch (e) { /* si el player falla, igual ocultamos abajo */ }
+      player.on('play', () => hideLoader());
+      player.on('playing', () => hideLoader());
+    } catch (e) { /* si el player falla, el tope de abajo igual oculta */ }
   }
-  window.addEventListener('load', () => setTimeout(hideLoader, 600));
-  setTimeout(hideLoader, 3500); // tope máximo de seguridad
+  setTimeout(hideLoader, 10000); // tope de seguridad (autoplay bloqueado)
 })();
 
 /* ---- FORMULARIO CONTACTO ---- */
@@ -401,56 +401,81 @@ function initEntranceAnimations() {
   });
 }
 
-/* ---- SERVICIOS: CARRUSEL HORIZONTAL (no secuestra el scroll de la página) ---- */
+/* ---- SERVICIOS: SCROLL HORIZONTAL FIJADO (pin) ---- */
 function initServiciosHScroll() {
-  const hscroll  = document.getElementById('serviciosTrack');
+  const section  = document.querySelector('.servicios');
+  const track    = document.getElementById('serviciosTrack');
   const progress = document.getElementById('serviciosProgress');
   const hint     = document.getElementById('serviciosHint');
-  if (!hscroll) return;
+  if (!section || !track) return;
 
-  const updateProgress = () => {
-    const max = hscroll.scrollWidth - hscroll.clientWidth;
-    const p = max > 0 ? hscroll.scrollLeft / max : 0;
-    if (progress) progress.style.width = (p * 100) + '%';
-    return p;
-  };
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 1px)', () => {
+    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
 
-  // Indicador "Desliza →": aparece tras inactividad estando la sección en pantalla
-  let idleTimer;
-  const inView = () => {
-    const r = hscroll.getBoundingClientRect();
-    return r.top < window.innerHeight * 0.85 && r.bottom > window.innerHeight * 0.2;
-  };
-  const resetIdle = () => {
-    clearTimeout(idleTimer);
-    if (hint) hint.style.opacity = '0';
-    idleTimer = setTimeout(() => {
-      if (hint && inView() && updateProgress() < 0.9) hint.style.opacity = '1';
-    }, 2000);
-  };
-
-  hscroll.addEventListener('scroll', () => { updateProgress(); resetIdle(); }, { passive: true });
-  window.addEventListener('scroll', resetIdle, { passive: true });
-
-  // Arrastre con mouse (desktop): mueve el carrusel horizontalmente.
-  // En táctil el deslizamiento horizontal nativo ya funciona.
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let down = false, startX = 0, startLeft = 0;
-    hscroll.addEventListener('pointerdown', (e) => {
-      down = true; startX = e.clientX; startLeft = hscroll.scrollLeft;
-      hscroll.classList.add('dragging');
+    const tween = gsap.to(track, {
+      x: () => -distance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + distance(),
+        pin: true,
+        scrub: 0.3,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          if (progress) progress.style.width = (self.progress * 100) + '%';
+        }
+      }
     });
-    window.addEventListener('pointermove', (e) => {
-      if (!down) return;
-      hscroll.scrollLeft = startLeft - (e.clientX - startX) * 1.4;
-    });
-    const up = () => { down = false; hscroll.classList.remove('dragging'); };
-    window.addEventListener('pointerup', up);
-    window.addEventListener('pointercancel', up);
-  }
 
-  updateProgress();
-  resetIdle();
+    // Indicador "Desliza →": aparece tras inactividad dentro de la sección
+    let idleTimer;
+    const st = () => tween.scrollTrigger;
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      if (hint) hint.style.opacity = '0';
+      idleTimer = setTimeout(() => {
+        if (hint && st() && st().isActive && st().progress < 0.92) hint.style.opacity = '1';
+      }, 2000);
+    };
+    window.addEventListener('scroll', resetIdle, { passive: true });
+    resetIdle();
+
+    // Arrastre lateral SOLO en computador (mouse). En táctil se usa el scroll
+    // normal del dedo, que ya mueve los servicios vía el pin (sin interferir).
+    const cleanups = [];
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let dragging = false, lastX = 0;
+      const onDown = (e) => { dragging = true; lastX = e.clientX; resetIdle(); };
+      const onMove = (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - lastX;
+        window.scrollBy(0, -dx * 2.4);
+        lastX = e.clientX;
+      };
+      const onUp = () => { dragging = false; };
+      section.addEventListener('pointerdown', onDown);
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', onUp);
+      window.addEventListener('pointercancel', onUp);
+      cleanups.push(() => {
+        section.removeEventListener('pointerdown', onDown);
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('pointerup', onUp);
+        window.removeEventListener('pointercancel', onUp);
+      });
+    }
+
+    return () => {
+      if (tween.scrollTrigger) tween.scrollTrigger.kill();
+      tween.kill();
+      gsap.set(track, { x: 0 });
+      clearTimeout(idleTimer);
+      window.removeEventListener('scroll', resetIdle);
+      cleanups.forEach((fn) => fn());
+    };
+  });
 }
 
 /* ---- MENÚ MÓVIL ---- */
