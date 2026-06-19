@@ -128,6 +128,38 @@ async function loadContent() {
   setInterval(nextWord, 2000);
 })();
 
+/* ---- MARQUEE DE MARCAS (relleno automático sin huecos) ---- */
+(function initBrandsMarquee() {
+  const track = document.getElementById('brandsTrack');
+  if (!track) return;
+  const baseHTML = track.innerHTML; // un set de logos
+
+  function build() {
+    // 1) un grupo que cubra al menos el ancho de pantalla
+    track.style.animation = 'none';
+    track.innerHTML = baseHTML;
+    let guard = 0;
+    while (track.scrollWidth < window.innerWidth && guard < 30) {
+      track.innerHTML += baseHTML;
+      guard++;
+    }
+    // 2) duplicar el grupo -> dos mitades idénticas para loop sin saltos
+    const groupHTML = track.innerHTML;
+    track.innerHTML = groupHTML + groupHTML;
+    // 3) velocidad constante (~55px/s) sin importar cuántas copias haya
+    const halfWidth = track.scrollWidth / 2;
+    const duration = Math.max(20, halfWidth / 55);
+    track.style.animation = `marquee-scroll ${duration}s linear infinite`;
+  }
+
+  build();
+  // Rebuild cuando carguen imágenes/fuentes y al cambiar el tamaño
+  window.addEventListener('load', build);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(build, 200); });
+})();
+
 /* ---- LOADER ---- */
 (function initLoader() {
   const loader  = document.getElementById('loader');
