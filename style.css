@@ -506,15 +506,12 @@ a {
 .servicios {
   background: var(--bg);
   border-top: 1px solid var(--border);
+  padding: clamp(80px, 11vh, 130px) 0;
 }
 
 .servicios-pin {
   position: relative;
-  height: 100vh;
-  display: flex;
-  align-items: center;
   overflow: hidden;
-  touch-action: pan-y;
 }
 
 /* Indicador "Desliza →" */
@@ -568,21 +565,31 @@ a {
 
 .servicios-hscroll {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: clamp(40px, 4.5vw, 84px);
   padding: 0 7vw;
-  width: max-content;
-  will-change: transform;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   user-select: none;
   -webkit-user-select: none;
 }
 
+.servicios-hscroll::-webkit-scrollbar {
+  display: none;
+}
+
 .servicio-item {
   flex-shrink: 0;
-  width: min(540px, 84vw);
+  width: min(460px, 82vw);
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  justify-content: center;
+  gap: 28px;
+  min-height: 46vh;
 }
 
 .servicio-intro {
@@ -1193,16 +1200,18 @@ a {
   }
 
   .servicios-hscroll {
-    gap: 48px;
+    gap: 36px;
     padding: 0 24px;
   }
 
   .servicio-item {
-    width: 80vw;
+    width: 84vw;
+    min-height: 0;
+    gap: 22px;
   }
 
   .servicio-intro {
-    width: auto;
+    width: 84vw;
   }
 
   .servicios-title {

@@ -180,22 +180,17 @@ async function loadContent() {
     setTimeout(() => loader.classList.add('hidden'), 300);
   }
 
-  // Espera a que el video de Vimeo empiece a reproducirse
-  window.addEventListener('load', () => {
-    const iframe = document.querySelector('.hero-video-wrap iframe');
-    if (iframe && typeof Vimeo !== 'undefined') {
+  // Ocultar al ANTES de: el video arranca, la página carga, o un tope corto.
+  // Antes esperaba hasta 20s al video → "cuesta entrar / no se ve el video".
+  const iframe = document.querySelector('.hero-video-wrap iframe');
+  if (iframe && typeof Vimeo !== 'undefined') {
+    try {
       const player = new Vimeo.Player(iframe);
-      // Tope de seguridad: si el autoplay está bloqueado (ej: modo bajo
-      // consumo en iPhone) el video nunca parte y hay que entrar igual
-      const timeout = setTimeout(hideLoader, 20000);
-      player.on('play', () => {
-        clearTimeout(timeout);
-        setTimeout(hideLoader, 200);
-      });
-    } else {
-      setTimeout(hideLoader, 1000);
-    }
-  });
+      player.on('play', () => setTimeout(hideLoader, 150));
+    } catch (e) { /* si el player falla, igual ocultamos abajo */ }
+  }
+  window.addEventListener('load', () => setTimeout(hideLoader, 600));
+  setTimeout(hideLoader, 3500); // tope máximo de seguridad
 })();
 
 /* ---- FORMULARIO CONTACTO ---- */
@@ -406,111 +401,56 @@ function initEntranceAnimations() {
   });
 }
 
-/* ---- SERVICIOS: SCROLL HORIZONTAL + ARRASTRE LATERAL ---- */
+/* ---- SERVICIOS: CARRUSEL HORIZONTAL (no secuestra el scroll de la página) ---- */
 function initServiciosHScroll() {
-  const section  = document.querySelector('.servicios');
-  const track    = document.getElementById('serviciosTrack');
+  const hscroll  = document.getElementById('serviciosTrack');
   const progress = document.getElementById('serviciosProgress');
   const hint     = document.getElementById('serviciosHint');
-  if (!section || !track) return;
+  if (!hscroll) return;
 
-  const mm = gsap.matchMedia();
-  // Mismo comportamiento en desktop y móvil: sección fijada + scroll horizontal
-  mm.add('(min-width: 1px)', () => {
-    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+  const updateProgress = () => {
+    const max = hscroll.scrollWidth - hscroll.clientWidth;
+    const p = max > 0 ? hscroll.scrollLeft / max : 0;
+    if (progress) progress.style.width = (p * 100) + '%';
+    return p;
+  };
 
-    const tween = gsap.to(track, {
-      x: () => -distance(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: () => '+=' + distance(),
-        pin: true,
-        scrub: 0.25,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          if (progress) progress.style.width = (self.progress * 100) + '%';
-        }
-      }
+  // Indicador "Desliza →": aparece tras inactividad estando la sección en pantalla
+  let idleTimer;
+  const inView = () => {
+    const r = hscroll.getBoundingClientRect();
+    return r.top < window.innerHeight * 0.85 && r.bottom > window.innerHeight * 0.2;
+  };
+  const resetIdle = () => {
+    clearTimeout(idleTimer);
+    if (hint) hint.style.opacity = '0';
+    idleTimer = setTimeout(() => {
+      if (hint && inView() && updateProgress() < 0.9) hint.style.opacity = '1';
+    }, 2000);
+  };
+
+  hscroll.addEventListener('scroll', () => { updateProgress(); resetIdle(); }, { passive: true });
+  window.addEventListener('scroll', resetIdle, { passive: true });
+
+  // Arrastre con mouse (desktop): mueve el carrusel horizontalmente.
+  // En táctil el deslizamiento horizontal nativo ya funciona.
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let down = false, startX = 0, startLeft = 0;
+    hscroll.addEventListener('pointerdown', (e) => {
+      down = true; startX = e.clientX; startLeft = hscroll.scrollLeft;
+      hscroll.classList.add('dragging');
     });
-
-    // El indicador "Desliza →" aparece tras unos segundos de inactividad,
-    // solo si estás dentro de la sección y todavía queda contenido por recorrer.
-    let idleTimer;
-    const st = () => tween.scrollTrigger;
-    const sectionPinned = () => {
-      const r = section.getBoundingClientRect();
-      return r.top <= 1 && r.bottom > window.innerHeight * 0.5;
-    };
-    const resetIdle = () => {
-      clearTimeout(idleTimer);
-      if (hint) hint.style.opacity = '0';
-      idleTimer = setTimeout(() => {
-        if (hint && sectionPinned() && st() && st().progress < 0.92) {
-          hint.style.opacity = '1';
-        }
-      }, 2000);
-    };
-    window.addEventListener('scroll', resetIdle, { passive: true });
-    resetIdle();
-
-    // Cada item entra con un pequeño fundido al acercarse al centro
-    const items = gsap.utils.toArray('.servicio-item:not(.servicio-intro)');
-    items.forEach((it) => {
-      gsap.from(it, {
-        opacity: 0, y: 40, duration: 0.6, ease: 'power2.out',
-        scrollTrigger: {
-          trigger: it,
-          containerAnimation: tween,
-          start: 'left 85%'
-        }
-      });
+    window.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      hscroll.scrollLeft = startLeft - (e.clientX - startX) * 1.4;
     });
+    const up = () => { down = false; hscroll.classList.remove('dragging'); };
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+  }
 
-    // --- Arrastre lateral (mouse o dedo) que mueve el scroll ---
-    let dragging = false, lastX = 0, startX = 0, startY = 0, isHorizontal = null;
-
-    const onDown = (e) => {
-      dragging = true;
-      isHorizontal = null;
-      lastX = startX = e.clientX;
-      startY = e.clientY;
-      resetIdle();
-    };
-    const onMove = (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - lastX;
-      if (isHorizontal === null) {
-        const tdx = Math.abs(e.clientX - startX), tdy = Math.abs(e.clientY - startY);
-        if (tdx > 6 || tdy > 6) isHorizontal = tdx > tdy;
-      }
-      if (isHorizontal) {
-        // arrastrar a la izquierda avanza (scroll hacia abajo); ×2.6 = más ágil
-        window.scrollBy(0, -dx * 2.6);
-        lastX = e.clientX;
-      }
-    };
-    const onUp = () => { dragging = false; };
-
-    section.addEventListener('pointerdown', onDown);
-    window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('pointerup', onUp);
-    window.addEventListener('pointercancel', onUp);
-
-    return () => {
-      if (tween.scrollTrigger) tween.scrollTrigger.kill();
-      tween.kill();
-      gsap.set(track, { x: 0 });
-      clearTimeout(idleTimer);
-      window.removeEventListener('scroll', resetIdle);
-      section.removeEventListener('pointerdown', onDown);
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
-      window.removeEventListener('pointercancel', onUp);
-    };
-  });
+  updateProgress();
+  resetIdle();
 }
 
 /* ---- MENÚ MÓVIL ---- */
