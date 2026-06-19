@@ -432,10 +432,29 @@ function initServiciosHScroll() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           if (progress) progress.style.width = (self.progress * 100) + '%';
-          if (hint) hint.style.opacity = self.progress < 0.03 ? '1' : '0';
         }
       }
     });
+
+    // El indicador "Desliza →" aparece tras unos segundos de inactividad,
+    // solo si estás dentro de la sección y todavía queda contenido por recorrer.
+    let idleTimer;
+    const st = () => tween.scrollTrigger;
+    const sectionPinned = () => {
+      const r = section.getBoundingClientRect();
+      return r.top <= 1 && r.bottom > window.innerHeight * 0.5;
+    };
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      if (hint) hint.style.opacity = '0';
+      idleTimer = setTimeout(() => {
+        if (hint && sectionPinned() && st() && st().progress < 0.92) {
+          hint.style.opacity = '1';
+        }
+      }, 2000);
+    };
+    window.addEventListener('scroll', resetIdle, { passive: true });
+    resetIdle();
 
     // Cada item entra con un pequeño fundido al acercarse al centro
     const items = gsap.utils.toArray('.servicio-item:not(.servicio-intro)');
@@ -458,6 +477,7 @@ function initServiciosHScroll() {
       isHorizontal = null;
       lastX = startX = e.clientX;
       startY = e.clientY;
+      resetIdle();
     };
     const onMove = (e) => {
       if (!dragging) return;
@@ -483,6 +503,8 @@ function initServiciosHScroll() {
       if (tween.scrollTrigger) tween.scrollTrigger.kill();
       tween.kill();
       gsap.set(track, { x: 0 });
+      clearTimeout(idleTimer);
+      window.removeEventListener('scroll', resetIdle);
       section.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
