@@ -84,6 +84,28 @@ async function loadContent() {
   setInterval(nextWord, 2400);
 })();
 
+/* ---- "¿QUÉ MIERDA HACEMOS?" WORD CYCLING ---- */
+(function initQhWordCycle() {
+  const wordEl = document.getElementById('qhWord');
+  if (!wordEl) return;
+  const words = ['MIERDA', 'CARAJOS', 'CHUCHA', 'WEÁ', 'DIABLOS'];
+  let idx = 0;
+
+  function nextWord() {
+    idx = (idx + 1) % words.length;
+    wordEl.classList.add('exit');
+    setTimeout(() => {
+      wordEl.textContent = words[idx];
+      wordEl.classList.remove('exit');
+      wordEl.classList.add('enter');
+      void wordEl.offsetWidth;
+      wordEl.classList.remove('enter');
+    }, 420);
+  }
+
+  setInterval(nextWord, 2000);
+})();
+
 /* ---- LOADER ---- */
 (function initLoader() {
   const loader  = document.getElementById('loader');
@@ -152,6 +174,13 @@ async function loadContent() {
 /* ---- BOOTSTRAP ---- */
 loadContent().then(() => {
   initEntranceAnimations();
+  // Recalcular posiciones de scroll cuando la página termina de cargar
+  // (el video, imágenes y fuentes cambian la altura y desfasan los triggers)
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
+  setTimeout(() => ScrollTrigger.refresh(), 1500);
 });
 
 /* ---- PORTFOLIO THUMBNAILS ---- */
@@ -226,6 +255,50 @@ function initEntranceAnimations() {
     x: 20, opacity: 0
   }, {
     x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.6
+  });
+
+  // Qué hacemos
+  gsap.fromTo('.qh-title', {
+    y: 40, opacity: 0
+  }, {
+    y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.que-hacemos', start: 'top 75%' }
+  });
+
+  gsap.fromTo('.qh-intro', {
+    y: 24, opacity: 0
+  }, {
+    y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.2,
+    scrollTrigger: { trigger: '.que-hacemos', start: 'top 70%' }
+  });
+
+  // Servicios header
+  gsap.fromTo('.servicios-header .section-label', {
+    opacity: 0
+  }, {
+    opacity: 1, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: '.servicios-header', start: 'top 82%' }
+  });
+
+  gsap.fromTo('.servicios-title', {
+    y: 30, opacity: 0
+  }, {
+    y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.servicios-header', start: 'top 82%' }
+  });
+
+  // Servicios — cada fila aparece al entrar en pantalla
+  gsap.utils.toArray('.servicio-row').forEach((el) => {
+    const num  = el.querySelector('.servicio-num');
+    const name = el.querySelector('.servicio-name');
+    const desc = el.querySelector('.servicio-desc');
+    gsap.fromTo([num, name, desc], {
+      y: 36, opacity: 0
+    }, {
+      y: 0, opacity: 1, duration: 0.85, ease: 'power3.out',
+      stagger: 0.08,
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    });
   });
 
   // Portfolio header

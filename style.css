@@ -432,6 +432,148 @@ a {
 }
 
 /* ============================================
+   QUÉ HACEMOS
+   ============================================ */
+.que-hacemos {
+  padding: 160px 48px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+}
+
+.qh-inner {
+  max-width: 1000px;
+  text-align: center;
+}
+
+.qh-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 8vw, 128px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.qh-word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 0.95;
+  vertical-align: bottom;
+}
+
+.qh-word {
+  display: inline-block;
+  line-height: 0.95;
+  color: #ff3b1d;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+.qh-word.exit {
+  transform: translateY(-110%);
+  opacity: 0;
+}
+
+.qh-word.enter {
+  transform: translateY(110%);
+  opacity: 0;
+  transition: none;
+}
+
+.qh-intro {
+  margin-top: 44px;
+  font-size: clamp(16px, 1.6vw, 21px);
+  font-weight: 300;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  color: var(--text-mid);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
+   SERVICIOS
+   ============================================ */
+.servicios {
+  padding: 40px 48px 120px;
+  background: var(--bg);
+}
+
+.servicios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.servicios-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 6vw, 100px);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-align: right;
+}
+
+.servicios-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.servicio-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px 8px;
+  border-bottom: 1px solid var(--border);
+  transition: padding-left 0.4s ease, background 0.4s ease;
+}
+
+.servicio-row:hover {
+  padding-left: 24px;
+}
+
+.servicio-num {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  padding-top: 12px;
+  flex-shrink: 0;
+  transition: color 0.4s ease;
+}
+
+.servicio-row:hover .servicio-num {
+  color: #ff3b1d;
+}
+
+.servicio-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 760px;
+}
+
+.servicio-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  transition: transform 0.4s ease;
+}
+
+.servicio-desc {
+  font-size: clamp(14px, 1.4vw, 16px);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-mid);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================
    PORTFOLIO
    ============================================ */
 .portfolio {
@@ -975,6 +1117,45 @@ a {
 
   .hero-title {
     font-size: clamp(58px, 14vw, 80px);
+  }
+
+  .que-hacemos {
+    padding: 96px 24px;
+  }
+
+  .qh-intro {
+    margin-top: 32px;
+  }
+
+  .servicios {
+    padding: 24px 24px 80px;
+  }
+
+  .servicios-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 32px;
+  }
+
+  .servicios-title {
+    text-align: left;
+    font-size: 64px;
+  }
+
+  .servicio-row {
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px 4px;
+  }
+
+  .servicio-row:hover {
+    padding-left: 4px;
+  }
+
+  .servicio-num {
+    padding-top: 0;
   }
 
   .portfolio {
