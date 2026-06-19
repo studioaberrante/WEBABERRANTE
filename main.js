@@ -413,8 +413,8 @@ function initServiciosHScroll() {
   if (!section || !track) return;
 
   const mm = gsap.matchMedia();
-  // Solo desktop: en móvil queda como deslizamiento táctil nativo
-  mm.add('(min-width: 769px)', () => {
+  // Mismo comportamiento en desktop y móvil: sección fijada + scroll horizontal
+  mm.add('(min-width: 1px)', () => {
     const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
 
     const tween = gsap.to(track, {

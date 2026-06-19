@@ -526,15 +526,16 @@ a {
 
 .servicio-item {
   flex-shrink: 0;
-  width: min(440px, 78vw);
+  width: min(540px, 84vw);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 32px;
 }
 
 .servicio-intro {
   width: auto;
   padding-right: clamp(20px, 4vw, 80px);
+  gap: 20px;
 }
 
 .servicios-title {
@@ -546,17 +547,18 @@ a {
 
 .servicio-num {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: clamp(48px, 5.5vw, 88px);
   font-weight: 400;
-  letter-spacing: 0.1em;
+  line-height: 1;
+  letter-spacing: 0.02em;
   color: #ff3b1d;
 }
 
 .servicio-name {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: clamp(28px, 3vw, 46px);
-  line-height: 1.05;
+  font-size: clamp(30px, 3.4vw, 52px);
+  line-height: 1.04;
   letter-spacing: -0.03em;
   color: var(--text);
 }
@@ -1137,26 +1139,17 @@ a {
     margin-top: 32px;
   }
 
-  .servicios-pin {
-    height: auto;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding: 72px 0;
-  }
-
   .servicios-hscroll {
-    gap: 28px;
+    gap: 48px;
     padding: 0 24px;
   }
 
   .servicio-item {
-    width: 82vw;
-    scroll-snap-align: center;
+    width: 80vw;
   }
 
   .servicio-intro {
-    width: 82vw;
+    width: auto;
   }
 
   .servicios-title {
@@ -1870,7 +1863,7 @@ body.cursor-hidden * {
 .portfolio-title,
 .nosotros-title { font-size: clamp(44px, 5.5vw, 88px); }
 .footer-title { font-size: clamp(46px, 7.5vw, 108px); }
-.servicio-name { font-size: clamp(28px, 3vw, 46px); }
+.servicio-name { font-size: clamp(38px, 4.6vw, 76px); }
 
 @media (max-width: 768px) {
   .servicios-title,
