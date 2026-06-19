@@ -11,6 +11,8 @@
   --text-mid: rgba(255, 255, 255, 0.65);
   --border: rgba(255, 255, 255, 0.07);
   --header-h: 64px;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ---- RESET ---- */
@@ -90,9 +92,10 @@ a {
 }
 
 .loader-text {
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: lowercase;
   color: rgba(255,255,255,0.35);
   animation: loader-fade-in 0.8s ease 0.4s forwards;
@@ -141,12 +144,13 @@ a {
 }
 
 .header-nav a {
+  font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-weight: 400;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.6);
-  transition: color 0.25s ease;
+  transition: color 0.35s var(--ease-premium);
 }
 
 .header.scrolled .header-nav a {
@@ -251,11 +255,12 @@ a {
 }
 
 .hero-eyebrow {
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.6);
   margin-bottom: 16px;
 }
 
@@ -323,9 +328,10 @@ a {
 }
 
 .scroll-hint span {
+  font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 400;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.5);
 }
@@ -536,13 +542,14 @@ a {
 }
 
 .servicio-num {
+  font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
-  padding-top: 12px;
+  padding-top: 14px;
   flex-shrink: 0;
-  transition: color 0.4s ease;
+  transition: color 0.4s var(--ease-premium);
 }
 
 .servicio-row:hover .servicio-num {
@@ -591,9 +598,10 @@ a {
 }
 
 .section-label {
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -638,23 +646,25 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+  filter: grayscale(100%);
+  transition: transform 0.7s var(--ease-premium), filter 0.7s var(--ease-premium), opacity 0.4s ease;
 }
 
 .portfolio-item:hover .portfolio-thumb img {
-  transform: scale(1.04);
+  transform: scale(1.05);
+  filter: grayscale(0%);
 }
 
 .portfolio-thumb-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.35);
-  transition: background 0.4s ease;
+  transition: background 0.5s var(--ease-premium);
   z-index: 1;
 }
 
 .portfolio-item:hover .portfolio-thumb-overlay {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.15);
 }
 
 .portfolio-play {
@@ -695,9 +705,10 @@ a {
 }
 
 .portfolio-tag {
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -795,6 +806,11 @@ a {
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid var(--border);
+  transition: border-color 0.5s var(--ease-premium);
+}
+
+.nosotros-foto:hover {
+  border-color: rgba(255,255,255,0.25);
 }
 
 .nosotros-img {
@@ -805,6 +821,12 @@ a {
   object-fit: cover;
   border-radius: 50%;
   display: none;
+  filter: grayscale(100%);
+  transition: filter 0.7s var(--ease-premium);
+}
+
+.nosotros-foto:hover .nosotros-img {
+  filter: grayscale(0%);
 }
 
 .nosotros-img[src]:not([src=""]) {
@@ -836,9 +858,10 @@ a {
 }
 
 .nosotros-cargo {
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -905,9 +928,10 @@ a {
 }
 
 .contacto-label {
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -947,11 +971,11 @@ a {
   background: #fff;
   color: #080808;
   border: none;
-  padding: 14px 28px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  padding: 15px 30px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.25s ease, opacity 0.25s ease;
@@ -1028,9 +1052,10 @@ a {
 }
 
 .footer-copy {
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-muted);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
 }
 
 /* ============================================
@@ -1798,4 +1823,42 @@ a {
   .avd-info-col {
     padding: 40px 24px;
   }
+}
+
+/* ============================================
+   CURSOR PERSONALIZADO (difference)
+   ============================================ */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  transition: opacity 0.3s ease;
+}
+
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor input,
+body.has-custom-cursor textarea,
+body.has-custom-cursor .portfolio-item,
+body.has-custom-cursor .servicio-row {
+  cursor: none;
+}
+
+body.cursor-hidden .cursor-dot {
+  display: none;
+}
+
+body.cursor-hidden,
+body.cursor-hidden * {
+  cursor: auto !important;
 }

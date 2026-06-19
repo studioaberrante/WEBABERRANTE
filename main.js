@@ -216,12 +216,14 @@ loadContent().then(() => {
     iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&badge=0&autopause=0`;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('cursor-hidden'); // cursor normal sobre el video
   });
 
   function closeModal() {
     modal.classList.remove('open');
     iframe.src = '';
     document.body.style.overflow = '';
+    document.body.classList.remove('cursor-hidden');
   }
 
   btnClose.addEventListener('click', closeModal);
@@ -410,3 +412,34 @@ ScrollTrigger.create({
     }
   }
 });
+
+/* ---- CURSOR PERSONALIZADO (difference) ---- */
+(function initCursor() {
+  // Solo en dispositivos con mouse fino (no táctiles)
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!fine) return;
+
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  document.body.appendChild(dot);
+  document.body.classList.add('has-custom-cursor');
+
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let cx = mx, cy = my, scale = 1, targetScale = 1;
+  const HOT = 'a, button, input, textarea, .portfolio-item, .servicio-row, .footer-cta, .nav-toggle';
+
+  window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseover', (e) => { if (e.target.closest(HOT)) targetScale = 2.5; });
+  document.addEventListener('mouseout',  (e) => { if (e.target.closest(HOT)) targetScale = 1; });
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; });
+
+  function loop() {
+    cx += (mx - cx) * 0.2;
+    cy += (my - cy) * 0.2;
+    scale += (targetScale - scale) * 0.2;
+    dot.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%) scale(${scale})`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
