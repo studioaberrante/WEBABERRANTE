@@ -568,8 +568,8 @@ a {
 .servicios-hscroll {
   display: flex;
   align-items: center;
-  gap: clamp(48px, 7vw, 130px);
-  padding: 0 8vw;
+  gap: clamp(40px, 4.5vw, 84px);
+  padding: 0 7vw;
   width: max-content;
   will-change: transform;
   user-select: none;

@@ -427,7 +427,7 @@ function initServiciosHScroll() {
         start: 'top top',
         end: () => '+=' + distance(),
         pin: true,
-        scrub: 0.8,
+        scrub: 0.25,
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
@@ -467,8 +467,8 @@ function initServiciosHScroll() {
         if (tdx > 6 || tdy > 6) isHorizontal = tdx > tdy;
       }
       if (isHorizontal) {
-        // arrastrar a la izquierda avanza (scroll hacia abajo)
-        window.scrollBy(0, -dx);
+        // arrastrar a la izquierda avanza (scroll hacia abajo); ×2.6 = más ágil
+        window.scrollBy(0, -dx * 2.6);
         lastX = e.clientX;
       }
     };
