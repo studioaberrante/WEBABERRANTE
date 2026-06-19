@@ -1862,3 +1862,41 @@ body.cursor-hidden,
 body.cursor-hidden * {
   cursor: auto !important;
 }
+
+/* ============================================
+   TITULARES EN INTER GRUESO (reemplaza Bebas Neue)
+   ============================================ */
+.hero-title,
+.qh-title,
+.servicios-title,
+.portfolio-title,
+.nosotros-title,
+.footer-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+.servicio-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+/* Tamaños reajustados para Inter (más ancho que la condensada Bebas) */
+.hero-title   { font-size: clamp(44px, 7vw, 104px); }
+.qh-title     { font-size: clamp(38px, 6vw, 90px); line-height: 0.96; }
+.servicios-title,
+.portfolio-title,
+.nosotros-title { font-size: clamp(44px, 5.5vw, 88px); }
+.footer-title { font-size: clamp(46px, 7.5vw, 108px); }
+.servicio-name { font-size: clamp(22px, 2.8vw, 38px); }
+
+@media (max-width: 768px) {
+  .servicios-title,
+  .portfolio-title,
+  .nosotros-title { font-size: 52px; }
+  .footer-title { font-size: clamp(40px, 13vw, 64px); }
+}
