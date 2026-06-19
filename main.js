@@ -228,6 +228,7 @@ async function loadContent() {
 /* ---- BOOTSTRAP ---- */
 loadContent().then(() => {
   initEntranceAnimations();
+  initServiciosHScroll();
   // Recalcular posiciones de scroll cuando la página termina de cargar
   // (el video, imágenes y fuentes cambian la altura y desfasan los triggers)
   window.addEventListener('load', () => ScrollTrigger.refresh());
@@ -328,34 +329,7 @@ function initEntranceAnimations() {
     scrollTrigger: { trigger: '.que-hacemos', start: 'top 70%' }
   });
 
-  // Servicios header
-  gsap.fromTo('.servicios-header .section-label', {
-    opacity: 0
-  }, {
-    opacity: 1, duration: 0.8, ease: 'power2.out',
-    scrollTrigger: { trigger: '.servicios-header', start: 'top 82%' }
-  });
-
-  gsap.fromTo('.servicios-title', {
-    y: 30, opacity: 0
-  }, {
-    y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: '.servicios-header', start: 'top 82%' }
-  });
-
-  // Servicios — cada fila aparece al entrar en pantalla
-  gsap.utils.toArray('.servicio-row').forEach((el) => {
-    const num  = el.querySelector('.servicio-num');
-    const name = el.querySelector('.servicio-name');
-    const desc = el.querySelector('.servicio-desc');
-    gsap.fromTo([num, name, desc], {
-      y: 36, opacity: 0
-    }, {
-      y: 0, opacity: 1, duration: 0.85, ease: 'power3.out',
-      stagger: 0.08,
-      scrollTrigger: { trigger: el, start: 'top 88%' }
-    });
-  });
+  // (Servicios usa scroll horizontal propio, ver initServiciosHScroll)
 
   // Portfolio header
   gsap.fromTo('.portfolio-header .section-label', {
@@ -432,6 +406,52 @@ function initEntranceAnimations() {
   });
 }
 
+/* ---- SERVICIOS: SCROLL HORIZONTAL (desktop) ---- */
+function initServiciosHScroll() {
+  const section = document.querySelector('.servicios');
+  const track   = document.getElementById('serviciosTrack');
+  if (!section || !track) return;
+
+  const mm = gsap.matchMedia();
+  // Solo desktop: en móvil queda como deslizamiento táctil nativo
+  mm.add('(min-width: 769px)', () => {
+    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+
+    const tween = gsap.to(track, {
+      x: () => -distance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + distance(),
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    // Cada item entra con un pequeño fundido al acercarse al centro
+    const items = gsap.utils.toArray('.servicio-item:not(.servicio-intro)');
+    items.forEach((it) => {
+      gsap.from(it, {
+        opacity: 0, y: 40, duration: 0.6, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: it,
+          containerAnimation: tween,
+          start: 'left 85%'
+        }
+      });
+    });
+
+    return () => {
+      if (tween.scrollTrigger) tween.scrollTrigger.kill();
+      tween.kill();
+      gsap.set(track, { x: 0 });
+    };
+  });
+}
+
 /* ---- MENÚ MÓVIL ---- */
 (function initMobileNav() {
   const toggle = document.getElementById('navToggle');
@@ -480,7 +500,7 @@ ScrollTrigger.create({
 
   let mx = window.innerWidth / 2, my = window.innerHeight / 2;
   let cx = mx, cy = my, scale = 1, targetScale = 1;
-  const HOT = 'a, button, input, textarea, .portfolio-item, .servicio-row, .footer-cta, .nav-toggle';
+  const HOT = 'a, button, input, textarea, .portfolio-item, .footer-cta, .nav-toggle';
 
   window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
   document.addEventListener('mouseover', (e) => { if (e.target.closest(HOT)) targetScale = 2.5; });
