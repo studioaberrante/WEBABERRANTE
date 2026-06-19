@@ -406,10 +406,12 @@ function initEntranceAnimations() {
   });
 }
 
-/* ---- SERVICIOS: SCROLL HORIZONTAL (desktop) ---- */
+/* ---- SERVICIOS: SCROLL HORIZONTAL + ARRASTRE LATERAL ---- */
 function initServiciosHScroll() {
-  const section = document.querySelector('.servicios');
-  const track   = document.getElementById('serviciosTrack');
+  const section  = document.querySelector('.servicios');
+  const track    = document.getElementById('serviciosTrack');
+  const progress = document.getElementById('serviciosProgress');
+  const hint     = document.getElementById('serviciosHint');
   if (!section || !track) return;
 
   const mm = gsap.matchMedia();
@@ -425,9 +427,13 @@ function initServiciosHScroll() {
         start: 'top top',
         end: () => '+=' + distance(),
         pin: true,
-        scrub: 1,
+        scrub: 0.8,
         anticipatePin: 1,
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          if (progress) progress.style.width = (self.progress * 100) + '%';
+          if (hint) hint.style.opacity = self.progress < 0.03 ? '1' : '0';
+        }
       }
     });
 
@@ -444,10 +450,43 @@ function initServiciosHScroll() {
       });
     });
 
+    // --- Arrastre lateral (mouse o dedo) que mueve el scroll ---
+    let dragging = false, lastX = 0, startX = 0, startY = 0, isHorizontal = null;
+
+    const onDown = (e) => {
+      dragging = true;
+      isHorizontal = null;
+      lastX = startX = e.clientX;
+      startY = e.clientY;
+    };
+    const onMove = (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      if (isHorizontal === null) {
+        const tdx = Math.abs(e.clientX - startX), tdy = Math.abs(e.clientY - startY);
+        if (tdx > 6 || tdy > 6) isHorizontal = tdx > tdy;
+      }
+      if (isHorizontal) {
+        // arrastrar a la izquierda avanza (scroll hacia abajo)
+        window.scrollBy(0, -dx);
+        lastX = e.clientX;
+      }
+    };
+    const onUp = () => { dragging = false; };
+
+    section.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+
     return () => {
       if (tween.scrollTrigger) tween.scrollTrigger.kill();
       tween.kill();
       gsap.set(track, { x: 0 });
+      section.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
     };
   });
 }

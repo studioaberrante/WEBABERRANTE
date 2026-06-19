@@ -509,10 +509,60 @@ a {
 }
 
 .servicios-pin {
+  position: relative;
   height: 100vh;
   display: flex;
   align-items: center;
   overflow: hidden;
+  touch-action: pan-y;
+}
+
+/* Indicador "Desliza →" */
+.servicios-hint {
+  position: absolute;
+  bottom: 48px;
+  right: 8vw;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-premium);
+  z-index: 3;
+}
+
+.servicios-hint-arrow {
+  display: inline-block;
+  font-size: 16px;
+  color: #ff3b1d;
+  animation: hint-nudge 1.4s ease-in-out infinite;
+}
+
+@keyframes hint-nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(8px); }
+}
+
+/* Barra de progreso */
+.servicios-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  z-index: 3;
+}
+
+.servicios-progress-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: #ff3b1d;
 }
 
 .servicios-hscroll {
@@ -522,6 +572,8 @@ a {
   padding: 0 8vw;
   width: max-content;
   will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .servicio-item {
