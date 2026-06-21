@@ -21,11 +21,14 @@
     setTimeout(() => intro.remove(), 600);
   }
 
-  // Cierre por TIEMPO fijo, sincronizado con el zoom final de las letras (~4 s).
+  // Cierre por TIEMPO fijo, sincronizado con el final de la intro (~3.1 s).
   // No usamos 'ended' ni video.duration porque en algunos entornos no son fiables.
-  timer = setTimeout(end, 4000);
+  timer = setTimeout(end, 3150);
 
-  if (video) video.play().catch(() => {});
+  // Intenta reproducir CON sonido; si el navegador lo bloquea, arranca muteada.
+  if (video) {
+    video.play().catch(() => { video.muted = true; video.play().catch(() => {}); });
+  }
   intro.addEventListener('click', end); // permite saltar con click
 })();
 
