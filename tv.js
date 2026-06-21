@@ -4,22 +4,20 @@
    ============================================ */
 
 const PIEZAS = {
-  '1169366177': { titulo: 'Alo Yoga x Josefa Sorel', tipo: 'Cortometraje', autor: 'Studio Aberrante' },
-  '1199576480': { titulo: 'Nike',            tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante' },
-  '1202693340': { titulo: 'Spotify',         tipo: 'Cortometraje', autor: 'Studio Aberrante' },
-  '1199573268': { titulo: 'The Candle Shop', tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante' },
-  '1199573953': { titulo: 'Salcobrand',      tipo: 'Cortometraje', autor: 'Studio Aberrante' },
-  '1199572315': { titulo: 'Hypnos',          tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante' }
+  '1169366177': { titulo: 'Alo Yoga x Josefa Sorel', tipo: 'Cortometraje',        autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 24, tags: ['Cinemático', 'Wellness', 'Moda'] },
+  '1199576480': { titulo: 'Nike',            tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante', label: 'Staff Picks',         likes: 41, tags: ['Deporte', 'Cinemático', 'Épico'] },
+  '1202693340': { titulo: 'Spotify',         tipo: 'Cortometraje',        autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 18, tags: ['Música', 'Lifestyle'] },
+  '1199573268': { titulo: 'The Candle Shop', tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante', label: 'Staff Picks',         likes: 12, tags: ['Atmósfera', 'Producto'] },
+  '1199573953': { titulo: 'Salcobrand',      tipo: 'Cortometraje',        autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 9,  tags: ['Narrativa', 'Marca'] },
+  '1199572315': { titulo: 'Hypnos',          tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante', label: 'Staff Picks',         likes: 33, tags: ['Onírico', 'Cinemático'] }
 };
 
-// Piezas del hero (carrusel destacado)
 const DESTACADOS = ['1169366177', '1199576480', '1199572315'];
 
-// Filas tipo Netflix
 const FILAS = [
-  { id: 'row-originals',  titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ['1169366177', '1199576480', '1199572315', '1202693340', '1199573953'] },
-  { id: 'row-cortos',     titulo: 'Cortometrajes',        sub: 'Narrativas con estética de cine',          posters: false, ids: ['1202693340', '1199572315', '1199573953', '1199573268', '1169366177'] },
-  { id: 'row-destacados', titulo: 'Lo más visto',         sub: '',                                          posters: false, ids: ['1199576480', '1169366177', '1202693340', '1199573268', '1199572315', '1199573953'] }
+  { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ['1169366177', '1199576480', '1199572315', '1202693340', '1199573953'] },
+  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ['1199576480', '1199573268', '1199572315', '1169366177', '1199573953'] },
+  { id: 'row-cat',       titulo: 'Lo más visto',         sub: '',                                       posters: false, ids: ['1199576480', '1169366177', '1202693340', '1199573268', '1199572315', '1199573953'] }
 ];
 
 /* ---- THUMBNAILS DE VIMEO ---- */
@@ -31,11 +29,6 @@ function getRaw(id) {
     .then(d => { rawCache[id] = d.thumbnail_url || ''; return rawCache[id]; })
     .catch(() => '');
 }
-// Devuelve una URL del tamaño pedido (con respaldo a la original si no existe)
-function getThumb(id, size = '640x360') {
-  return getRaw(id).then(raw => raw ? raw.replace(/_\d+x\d+/, '_' + size) : '');
-}
-// Carga una imagen probando un tamaño grande y, si falla, la original
 function loadImageWithFallback(id, size, onReady) {
   getRaw(id).then(raw => {
     if (!raw) return;
@@ -45,6 +38,30 @@ function loadImageWithFallback(id, size, onReady) {
     img.onerror = () => onReady(raw);
     img.src = big;
   });
+}
+function applyThumb(imgEl, id, size) {
+  getRaw(id).then(raw => { if (raw) imgEl.src = raw.replace(/_\d+x\d+/, '_' + size); });
+}
+
+/* ---- TARJETA (reutilizable) ---- */
+function makeCard(id, posters) {
+  const p = PIEZAS[id];
+  const card = document.createElement('div');
+  card.className = 'tv-card';
+  card.dataset.vimeo = id;
+  card.innerHTML = `
+    <div class="tv-card-thumb">
+      <img alt="${p.titulo}" loading="lazy">
+      <div class="tv-card-play">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="tv-card-info">
+      <p class="tv-card-name">${p.titulo}</p>
+      <p class="tv-card-sub">${p.tipo} · ${p.autor}</p>
+    </div>`;
+  applyThumb(card.querySelector('img'), id, posters ? '540x720' : '640x360');
+  return card;
 }
 
 /* ---- HERO (carrusel destacado) ---- */
@@ -68,10 +85,10 @@ function loadImageWithFallback(id, size, onReady) {
     const id = DESTACADOS[i];
     const p = PIEZAS[id];
     loadImageWithFallback(id, '1280x720', (url) => { bg.style.backgroundImage = `url(${url})`; });
-    eyebrow.textContent = p.tipo === 'Cortometraje' ? 'Aberrante Originals' : 'Destacado';
+    eyebrow.textContent = p.label;
     title.textContent = p.titulo;
     sub.textContent = `${p.tipo} · ${p.autor}`;
-    watch.onclick = () => openModal(id);
+    watch.onclick = () => openDetail(id);
     [...dotsBox.children].forEach((d, k) => d.classList.toggle('active', k === i));
     if (restart) restartTimer();
   }
@@ -87,7 +104,6 @@ function loadImageWithFallback(id, size, onReady) {
 /* ---- RENDER DE FILAS ---- */
 (function renderRows() {
   const root = document.getElementById('tvRows');
-
   FILAS.forEach(fila => {
     const section = document.createElement('section');
     section.className = 'tv-row' + (fila.posters ? ' tv-row--posters' : '');
@@ -111,38 +127,13 @@ function loadImageWithFallback(id, size, onReady) {
 
     const track = document.createElement('div');
     track.className = 'tv-track';
-
-    fila.ids.forEach(id => {
-      const p = PIEZAS[id];
-      if (!p) return;
-      const card = document.createElement('div');
-      card.className = 'tv-card';
-      card.dataset.vimeo = id;
-      card.innerHTML = `
-        <div class="tv-card-thumb">
-          <img alt="${p.titulo}" loading="lazy">
-          <div class="tv-card-play">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-        </div>
-        <div class="tv-card-info">
-          <p class="tv-card-name">${p.titulo}</p>
-          <p class="tv-card-sub">${p.tipo} · ${p.autor}</p>
-        </div>`;
-      getThumb(id, fila.posters ? '540x720' : '640x360').then(url => {
-        if (url) card.querySelector('img').src = url;
-      });
-      track.appendChild(card);
-    });
-
+    fila.ids.forEach(id => { if (PIEZAS[id]) track.appendChild(makeCard(id, fila.posters)); });
     section.appendChild(track);
     root.appendChild(section);
 
-    // Flechas de la fila
     head.querySelectorAll('.tv-row-arrows button').forEach(btn => {
       btn.addEventListener('click', () => {
-        const amount = track.clientWidth * 0.8 * Number(btn.dataset.dir);
-        track.scrollBy({ left: amount, behavior: 'smooth' });
+        track.scrollBy({ left: track.clientWidth * 0.8 * Number(btn.dataset.dir), behavior: 'smooth' });
       });
     });
     head.querySelector('.tv-row-viewall').addEventListener('click', () => {
@@ -151,45 +142,118 @@ function loadImageWithFallback(id, size, onReady) {
   });
 })();
 
-/* ---- CLICK EN TARJETA -> MODAL ---- */
-document.getElementById('tvRows').addEventListener('click', (e) => {
-  const card = e.target.closest('.tv-card');
-  if (card) openModal(card.dataset.vimeo);
-});
+/* ---- VISTA DE DETALLE ---- */
+const detail      = document.getElementById('tvDetail');
+const dIframe     = document.getElementById('tvDetailIframe');
+const dScroll     = document.getElementById('tvDetailScroll');
+const dTitle      = document.getElementById('tvDetailTitle');
+const dType       = document.getElementById('tvDetailType');
+const dAuthor     = document.getElementById('tvDetailAuthor');
+const dLabel      = document.getElementById('tvDetailLabel');
+const dLike       = document.getElementById('tvDetailLike');
+const dLikeCount  = document.getElementById('tvDetailLikeCount');
+const dTags       = document.getElementById('tvDetailTags');
+const dRelated    = document.getElementById('tvRelated');
+const likedSet    = new Set();
+let currentId = null;
 
-/* ---- MODAL ---- */
-const modal   = document.getElementById('tvModal');
-const mIframe  = document.getElementById('tvModalIframe');
-const mTitle   = document.getElementById('tvModalTitle');
-const mCat     = document.getElementById('tvModalCat');
-
-function openModal(id) {
+function openDetail(id) {
   const p = PIEZAS[id];
   if (!p) return;
-  mIframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&badge=0`;
-  mTitle.textContent = p.titulo;
-  mCat.textContent = `${p.tipo} · ${p.autor}`;
-  modal.classList.add('open');
+  currentId = id;
+  dIframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&badge=0`;
+  dTitle.textContent = p.titulo;
+  dType.textContent = p.tipo;
+  dAuthor.textContent = p.autor;
+  dLabel.textContent = p.label;
+  const liked = likedSet.has(id);
+  dLike.classList.toggle('liked', liked);
+  dLikeCount.textContent = p.likes + (liked ? 1 : 0);
+  dTags.innerHTML = p.tags.map(t => `<span>${t}</span>`).join('');
+
+  // Relacionados: otras piezas
+  dRelated.innerHTML = '';
+  Object.keys(PIEZAS).filter(k => k !== id).forEach(rid => dRelated.appendChild(makeCard(rid, false)));
+
+  detail.classList.add('open');
   document.body.style.overflow = 'hidden';
+  dScroll.scrollTop = 0;
 }
-function closeModal() {
-  modal.classList.remove('open');
-  mIframe.src = '';
+
+function closeDetail() {
+  detail.classList.remove('open');
+  dIframe.src = '';
   document.body.style.overflow = '';
 }
-document.getElementById('tvModalClose').addEventListener('click', closeModal);
-modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-/* ---- NAV: marcar activo + scroll a la fila ---- */
-document.querySelectorAll('.tv-nav a').forEach(link => {
-  link.addEventListener('click', (e) => {
-    const rowId = link.dataset.row;
-    document.querySelectorAll('.tv-nav a').forEach(a => a.classList.remove('active'));
-    link.classList.add('active');
-    if (!rowId) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-  });
+document.getElementById('tvDetailBack').addEventListener('click', closeDetail);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && detail.classList.contains('open')) closeDetail(); });
+
+// Like (local, demostrativo)
+dLike.addEventListener('click', () => {
+  if (!currentId) return;
+  const liked = likedSet.has(currentId);
+  if (liked) likedSet.delete(currentId); else likedSet.add(currentId);
+  dLike.classList.toggle('liked', !liked);
+  dLikeCount.textContent = PIEZAS[currentId].likes + (likedSet.has(currentId) ? 1 : 0);
 });
+
+// Compartir
+const toast = document.getElementById('tvToast');
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+document.getElementById('tvDetailShare').addEventListener('click', async () => {
+  const p = PIEZAS[currentId];
+  const data = { title: `${p.titulo} — Aberrante TV`, text: `Mira "${p.titulo}" en Aberrante TV`, url: location.href };
+  if (navigator.share) {
+    try { await navigator.share(data); } catch (e) {}
+  } else {
+    try { await navigator.clipboard.writeText(location.href); showToast('Enlace copiado'); }
+    catch (e) { showToast('Copia el enlace desde la barra'); }
+  }
+});
+
+// Click en tarjeta (filas o relacionados) -> detalle
+document.getElementById('tvRows').addEventListener('click', (e) => {
+  const card = e.target.closest('.tv-card');
+  if (card) openDetail(card.dataset.vimeo);
+});
+dRelated.addEventListener('click', (e) => {
+  const card = e.target.closest('.tv-card');
+  if (card) openDetail(card.dataset.vimeo);
+});
+
+/* ---- NAV TUBELIGHT ---- */
+(function initTube() {
+  const nav  = document.getElementById('tvNav');
+  const tube = document.getElementById('tvNavTube');
+  const links = [...nav.querySelectorAll('a')];
+
+  function moveTube(link) {
+    tube.style.left = link.offsetLeft + 'px';
+    tube.style.width = link.offsetWidth + 'px';
+  }
+  function setActive(link) {
+    links.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    moveTube(link);
+  }
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      setActive(link);
+      if (link.dataset.target === 'top') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    });
+  });
+
+  const init = () => moveTube(nav.querySelector('a.active'));
+  init();
+  window.addEventListener('resize', init);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(init);
+})();
 
 /* ---- HEADER SÓLIDO AL SCROLLEAR ---- */
 const header = document.getElementById('tvHeader');

@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=3">
+  <link rel="stylesheet" href="tv.css?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -31,11 +31,12 @@
       <img src="logo negro.png" alt="Studio Aberrante" class="tv-logo-img">
       <span class="tv-logo-badge">TV+</span>
     </a>
-    <nav class="tv-nav">
-      <a href="#" class="active" data-row="">Inicio</a>
-      <a href="#row-originals" data-row="row-originals">Originales</a>
-      <a href="#row-cortos" data-row="row-cortos">Cortometrajes</a>
-      <a href="#row-destacados" data-row="row-destacados">Categorías</a>
+    <nav class="tv-nav" id="tvNav">
+      <span class="tv-nav-tube" id="tvNavTube"></span>
+      <a href="#" class="active" data-target="top">Inicio</a>
+      <a href="#row-originals" data-target="row-originals">Originales</a>
+      <a href="#row-staff" data-target="row-staff">Staff Picks</a>
+      <a href="#row-cat" data-target="row-cat">Categorías</a>
     </nav>
     <div class="tv-header-right">
       <a href="index.html" class="tv-back">← Sitio</a>
@@ -85,8 +86,8 @@
       <div class="tv-footer-col">
         <h4>Aberrante TV</h4>
         <a href="#row-originals">Originales</a>
-        <a href="#row-cortos">Cortometrajes</a>
-        <a href="#row-destacados">Categorías</a>
+        <a href="#row-staff">Staff Picks</a>
+        <a href="#row-cat">Categorías</a>
       </div>
       <div class="tv-footer-col">
         <h4>Contacto</h4>
@@ -99,22 +100,46 @@
     </div>
   </footer>
 
-  <!-- MODAL -->
-  <div class="tv-modal" id="tvModal">
-    <button class="tv-modal-close" id="tvModalClose" aria-label="Cerrar">✕</button>
-    <div class="tv-modal-inner">
-      <div class="tv-modal-video">
-        <iframe id="tvModalIframe" src="" frameborder="0"
+  <!-- VISTA DE DETALLE -->
+  <div class="tv-detail" id="tvDetail">
+    <header class="tv-detail-bar">
+      <button class="tv-detail-back" id="tvDetailBack">← Volver</button>
+    </header>
+    <div class="tv-detail-scroll" id="tvDetailScroll">
+      <div class="tv-detail-player">
+        <iframe id="tvDetailIframe" src="" frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
       </div>
-      <div class="tv-modal-meta">
-        <h3 class="tv-modal-title" id="tvModalTitle"></h3>
-        <p class="tv-modal-cat" id="tvModalCat"></p>
+      <div class="tv-detail-info">
+        <h1 class="tv-detail-title" id="tvDetailTitle"></h1>
+        <p class="tv-detail-type" id="tvDetailType"></p>
+        <p class="tv-detail-author">
+          <strong id="tvDetailAuthor"></strong>
+          <span id="tvDetailLabel"></span>
+        </p>
+        <div class="tv-detail-actions">
+          <button class="tv-detail-like" id="tvDetailLike">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            <span id="tvDetailLikeCount">0</span>
+          </button>
+          <button class="tv-detail-share" id="tvDetailShare">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+            Compartir
+          </button>
+        </div>
+        <div class="tv-detail-tags" id="tvDetailTags"></div>
+      </div>
+      <div class="tv-detail-related">
+        <h2>Relacionados</h2>
+        <div class="tv-track" id="tvRelated"></div>
       </div>
     </div>
   </div>
 
+  <!-- aviso al copiar enlace -->
+  <div class="tv-toast" id="tvToast">Enlace copiado</div>
+
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=3"></script>
+  <script src="tv.js?v=4"></script>
 </body>
 </html>
