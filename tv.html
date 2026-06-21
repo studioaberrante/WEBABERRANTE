@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=4">
+  <link rel="stylesheet" href="tv.css?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -43,9 +43,14 @@
     </div>
   </header>
 
-  <!-- HERO DESTACADO (carrusel) -->
+  <!-- HERO DESTACADO (Originals en reproducción) -->
   <section class="tv-hero" id="tvHero">
     <div class="tv-hero-bg" id="tvHeroBg"></div>
+    <div class="tv-hero-video">
+      <iframe id="tvHeroVideo" src="" frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        referrerpolicy="strict-origin-when-cross-origin" title="Aberrante Originals"></iframe>
+    </div>
     <div class="tv-hero-overlay"></div>
     <div class="tv-hero-content">
       <p class="tv-hero-eyebrow" id="tvHeroEyebrow">Aberrante Originals</p>
@@ -56,7 +61,7 @@
         Ver
       </button>
     </div>
-    <div class="tv-hero-dots" id="tvHeroDots"></div>
+    <div class="tv-hero-progress" id="tvHeroProgress"></div>
     <div class="tv-hero-arrows">
       <button id="tvHeroPrev" aria-label="Anterior">‹</button>
       <button id="tvHeroNext" aria-label="Siguiente">›</button>
@@ -140,6 +145,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=4"></script>
+  <script src="tv.js?v=6"></script>
 </body>
 </html>

@@ -4,21 +4,25 @@
    ============================================ */
 
 const PIEZAS = {
-  '1169366177': { titulo: 'Alo Yoga x Josefa Sorel', tipo: 'Cortometraje',        autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 24, tags: ['Cinemático', 'Wellness', 'Moda'] },
-  '1199576480': { titulo: 'Nike',            tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante', label: 'Staff Picks',         likes: 41, tags: ['Deporte', 'Cinemático', 'Épico'] },
-  '1202693340': { titulo: 'Spotify',         tipo: 'Cortometraje',        autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 18, tags: ['Música', 'Lifestyle'] },
-  '1199573268': { titulo: 'The Candle Shop', tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante', label: 'Staff Picks',         likes: 12, tags: ['Atmósfera', 'Producto'] },
-  '1199573953': { titulo: 'Salcobrand',      tipo: 'Cortometraje',        autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 9,  tags: ['Narrativa', 'Marca'] },
-  '1199572315': { titulo: 'Hypnos',          tipo: 'Pieza cinematográfica', autor: 'Studio Aberrante', label: 'Staff Picks',         likes: 33, tags: ['Onírico', 'Cinemático'] }
+  // --- Aberrante Originals (solo en Aberrante TV) ---
+  '1203128705': { titulo: 'Final Day', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
+  '1203129093': { titulo: 'Route 5',   tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
+  '1203129625': { titulo: '847 Días',  tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
+  '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Música'] }
 };
 
-const DESTACADOS = ['1169366177', '1199576480', '1199572315'];
+const ORIGINALS = ['1203128705', '1203129093', '1203129625', '1203130346'];
+
+// Hero: los Originals (se reproducen en silencio y rotan)
+const DESTACADOS = ORIGINALS;
 
 const FILAS = [
-  { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ['1169366177', '1199576480', '1199572315', '1202693340', '1199573953'] },
-  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ['1199576480', '1199573268', '1199572315', '1169366177', '1199573953'] },
-  { id: 'row-cat',       titulo: 'Lo más visto',         sub: '',                                       posters: false, ids: ['1199576480', '1169366177', '1202693340', '1199573268', '1199572315', '1199573953'] }
+  { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ORIGINALS },
+  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ORIGINALS },
+  { id: 'row-cat',       titulo: 'Lo más visto',         sub: '',                                       posters: false, ids: ORIGINALS }
 ];
+
+const SLIDE_MS = 6000;
 
 /* ---- THUMBNAILS DE VIMEO ---- */
 const rawCache = {};
@@ -64,41 +68,62 @@ function makeCard(id, posters) {
   return card;
 }
 
-/* ---- HERO (carrusel destacado) ---- */
+/* ---- HERO (Originals reproduciéndose, rotan cada SLIDE_MS) ---- */
 (function initHero() {
-  const bg      = document.getElementById('tvHeroBg');
-  const eyebrow = document.getElementById('tvHeroEyebrow');
-  const title   = document.getElementById('tvHeroTitle');
-  const sub     = document.getElementById('tvHeroSub');
-  const watch   = document.getElementById('tvHeroWatch');
-  const dotsBox = document.getElementById('tvHeroDots');
+  const bg       = document.getElementById('tvHeroBg');
+  const video    = document.getElementById('tvHeroVideo');
+  const eyebrow  = document.getElementById('tvHeroEyebrow');
+  const title    = document.getElementById('tvHeroTitle');
+  const sub      = document.getElementById('tvHeroSub');
+  const watch    = document.getElementById('tvHeroWatch');
+  const progress = document.getElementById('tvHeroProgress');
   let i = 0, timer;
 
-  DESTACADOS.forEach((_, idx) => {
-    const b = document.createElement('button');
-    b.addEventListener('click', () => show(idx, true));
-    dotsBox.appendChild(b);
+  // Construir segmentos de progreso (uno por Original)
+  const segs = DESTACADOS.map((_, idx) => {
+    const seg = document.createElement('span');
+    seg.className = 'seg';
+    seg.innerHTML = '<span class="seg-fill"></span>';
+    seg.addEventListener('click', () => show(idx));
+    progress.appendChild(seg);
+    return seg.querySelector('.seg-fill');
   });
 
-  function show(idx, restart) {
+  function paintSegments() {
+    segs.forEach((fill, k) => {
+      fill.style.transition = 'none';
+      if (k < i) fill.style.width = '100%';
+      else if (k > i) fill.style.width = '0%';
+      else {
+        fill.style.width = '0%';
+        void fill.offsetWidth; // reflow
+        fill.style.transition = `width ${SLIDE_MS}ms linear`;
+        fill.style.width = '100%';
+      }
+    });
+  }
+
+  function show(idx) {
     i = (idx + DESTACADOS.length) % DESTACADOS.length;
     const id = DESTACADOS[i];
     const p = PIEZAS[id];
+    // Imagen de respaldo mientras carga el video
     loadImageWithFallback(id, '1280x720', (url) => { bg.style.backgroundImage = `url(${url})`; });
+    // Video en silencio, loop, sin controles
+    video.src = `https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1&badge=0`;
     eyebrow.textContent = p.label;
     title.textContent = p.titulo;
     sub.textContent = `${p.tipo} · ${p.autor}`;
     watch.onclick = () => openDetail(id);
-    [...dotsBox.children].forEach((d, k) => d.classList.toggle('active', k === i));
-    if (restart) restartTimer();
+    paintSegments();
+    restartTimer();
   }
-  function restartTimer() { clearInterval(timer); timer = setInterval(() => show(i + 1), 7000); }
+  function restartTimer() { clearTimeout(timer); timer = setTimeout(() => show(i + 1), SLIDE_MS); }
 
-  document.getElementById('tvHeroNext').addEventListener('click', () => show(i + 1, true));
-  document.getElementById('tvHeroPrev').addEventListener('click', () => show(i - 1, true));
+  document.getElementById('tvHeroNext').addEventListener('click', () => show(i + 1));
+  document.getElementById('tvHeroPrev').addEventListener('click', () => show(i - 1));
 
   show(0);
-  restartTimer();
 })();
 
 /* ---- RENDER DE FILAS ---- */

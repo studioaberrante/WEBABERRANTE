@@ -153,12 +153,33 @@ button { font-family: inherit; }
   inset: 0;
   background-size: cover;
   background-position: center;
-  transition: opacity 0.8s var(--tv-ease);
+  z-index: 0;
+}
+
+/* Video de fondo del hero (Originals en reproducción silenciosa) */
+.tv-hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.tv-hero-video iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 177.78vh;
+  height: 56.25vw;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .tv-hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background:
     linear-gradient(to top, var(--tv-bg) 1%, rgba(10,10,10,0.15) 45%, transparent 78%),
     linear-gradient(to right, rgba(10,10,10,0.8) 0%, transparent 60%);
@@ -166,7 +187,7 @@ button { font-family: inherit; }
 
 .tv-hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 0 clamp(20px, 3.5vw, 48px) clamp(64px, 11vh, 120px);
   max-width: 680px;
 }
@@ -219,37 +240,38 @@ button { font-family: inherit; }
   border-color: #fff;
 }
 
-.tv-hero-dots {
+/* Barra de progreso segmentada (estilo stories) */
+.tv-hero-progress {
   position: absolute;
-  bottom: 28px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 3;
+  z-index: 4;
   display: flex;
   gap: 8px;
 }
 
-.tv-hero-dots button {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255,255,255,0.3);
+.tv-hero-progress .seg {
+  width: 44px;
+  height: 3px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.25);
+  overflow: hidden;
   cursor: pointer;
-  padding: 0;
-  transition: background 0.3s var(--tv-ease), width 0.3s var(--tv-ease);
 }
 
-.tv-hero-dots button.active {
+.tv-hero-progress .seg-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
   background: #fff;
-  width: 22px;
-  border-radius: 4px;
 }
 
 .tv-hero-arrows {
   position: absolute;
-  bottom: 28px;
+  bottom: 24px;
   right: clamp(20px, 3.5vw, 48px);
-  z-index: 3;
+  z-index: 4;
   display: flex;
   gap: 8px;
 }
