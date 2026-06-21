@@ -37,18 +37,19 @@ const PIEZAS = {
   '1203128705': { titulo: 'Final Day', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
   '1203129093': { titulo: 'Route 5',   tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
   '1203129625': { titulo: '847 Días',  tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
-  '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Música'] }
+  '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Música'] },
+  '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Emotivo'] }
 };
 
-const ORIGINALS = ['1203128705', '1203129093', '1203129625', '1203130346'];
+const ORIGINALS = ['1203128705', '1203129093', '1203129625', '1203130346', '1203147533'];
 
 // Hero: los Originals (se reproducen en silencio y rotan)
 const DESTACADOS = ORIGINALS;
 
 const FILAS = [
   { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ORIGINALS },
-  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ORIGINALS },
-  { id: 'row-cat',       titulo: 'Lo más visto',         sub: '',                                       posters: false, ids: ORIGINALS }
+  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, comingSoon: true },
+  { id: 'row-cat',       titulo: 'Categorías',           sub: '',                                       posters: false, comingSoon: true }
 ];
 
 const SLIDE_MS = 6000;
@@ -149,9 +150,6 @@ function makeCard(id, posters) {
   }
   function restartTimer() { clearTimeout(timer); timer = setTimeout(() => show(i + 1), SLIDE_MS); }
 
-  document.getElementById('tvHeroNext').addEventListener('click', () => show(i + 1));
-  document.getElementById('tvHeroPrev').addEventListener('click', () => show(i - 1));
-
   show(0);
 })();
 
@@ -170,14 +168,24 @@ function makeCard(id, posters) {
         <h2>${fila.titulo}</h2>
         ${fila.sub ? `<p>${fila.sub}</p>` : ''}
       </div>
+      ${fila.comingSoon ? '' : `
       <div class="tv-row-nav">
         <span class="tv-row-viewall">Ver todo →</span>
         <div class="tv-row-arrows">
           <button data-dir="-1" aria-label="Anterior">‹</button>
           <button data-dir="1" aria-label="Siguiente">›</button>
         </div>
-      </div>`;
+      </div>`}`;
     section.appendChild(head);
+
+    if (fila.comingSoon) {
+      const soon = document.createElement('div');
+      soon.className = 'tv-row-soon';
+      soon.innerHTML = '<span>Próximamente</span>';
+      section.appendChild(soon);
+      root.appendChild(section);
+      return;
+    }
 
     const track = document.createElement('div');
     track.className = 'tv-track';
@@ -314,3 +322,100 @@ const header = document.getElementById('tvHeader');
 window.addEventListener('scroll', () => {
   header.classList.toggle('solid', window.scrollY > 60);
 }, { passive: true });
+
+/* ---- FONDO DE ONDA ANIMADO (CTA) — versión nativa optimizada ---- */
+(function initCtaWave() {
+  const canvas = document.getElementById('tvCtaWave');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const SCALE = 3; // resolución reducida = más liviano
+  let width, height, imageData, data, raf = null, running = false;
+  const startTime = Date.now();
+
+  const SIN = new Float32Array(1024), COS = new Float32Array(1024);
+  for (let i = 0; i < 1024; i++) { const a = (i / 1024) * Math.PI * 2; SIN[i] = Math.sin(a); COS[i] = Math.cos(a); }
+  const fSin = (x) => SIN[Math.floor(((x % (Math.PI * 2)) / (Math.PI * 2)) * 1024) & 1023];
+  const fCos = (x) => COS[Math.floor(((x % (Math.PI * 2)) / (Math.PI * 2)) * 1024) & 1023];
+
+  function resize() {
+    canvas.width = Math.max(1, canvas.clientWidth);
+    canvas.height = Math.max(1, canvas.clientHeight);
+    width = Math.floor(canvas.width / SCALE);
+    height = Math.floor(canvas.height / SCALE);
+    imageData = ctx.createImageData(width, height);
+    data = imageData.data;
+  }
+
+  function render() {
+    if (!running) return;
+    const time = (Date.now() - startTime) * 0.001;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const ux = (2 * x - width) / height;
+        const uy = (2 * y - height) / height;
+        let a = 0, d = 0;
+        for (let i = 0; i < 4; i++) { a += fCos(i - d + time * 0.5 - a * ux); d += fSin(i * uy + a); }
+        const wave = (fSin(a) + fCos(d)) * 0.5;
+        const intensity = 0.3 + 0.4 * wave;
+        const baseVal = 0.1 + 0.15 * fCos(ux + uy + time * 0.3);
+        const blue = 0.2 * fSin(a * 1.5 + time * 0.2);
+        const purple = 0.15 * fCos(d * 2 + time * 0.1);
+        const r = Math.max(0, Math.min(1, baseVal + purple * 0.8)) * intensity;
+        const g = Math.max(0, Math.min(1, baseVal + blue * 0.6)) * intensity;
+        const b = Math.max(0, Math.min(1, baseVal + blue * 1.2 + purple * 0.4)) * intensity;
+        const idx = (y * width + x) * 4;
+        data[idx] = r * 255; data[idx + 1] = g * 255; data[idx + 2] = b * 255; data[idx + 3] = 255;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(canvas, 0, 0, width, height, 0, 0, canvas.width, canvas.height);
+    raf = requestAnimationFrame(render);
+  }
+
+  function start() { if (running) return; running = true; render(); }
+  function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
+
+  resize();
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 200); });
+
+  // Pausa solo cuando la sección NO está en pantalla (ahorra CPU)
+  const section = document.getElementById('tv-cta');
+  function checkVisible() {
+    const r = section.getBoundingClientRect();
+    const visible = r.top < window.innerHeight && r.bottom > 0;
+    if (visible) start(); else stop();
+  }
+  window.addEventListener('scroll', checkVisible, { passive: true });
+  start();          // arranca de inmediato
+  checkVisible();   // y se autopausa si no se ve
+})();
+
+/* ---- FORMULARIO "ENVÍANOS TU PIEZA" ---- */
+(function initTvForm() {
+  const modal   = document.getElementById('tvFormModal');
+  const openBtn = document.getElementById('tvCtaBtn');
+  const closeBtn = document.getElementById('tvFormClose');
+  const form    = document.getElementById('tvForm');
+  const success = document.getElementById('tvFormSuccess');
+  if (!modal || !openBtn) return;
+
+  const open  = () => { modal.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const close = () => { modal.classList.remove('open'); document.body.style.overflow = ''; };
+
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
+      .then(res => {
+        if (res.ok) { form.style.display = 'none'; success.classList.add('show'); }
+        else throw new Error();
+      })
+      .catch(() => alert('Hubo un problema al enviar. Escríbenos a contacto@studioaberrante.com'));
+  });
+})();

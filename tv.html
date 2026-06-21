@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=8">
+  <link rel="stylesheet" href="tv.css?v=14">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -68,14 +68,43 @@
       </button>
     </div>
     <div class="tv-hero-progress" id="tvHeroProgress"></div>
-    <div class="tv-hero-arrows">
-      <button id="tvHeroPrev" aria-label="Anterior">‹</button>
-      <button id="tvHeroNext" aria-label="Siguiente">›</button>
-    </div>
   </section>
 
   <!-- FILAS -->
   <main class="tv-rows" id="tvRows"></main>
+
+  <!-- CTA: publica tu film -->
+  <section class="tv-cta" id="tv-cta">
+    <canvas class="tv-cta-wave" id="tvCtaWave"></canvas>
+    <div class="tv-cta-overlay"></div>
+    <div class="tv-cta-content">
+      <p class="tv-cta-eyebrow">¿Creaste algo?</p>
+      <h2 class="tv-cta-title">¿Tienes una idea o quieres publicar tu film en Aberrante TV?</h2>
+      <p class="tv-cta-text">Buscamos historias que no existirían sin imaginación. Si lo creaste con IA y quieres que el mundo lo vea, este es tu lugar.</p>
+      <button class="tv-cta-btn" id="tvCtaBtn">Envíanos tu pieza →</button>
+    </div>
+  </section>
+
+  <!-- Modal: formulario enviar pieza -->
+  <div class="tv-form-modal" id="tvFormModal">
+    <div class="tv-form-card">
+      <button class="tv-form-close" id="tvFormClose" aria-label="Cerrar">✕</button>
+      <h3 class="tv-form-title">Envíanos tu pieza</h3>
+      <p class="tv-form-sub">Cuéntanos de tu film y déjanos el link. Si encaja con Aberrante TV, te contactamos.</p>
+      <form class="tv-form" id="tvForm" action="https://formspree.io/f/xdavzogz" method="POST">
+        <input type="hidden" name="origen" value="Aberrante TV — Envío de pieza">
+        <input type="hidden" name="_subject" value="Nueva pieza para Aberrante TV">
+        <div class="tv-form-row">
+          <input class="tv-form-input" type="text" name="nombre" placeholder="Tu nombre" required>
+          <input class="tv-form-input" type="email" name="email" placeholder="Tu correo" required>
+        </div>
+        <input class="tv-form-input" type="url" name="link" placeholder="Link de tu video (Vimeo, YouTube...)" required>
+        <textarea class="tv-form-input tv-form-textarea" name="mensaje" placeholder="Cuéntanos sobre tu pieza (opcional)"></textarea>
+        <button class="tv-form-submit" type="submit">Enviar pieza</button>
+      </form>
+      <div class="tv-form-success" id="tvFormSuccess">¡Recibido! Si encaja con Aberrante TV, te contactamos.</div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer class="tv-footer">
@@ -150,6 +179,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=13"></script>
+  <script src="tv.js?v=18"></script>
 </body>
 </html>
