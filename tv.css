@@ -819,7 +819,9 @@ button { font-family: inherit; }
    ============================================ */
 @media (max-width: 768px) {
   .tv-nav { display: none; }
-  .tv-hero { height: 76vh; }
+  /* En móvil mandamos solo con la altura; anulamos el aspect-ratio 21/9
+     (si no, el navegador calcula el ancho desde la altura y desborda) */
+  .tv-hero { aspect-ratio: auto; height: 76vh; max-height: none; }
   .tv-hero-title { font-size: clamp(34px, 11vw, 56px); }
   .tv-card { width: 74vw; }
   .tv-row--posters .tv-card { width: 50vw; }
