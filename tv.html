@@ -3,27 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aberrante TV — Studio Aberrante</title>
-  <meta name="description" content="Aberrante TV — nuestras piezas audiovisuales hechas con IA. Campañas, cortometrajes y más.">
+  <title>Aberrante TV — Contenido cinematográfico con IA</title>
+  <meta name="description" content="Aberrante TV — cortometrajes y contenido cinematográfico de entretenimiento creado con inteligencia artificial.">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://studioaberrante.com/tv">
-  <meta property="og:title" content="Aberrante TV — Studio Aberrante">
-  <meta property="og:description" content="Nuestras piezas audiovisuales hechas con IA.">
+  <meta property="og:title" content="Aberrante TV">
+  <meta property="og:description" content="Cortometrajes y contenido cinematográfico hecho con IA.">
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="style.css?v=15">
-  <link rel="stylesheet" href="tv.css?v=1">
+  <link rel="stylesheet" href="tv.css?v=3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://player.vimeo.com/api/player.js" rel="preload" as="script">
 </head>
 <body class="tv-body">
@@ -31,43 +28,78 @@
   <!-- HEADER -->
   <header class="tv-header" id="tvHeader">
     <a href="index.html" class="tv-logo">
-      <img src="logo negro.png" alt="Studio Aberrante" class="logo-img">
+      <img src="logo negro.png" alt="Studio Aberrante" class="tv-logo-img">
+      <span class="tv-logo-badge">TV+</span>
     </a>
     <nav class="tv-nav">
-      <a href="index.html">Sitio web</a>
-      <a href="index.html#contacto">Contacto</a>
+      <a href="#" class="active" data-row="">Inicio</a>
+      <a href="#row-originals" data-row="row-originals">Originales</a>
+      <a href="#row-cortos" data-row="row-cortos">Cortometrajes</a>
+      <a href="#row-destacados" data-row="row-destacados">Categorías</a>
     </nav>
+    <div class="tv-header-right">
+      <a href="index.html" class="tv-back">← Sitio</a>
+    </div>
   </header>
 
-  <!-- HERO DESTACADO -->
+  <!-- HERO DESTACADO (carrusel) -->
   <section class="tv-hero" id="tvHero">
-    <div class="tv-hero-media">
-      <iframe id="tvHeroVideo" src="" frameborder="0"
-        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-        referrerpolicy="strict-origin-when-cross-origin" title="Destacado Aberrante TV"></iframe>
-    </div>
+    <div class="tv-hero-bg" id="tvHeroBg"></div>
     <div class="tv-hero-overlay"></div>
     <div class="tv-hero-content">
-      <p class="tv-hero-eyebrow">Aberrante TV — Destacado</p>
+      <p class="tv-hero-eyebrow" id="tvHeroEyebrow">Aberrante Originals</p>
       <h1 class="tv-hero-title" id="tvHeroTitle">—</h1>
-      <p class="tv-hero-desc" id="tvHeroDesc"></p>
-      <div class="tv-hero-actions">
-        <button class="tv-hero-play" id="tvHeroPlay">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          Ver pieza
-        </button>
-      </div>
+      <p class="tv-hero-sub" id="tvHeroSub"></p>
+      <button class="tv-hero-watch" id="tvHeroWatch">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Ver
+      </button>
+    </div>
+    <div class="tv-hero-dots" id="tvHeroDots"></div>
+    <div class="tv-hero-arrows">
+      <button id="tvHeroPrev" aria-label="Anterior">‹</button>
+      <button id="tvHeroNext" aria-label="Siguiente">›</button>
     </div>
   </section>
 
-  <!-- FILAS DE CONTENIDO -->
+  <!-- FILAS -->
   <main class="tv-rows" id="tvRows"></main>
 
+  <!-- FOOTER -->
   <footer class="tv-footer">
-    <p>© 2026 Studio Aberrante — Aberrante TV</p>
+    <div class="tv-footer-grid">
+      <div class="tv-footer-brand">
+        <a href="index.html" class="tv-logo">
+          <img src="logo negro.png" alt="Studio Aberrante" class="tv-logo-img">
+          <span class="tv-logo-badge">TV+</span>
+        </a>
+        <p>La plataforma de contenido cinematográfico de Studio Aberrante. Entretenimiento creado con inteligencia artificial.</p>
+      </div>
+      <div class="tv-footer-col">
+        <h4>Aberrante</h4>
+        <a href="index.html">Sitio web</a>
+        <a href="index.html#servicios">Servicios</a>
+        <a href="index.html#portafolio">Portafolio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+      </div>
+      <div class="tv-footer-col">
+        <h4>Aberrante TV</h4>
+        <a href="#row-originals">Originales</a>
+        <a href="#row-cortos">Cortometrajes</a>
+        <a href="#row-destacados">Categorías</a>
+      </div>
+      <div class="tv-footer-col">
+        <h4>Contacto</h4>
+        <a href="mailto:contacto@studioaberrante.com">contacto@studioaberrante.com</a>
+        <a href="https://instagram.com/studioaberrante" target="_blank" rel="noopener">@studioaberrante</a>
+      </div>
+    </div>
+    <div class="tv-footer-bottom">
+      <p>© 2026 Studio Aberrante — Aberrante TV</p>
+    </div>
   </footer>
 
-  <!-- MODAL REPRODUCTOR -->
+  <!-- MODAL -->
   <div class="tv-modal" id="tvModal">
     <button class="tv-modal-close" id="tvModalClose" aria-label="Cerrar">✕</button>
     <div class="tv-modal-inner">
@@ -83,6 +115,6 @@
   </div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=1"></script>
+  <script src="tv.js?v=3"></script>
 </body>
 </html>

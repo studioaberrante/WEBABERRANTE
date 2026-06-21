@@ -1,201 +1,331 @@
 /* ============================================
-   ABERRANTE TV — estilo Netflix (dark)
-   Reutiliza las variables de style.css
+   ABERRANTE TV — estilo cinematográfico minimalista
    ============================================ */
 
-.tv-body {
-  background: #050505;
-  color: var(--text);
-  min-height: 100vh;
+:root {
+  --tv-bg: #0a0a0a;
+  --tv-text: #ffffff;
+  --tv-muted: rgba(255, 255, 255, 0.52);
+  --tv-dim: rgba(255, 255, 255, 0.32);
+  --tv-border: rgba(255, 255, 255, 0.1);
+  --tv-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ---- HEADER ---- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+.tv-body {
+  background: var(--tv-bg);
+  color: var(--tv-text);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+
+/* ============================================
+   HEADER
+   ============================================ */
 .tv-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 68px;
+  top: 0; left: 0; right: 0;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 clamp(24px, 4vw, 56px);
+  padding: 0 clamp(20px, 3.5vw, 48px);
   z-index: 200;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
-  transition: background 0.4s var(--ease-premium);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+  transition: background 0.4s var(--tv-ease), border-color 0.4s var(--tv-ease);
 }
 
 .tv-header.solid {
-  background: rgba(5,5,5,0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--tv-border);
 }
 
-.tv-logo .logo-img {
-  height: 26px;
+.tv-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tv-logo-img {
+  height: 22px;
   filter: invert(1);
   opacity: 0.95;
 }
 
+.tv-logo-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: #fff;
+  color: #000;
+  border-radius: 20px;
+  padding: 2px 7px;
+  line-height: 1;
+}
+
 .tv-nav {
   display: flex;
-  gap: 32px;
+  align-items: center;
+  gap: 6px;
 }
 
 .tv-nav a {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
-  transition: color 0.3s var(--ease-premium);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--tv-muted);
+  padding: 8px 18px;
+  border-radius: 30px;
+  transition: color 0.3s var(--tv-ease), background 0.3s var(--tv-ease);
 }
 
 .tv-nav a:hover { color: #fff; }
 
-/* ---- HERO DESTACADO ---- */
+.tv-nav a.active {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+}
+
+.tv-header-right { display: flex; align-items: center; gap: 18px; }
+
+.tv-back {
+  font-size: 13px;
+  color: var(--tv-muted);
+  transition: color 0.3s var(--tv-ease);
+}
+.tv-back:hover { color: #fff; }
+
+/* ============================================
+   HERO
+   ============================================ */
 .tv-hero {
   position: relative;
-  height: 86vh;
-  min-height: 540px;
-  overflow: hidden;
+  height: 88vh;
+  min-height: 560px;
   display: flex;
   align-items: flex-end;
+  overflow: hidden;
 }
 
-.tv-hero-media {
+.tv-hero-bg {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-}
-
-.tv-hero-media iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 177.78vh;
-  height: 56.25vw;
-  min-width: 100%;
-  min-height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.8s var(--tv-ease);
 }
 
 .tv-hero-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, #050505 2%, rgba(5,5,5,0.2) 45%, transparent 75%),
-    linear-gradient(to right, rgba(5,5,5,0.85) 0%, transparent 55%);
+    linear-gradient(to top, var(--tv-bg) 1%, rgba(10,10,10,0.15) 45%, transparent 78%),
+    linear-gradient(to right, rgba(10,10,10,0.8) 0%, transparent 60%);
 }
 
 .tv-hero-content {
   position: relative;
   z-index: 2;
-  padding: 0 clamp(24px, 4vw, 56px) clamp(48px, 8vh, 96px);
-  max-width: 720px;
+  padding: 0 clamp(20px, 3.5vw, 48px) clamp(64px, 11vh, 120px);
+  max-width: 680px;
 }
 
 .tv-hero-eyebrow {
-  font-family: var(--font-mono);
   font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #ff3b1d;
-  margin-bottom: 18px;
-}
-
-.tv-hero-title {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: clamp(44px, 7vw, 96px);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  margin-bottom: 20px;
-}
-
-.tv-hero-desc {
-  font-size: clamp(15px, 1.5vw, 19px);
-  font-weight: 300;
-  line-height: 1.55;
-  color: var(--text-mid);
-  max-width: 540px;
-  margin-bottom: 30px;
-}
-
-.tv-hero-actions {
-  display: flex;
-  gap: 16px;
-}
-
-.tv-hero-play {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  color: #050505;
-  border: none;
-  padding: 14px 30px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: opacity 0.25s var(--ease-premium), transform 0.25s var(--ease-premium);
-}
-
-.tv-hero-play:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-}
-
-/* ---- FILAS ---- */
-.tv-rows {
-  position: relative;
-  z-index: 3;
-  margin-top: -8vh;
-  padding-bottom: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(36px, 5vh, 60px);
-}
-
-.tv-row-title {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: clamp(18px, 2vw, 26px);
-  letter-spacing: -0.02em;
-  padding: 0 clamp(24px, 4vw, 56px);
+  color: rgba(255,255,255,0.75);
   margin-bottom: 16px;
 }
 
+.tv-hero-title {
+  font-size: clamp(40px, 6vw, 84px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+
+.tv-hero-sub {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--tv-muted);
+  margin-bottom: 28px;
+}
+
+.tv-hero-watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 40px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: background 0.3s var(--tv-ease), border-color 0.3s var(--tv-ease);
+}
+
+.tv-hero-watch:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.tv-hero-dots {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.tv-hero-dots button {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s var(--tv-ease), width 0.3s var(--tv-ease);
+}
+
+.tv-hero-dots button.active {
+  background: #fff;
+  width: 22px;
+  border-radius: 4px;
+}
+
+.tv-hero-arrows {
+  position: absolute;
+  bottom: 28px;
+  right: clamp(20px, 3.5vw, 48px);
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.tv-hero-arrows button {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--tv-border);
+  background: rgba(0,0,0,0.3);
+  color: rgba(255,255,255,0.7);
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s var(--tv-ease), color 0.3s var(--tv-ease);
+}
+
+.tv-hero-arrows button:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* ============================================
+   FILAS
+   ============================================ */
+.tv-rows {
+  position: relative;
+  z-index: 3;
+  margin-top: clamp(-60px, -6vh, -30px);
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vh, 64px);
+}
+
+.tv-row-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 3.5vw, 48px);
+  margin-bottom: 18px;
+}
+
+.tv-row-titles h2 {
+  font-size: clamp(19px, 2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tv-row-titles p {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--tv-muted);
+  margin-top: 4px;
+}
+
+.tv-row-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tv-row-viewall {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tv-muted);
+  transition: color 0.3s var(--tv-ease);
+}
+.tv-row-viewall:hover { color: #fff; }
+
+.tv-row-arrows { display: flex; gap: 8px; }
+
+.tv-row-arrows button {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--tv-border);
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s var(--tv-ease), color 0.3s var(--tv-ease);
+}
+.tv-row-arrows button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
 .tv-track {
   display: flex;
-  gap: 14px;
-  padding: 6px clamp(24px, 4vw, 56px) 18px;
+  gap: 16px;
+  padding: 4px clamp(20px, 3.5vw, 48px) 8px;
   overflow-x: auto;
+  scroll-behavior: smooth;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  user-select: none;
-  -webkit-user-select: none;
 }
-
 .tv-track::-webkit-scrollbar { display: none; }
 
 /* ---- TARJETA ---- */
 .tv-card {
-  position: relative;
   flex-shrink: 0;
-  width: clamp(260px, 26vw, 360px);
-  aspect-ratio: 16 / 9;
-  border-radius: 4px;
-  overflow: hidden;
-  background: var(--bg-2);
+  width: clamp(248px, 24vw, 340px);
   cursor: pointer;
   scroll-snap-align: start;
-  transition: transform 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium);
+}
+
+.tv-card-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #161616;
+  transition: transform 0.4s var(--tv-ease), box-shadow 0.4s var(--tv-ease);
 }
 
 .tv-card img {
@@ -204,96 +334,116 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(40%);
-  transition: filter 0.5s var(--ease-premium), transform 0.5s var(--ease-premium);
+  filter: grayscale(35%);
+  transition: filter 0.5s var(--tv-ease), transform 0.5s var(--tv-ease);
 }
 
-.tv-card:hover {
-  transform: scale(1.06);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.6);
-  z-index: 5;
+.tv-card:hover .tv-card-thumb {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.55);
 }
 
 .tv-card:hover img {
   filter: grayscale(0%);
-  transform: scale(1.04);
-}
-
-.tv-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 55%);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-premium);
-  z-index: 1;
-}
-
-.tv-card:hover .tv-card-overlay { opacity: 1; }
-
-.tv-card-info {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 16px;
-  z-index: 2;
-  transform: translateY(8px);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
-}
-
-.tv-card:hover .tv-card-info {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.tv-card-name {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin-bottom: 4px;
-}
-
-.tv-card-cat {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  transform: scale(1.05);
 }
 
 .tv-card-play {
   position: absolute;
   top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  width: 48px; height: 48px;
+  transform: translate(-50%, -50%) scale(0.85);
+  width: 46px; height: 46px;
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.7);
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.3);
   display: flex; align-items: center; justify-content: center;
   color: #fff;
   opacity: 0;
-  transition: opacity 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
-  z-index: 2;
+  transition: opacity 0.4s var(--tv-ease), transform 0.4s var(--tv-ease);
 }
-
 .tv-card:hover .tv-card-play {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* ---- FOOTER ---- */
+.tv-card-info { padding: 12px 2px 0; }
+
+.tv-card-name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.tv-card-sub {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--tv-muted);
+  margin-top: 2px;
+}
+
+/* ---- Fila de afiches verticales (Originales) ---- */
+.tv-row--posters .tv-card {
+  width: clamp(180px, 18vw, 240px);
+}
+.tv-row--posters .tv-card-thumb {
+  aspect-ratio: 2 / 3;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
 .tv-footer {
-  padding: 40px clamp(24px, 4vw, 56px);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--tv-border);
+  padding: clamp(48px, 7vh, 80px) clamp(20px, 3.5vw, 48px) 36px;
 }
 
-.tv-footer p {
-  font-family: var(--font-mono);
+.tv-footer-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.tv-footer-brand p {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--tv-muted);
+  max-width: 320px;
+  margin-top: 18px;
+}
+
+.tv-footer-col h4 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tv-dim);
+  margin-bottom: 18px;
+}
+
+.tv-footer-col a {
+  display: block;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--tv-muted);
+  margin-bottom: 12px;
+  transition: color 0.3s var(--tv-ease);
+}
+.tv-footer-col a:hover { color: #fff; }
+
+.tv-footer-bottom {
+  padding-top: 28px;
+  border-top: 1px solid var(--tv-border);
+}
+.tv-footer-bottom p {
   font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
+  color: var(--tv-dim);
 }
 
-/* ---- MODAL ---- */
+/* ============================================
+   MODAL
+   ============================================ */
 .tv-modal {
   position: fixed;
   inset: 0;
@@ -304,14 +454,13 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.35s var(--ease-premium), visibility 0.35s var(--ease-premium);
+  transition: opacity 0.35s var(--tv-ease), visibility 0.35s var(--tv-ease);
 }
-
 .tv-modal.open { opacity: 1; visibility: visible; }
 
 .tv-modal-close {
   position: absolute;
-  top: 28px; right: 36px;
+  top: 26px; right: 34px;
   background: none; border: none;
   color: rgba(255,255,255,0.7);
   font-size: 22px; cursor: pointer;
@@ -319,39 +468,31 @@
 }
 .tv-modal-close:hover { color: #fff; }
 
-.tv-modal-inner {
-  width: min(92vw, 1180px);
-}
+.tv-modal-inner { width: min(92vw, 1140px); }
 
 .tv-modal-video {
   width: 100%;
   aspect-ratio: 16 / 9;
   background: #000;
+  border-radius: 6px;
+  overflow: hidden;
 }
-
 .tv-modal-video iframe { width: 100%; height: 100%; }
 
-.tv-modal-meta { padding-top: 20px; }
+.tv-modal-meta { padding-top: 18px; }
+.tv-modal-title { font-size: clamp(20px, 2.2vw, 28px); font-weight: 600; letter-spacing: -0.01em; }
+.tv-modal-cat { font-size: 13px; font-weight: 300; color: var(--tv-muted); margin-top: 6px; }
 
-.tv-modal-title {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: clamp(20px, 2.4vw, 30px);
-  letter-spacing: -0.02em;
-}
-
-.tv-modal-cat {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 8px;
-}
-
-/* ---- RESPONSIVE ---- */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 768px) {
-  .tv-hero { height: 72vh; }
-  .tv-card { width: 75vw; }
-  .tv-rows { margin-top: -4vh; }
+  .tv-nav { display: none; }
+  .tv-hero { height: 76vh; }
+  .tv-hero-title { font-size: clamp(34px, 11vw, 56px); }
+  .tv-card { width: 74vw; }
+  .tv-row--posters .tv-card { width: 50vw; }
+  .tv-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .tv-footer-brand { grid-column: 1 / -1; }
+  .tv-hero-arrows { display: none; }
 }
