@@ -78,7 +78,7 @@ button { font-family: inherit; }
 }
 
 .tv-logo-img {
-  height: 18px;
+  height: 30px;
   width: auto;
   opacity: 0.95;
 }
@@ -162,8 +162,9 @@ button { font-family: inherit; }
    ============================================ */
 .tv-hero {
   position: relative;
-  height: 88vh;
-  min-height: 560px;
+  aspect-ratio: 21 / 9;
+  max-height: 92vh;
+  min-height: 480px;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
