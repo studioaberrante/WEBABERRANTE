@@ -3,6 +3,32 @@
    Contenido de muestra (reemplazar con piezas cinematográficas reales)
    ============================================ */
 
+/* ---- INTRO DE ENTRADA (se reproduce al entrar a Aberrante TV) ---- */
+(function initIntro() {
+  const intro = document.getElementById('tvIntro');
+  if (!intro) return;
+
+  const video = document.getElementById('tvIntroVideo');
+  document.body.style.overflow = 'hidden';
+  let done = false, timer;
+
+  function end() {
+    if (done) return;
+    done = true;
+    clearTimeout(timer);
+    intro.classList.add('hide');
+    document.body.style.overflow = '';
+    setTimeout(() => intro.remove(), 600);
+  }
+
+  // Cierre por TIEMPO fijo, sincronizado con el zoom final de las letras (~4 s).
+  // No usamos 'ended' ni video.duration porque en algunos entornos no son fiables.
+  timer = setTimeout(end, 4000);
+
+  if (video) video.play().catch(() => {});
+  intro.addEventListener('click', end); // permite saltar con click
+})();
+
 const PIEZAS = {
   // --- Aberrante Originals (solo en Aberrante TV) ---
   '1203128705': { titulo: 'Final Day', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },

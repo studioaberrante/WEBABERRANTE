@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=5">
+  <link rel="stylesheet" href="tv.css?v=8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,11 +25,17 @@
 </head>
 <body class="tv-body">
 
+  <!-- INTRO DE ENTRADA -->
+  <div class="tv-intro" id="tvIntro">
+    <video id="tvIntroVideo" class="tv-intro-video" muted playsinline autoplay preload="auto">
+      <source src="assets/intro-tv.mp4" type="video/mp4">
+    </video>
+  </div>
+
   <!-- HEADER -->
   <header class="tv-header" id="tvHeader">
     <a href="index.html" class="tv-logo">
-      <img src="logo negro.png" alt="Studio Aberrante" class="tv-logo-img">
-      <span class="tv-logo-badge">TV+</span>
+      <img src="assets/aberrante-tv-logo.png" alt="Aberrante TV+" class="tv-logo-img">
     </a>
     <nav class="tv-nav" id="tvNav">
       <span class="tv-nav-tube" id="tvNavTube"></span>
@@ -76,8 +82,7 @@
     <div class="tv-footer-grid">
       <div class="tv-footer-brand">
         <a href="index.html" class="tv-logo">
-          <img src="logo negro.png" alt="Studio Aberrante" class="tv-logo-img">
-          <span class="tv-logo-badge">TV+</span>
+          <img src="assets/aberrante-tv-logo.png" alt="Aberrante TV+" class="tv-logo-img">
         </a>
         <p>La plataforma de contenido cinematográfico de Studio Aberrante. Entretenimiento creado con inteligencia artificial.</p>
       </div>
@@ -145,6 +150,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=6"></script>
+  <script src="tv.js?v=11"></script>
 </body>
 </html>
