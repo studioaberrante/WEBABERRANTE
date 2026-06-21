@@ -48,7 +48,7 @@ const DESTACADOS = ORIGINALS;
 
 const FILAS = [
   { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ORIGINALS },
-  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, comingSoon: true },
+  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ['1203129093'] },
   { id: 'row-cat',       titulo: 'Categorías',           sub: '',                                       posters: false, comingSoon: true }
 ];
 
@@ -121,14 +121,18 @@ function makeCard(id, posters) {
 
   function paintSegments() {
     segs.forEach((fill, k) => {
+      const seg = fill.parentElement;
       fill.style.transition = 'none';
-      if (k < i) fill.style.width = '100%';
-      else if (k > i) fill.style.width = '0%';
-      else {
-        fill.style.width = '0%';
+      fill.style.width = '0%';
+      if (k === i) {
+        // El que se reproduce: barra que se llena durante SLIDE_MS
+        seg.classList.add('active');
         void fill.offsetWidth; // reflow
         fill.style.transition = `width ${SLIDE_MS}ms linear`;
         fill.style.width = '100%';
+      } else {
+        // El resto: puntos
+        seg.classList.remove('active');
       }
     });
   }
