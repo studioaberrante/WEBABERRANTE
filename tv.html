@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aberrante TV — Studio Aberrante</title>
+  <meta name="description" content="Aberrante TV — nuestras piezas audiovisuales hechas con IA. Campañas, cortometrajes y más.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://studioaberrante.com/tv">
+  <meta property="og:title" content="Aberrante TV — Studio Aberrante">
+  <meta property="og:description" content="Nuestras piezas audiovisuales hechas con IA.">
+  <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="tv.css?v=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://player.vimeo.com/api/player.js" rel="preload" as="script">
+</head>
+<body class="tv-body">
+
+  <!-- HEADER -->
+  <header class="tv-header" id="tvHeader">
+    <a href="index.html" class="tv-logo">
+      <img src="logo negro.png" alt="Studio Aberrante" class="logo-img">
+    </a>
+    <nav class="tv-nav">
+      <a href="index.html">Sitio web</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- HERO DESTACADO -->
+  <section class="tv-hero" id="tvHero">
+    <div class="tv-hero-media">
+      <iframe id="tvHeroVideo" src="" frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        referrerpolicy="strict-origin-when-cross-origin" title="Destacado Aberrante TV"></iframe>
+    </div>
+    <div class="tv-hero-overlay"></div>
+    <div class="tv-hero-content">
+      <p class="tv-hero-eyebrow">Aberrante TV — Destacado</p>
+      <h1 class="tv-hero-title" id="tvHeroTitle">—</h1>
+      <p class="tv-hero-desc" id="tvHeroDesc"></p>
+      <div class="tv-hero-actions">
+        <button class="tv-hero-play" id="tvHeroPlay">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Ver pieza
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILAS DE CONTENIDO -->
+  <main class="tv-rows" id="tvRows"></main>
+
+  <footer class="tv-footer">
+    <p>© 2026 Studio Aberrante — Aberrante TV</p>
+  </footer>
+
+  <!-- MODAL REPRODUCTOR -->
+  <div class="tv-modal" id="tvModal">
+    <button class="tv-modal-close" id="tvModalClose" aria-label="Cerrar">✕</button>
+    <div class="tv-modal-inner">
+      <div class="tv-modal-video">
+        <iframe id="tvModalIframe" src="" frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="tv-modal-meta">
+        <h3 class="tv-modal-title" id="tvModalTitle"></h3>
+        <p class="tv-modal-cat" id="tvModalCat"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script src="tv.js?v=1"></script>
+</body>
+</html>
