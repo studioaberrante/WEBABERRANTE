@@ -388,6 +388,9 @@ button { font-family: inherit; }
   display: flex;
   gap: 16px;
   padding: 4px var(--tv-gutter) 8px;
+  /* Centra los cards cuando caben; si hay muchos y desbordan, vuelve a
+     alinear a la izquierda para no esconder los primeros (scroll normal) */
+  justify-content: safe center;
   overflow-x: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
