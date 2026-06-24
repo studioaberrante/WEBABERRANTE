@@ -868,7 +868,14 @@ button { font-family: inherit; }
   font-weight: 600;
   letter-spacing: -0.02em;
 }
-.tv-detail-type { font-size: 15px; color: var(--tv-muted); margin-top: 8px; }
+.tv-detail-type { font-size: 14px; color: var(--tv-muted); }
+
+/* Meta al final: tipo + tags, separado con un divisor */
+.tv-detail-meta {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--tv-border);
+}
 
 /* Botón Reproducir (rectangular redondeado, estilo Netflix) */
 .tv-detail-play {
@@ -904,9 +911,7 @@ button { font-family: inherit; }
   align-items: center;
   flex-wrap: wrap;
   gap: 8px 12px;
-  margin-top: 26px;
-  padding-top: 22px;
-  border-top: 1px solid var(--tv-border);
+  margin-top: 22px;
 }
 .tv-detail-credit-label {
   font-size: 13px;
@@ -924,11 +929,21 @@ button { font-family: inherit; }
   color: var(--tv-muted);
 }
 .tv-detail-credit-country:empty { display: none; }
+/* Bloque "Contacta al autor" (debajo de la descripción) */
+.tv-detail-contact { margin-top: 28px; }
+.tv-detail-contact-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--tv-muted);
+  margin-bottom: 12px;
+}
+
 .tv-detail-socials {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-left: 4px;
 }
 .tv-social {
   font-size: 13px;
@@ -962,7 +977,7 @@ button { font-family: inherit; }
 .tv-detail-like.liked { color: #ff3b1d; border-color: rgba(255,59,29,0.5); }
 .tv-detail-like.liked svg { fill: #ff3b1d; stroke: #ff3b1d; }
 
-.tv-detail-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.tv-detail-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .tv-detail-tags span {
   font-size: 12px;
   color: var(--tv-muted);

@@ -249,6 +249,7 @@ const dPlay       = document.getElementById('tvDetailPlay');
 const dDesc       = document.getElementById('tvDetailDesc');
 const dAuthor     = document.getElementById('tvDetailAuthor');
 const dCountry    = document.getElementById('tvDetailCountry');
+const dContact    = document.getElementById('tvDetailContact');
 const dSocials    = document.getElementById('tvDetailSocials');
 const dLike       = document.getElementById('tvDetailLike');
 const dLikeCount  = document.getElementById('tvDetailLikeCount');
@@ -285,6 +286,7 @@ function openDetail(id) {
   dAuthor.textContent = p.autor;
   dCountry.textContent = p.pais ? `· ${p.pais}` : '';
   dSocials.innerHTML = renderSocials(p.redes);
+  dContact.style.display = (p.redes && p.redes.length) ? '' : 'none';
 
   const liked = likedSet.has(id);
   dLike.classList.toggle('liked', liked);

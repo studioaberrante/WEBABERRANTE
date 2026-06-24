@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=25">
+  <link rel="stylesheet" href="tv.css?v=27">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -211,7 +211,6 @@
 
       <div class="tv-detail-info">
         <h1 class="tv-detail-title" id="tvDetailTitle"></h1>
-        <p class="tv-detail-type" id="tvDetailType"></p>
 
         <div class="tv-detail-actions">
           <button class="tv-detail-play" id="tvDetailPlay">
@@ -228,16 +227,23 @@
           </button>
         </div>
 
-        <p class="tv-detail-desc" id="tvDetailDesc"></p>
-
         <div class="tv-detail-credit" id="tvDetailCredit">
           <span class="tv-detail-credit-label">Creado por</span>
           <strong class="tv-detail-credit-name" id="tvDetailAuthor"></strong>
           <span class="tv-detail-credit-country" id="tvDetailCountry"></span>
+        </div>
+
+        <p class="tv-detail-desc" id="tvDetailDesc"></p>
+
+        <div class="tv-detail-contact" id="tvDetailContact">
+          <span class="tv-detail-contact-label">Contacta al autor</span>
           <div class="tv-detail-socials" id="tvDetailSocials"></div>
         </div>
 
-        <div class="tv-detail-tags" id="tvDetailTags"></div>
+        <div class="tv-detail-meta">
+          <p class="tv-detail-type" id="tvDetailType"></p>
+          <div class="tv-detail-tags" id="tvDetailTags"></div>
+        </div>
       </div>
 
       <div class="tv-detail-related">
@@ -251,6 +257,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=26"></script>
+  <script src="tv.js?v=27"></script>
 </body>
 </html>
