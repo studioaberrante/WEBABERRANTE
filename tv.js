@@ -52,7 +52,10 @@ const PIEZAS = {
   '1203129093': { titulo: 'Route 5',   tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
   '1203129625': { titulo: '847 Días',  tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
   '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Música'] },
-  '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Emotivo'] }
+  '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Emotivo'] },
+
+  // --- Aberrante Selects (creadores externos que curamos) ---
+  '1204119921': { titulo: 'A World Without a Phone', tipo: 'Cortometraje', autor: 'Talat Nasreddin', label: 'Aberrante Selects', likes: 0, tags: ['Selects', 'Invitado'] }
 };
 
 const ORIGINALS = ['1203128705', '1203129093', '1203129625', '1203130346', '1203147533'];
@@ -62,7 +65,8 @@ const DESTACADOS = ORIGINALS;
 
 const FILAS = [
   { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ORIGINALS },
-  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ['1203129093'] },
+  { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ['1203129093', '1204119921'] },
+  { id: 'row-selects',   titulo: 'Aberrante Selects',     sub: 'Creadores que elegimos',                posters: false, ids: ['1204119921'] },
   { id: 'row-cat',       titulo: 'Categorías',           sub: '',                                       posters: false, comingSoon: true }
 ];
 
