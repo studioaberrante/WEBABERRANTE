@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=20">
+  <link rel="stylesheet" href="tv.css?v=21">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,9 +25,57 @@
 </head>
 <body class="tv-body">
 
+  <!-- PANTALLA DE ACCESO PRIVADO (pre-lanzamiento) -->
+  <div class="tv-gate" id="tvGate">
+    <div class="tv-gate-box">
+      <img src="assets/aberrante-tv-logo.png" alt="Aberrante TV+" class="tv-gate-logo">
+      <h1 class="tv-gate-title">Acceso privado</h1>
+      <p class="tv-gate-sub">Esta sección está en desarrollo. Ingresa el código para entrar.</p>
+      <form class="tv-gate-form" id="tvGateForm">
+        <input class="tv-gate-input" id="tvGateInput" type="password" placeholder="Código de acceso" autocomplete="off" autofocus>
+        <button class="tv-gate-btn" type="submit">Entrar</button>
+      </form>
+      <p class="tv-gate-error" id="tvGateError">Código incorrecto</p>
+    </div>
+  </div>
+  <script>
+  (function () {
+    // ⬇️ CAMBIA AQUÍ EL CÓDIGO DE ACCESO
+    var CODE = 'ABERRANTE2026';
+    var KEY  = 'aberrante_tv_unlocked';
+    var gate = document.getElementById('tvGate');
+    var ok = false;
+    try { ok = localStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (ok) { window.__tvGate = true; gate.parentNode.removeChild(gate); return; }
+
+    window.__tvGate = false;
+    document.documentElement.classList.add('tv-gated');
+    var form  = document.getElementById('tvGateForm');
+    var input = document.getElementById('tvGateInput');
+    var error = document.getElementById('tvGateError');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value.trim().toUpperCase() === CODE.toUpperCase()) {
+        try { localStorage.setItem(KEY, '1'); } catch (e) {}
+        window.__tvGate = true;
+        document.documentElement.classList.remove('tv-gated');
+        gate.classList.add('hide');
+        setTimeout(function () { if (gate.parentNode) gate.parentNode.removeChild(gate); }, 450);
+        document.dispatchEvent(new Event('tv:unlock'));
+      } else {
+        error.classList.add('show');
+        input.value = '';
+        input.focus();
+      }
+    });
+    if (input) input.focus();
+  })();
+  </script>
+
   <!-- INTRO DE ENTRADA -->
   <div class="tv-intro" id="tvIntro">
-    <video id="tvIntroVideo" class="tv-intro-video" playsinline autoplay preload="auto">
+    <video id="tvIntroVideo" class="tv-intro-video" playsinline preload="auto">
       <source src="assets/intro-tv.mp4?v=5" type="video/mp4">
     </video>
   </div>
@@ -179,6 +227,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=20"></script>
+  <script src="tv.js?v=22"></script>
 </body>
 </html>

@@ -9,27 +9,41 @@
   if (!intro) return;
 
   const video = document.getElementById('tvIntroVideo');
-  document.body.style.overflow = 'hidden';
-  let done = false, timer;
 
-  function end() {
-    if (done) return;
-    done = true;
-    clearTimeout(timer);
-    intro.classList.add('hide');
-    document.body.style.overflow = '';
-    setTimeout(() => intro.remove(), 600);
+  function start() {
+    document.body.style.overflow = 'hidden';
+    let done = false, timer;
+
+    function end() {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      intro.classList.add('hide');
+      document.body.style.overflow = '';
+      setTimeout(() => intro.remove(), 600);
+    }
+
+    // Cierre por TIEMPO fijo, sincronizado con el final de la intro (~3.1 s).
+    // No usamos 'ended' ni video.duration porque en algunos entornos no son fiables.
+    timer = setTimeout(end, 3150);
+
+    // Intenta reproducir CON sonido desde el inicio; si el navegador lo bloquea,
+    // arranca muteada. (La intro la controla el JS; el <video> ya no tiene autoplay
+    // para que no se reproduzca detrás de la pantalla de acceso.)
+    if (video) {
+      try { video.currentTime = 0; } catch (e) {}
+      video.play().catch(() => { video.muted = true; video.play().catch(() => {}); });
+    }
+    intro.addEventListener('click', end); // permite saltar con click
   }
 
-  // Cierre por TIEMPO fijo, sincronizado con el final de la intro (~3.1 s).
-  // No usamos 'ended' ni video.duration porque en algunos entornos no son fiables.
-  timer = setTimeout(end, 3150);
-
-  // Intenta reproducir CON sonido; si el navegador lo bloquea, arranca muteada.
-  if (video) {
-    video.play().catch(() => { video.muted = true; video.play().catch(() => {}); });
+  // Si hay pantalla de acceso (pre-lanzamiento), la intro espera al desbloqueo
+  // para no reproducirse ni sonar detrás del bloqueo.
+  if (window.__tvGate === false) {
+    document.addEventListener('tv:unlock', start, { once: true });
+  } else {
+    start();
   }
-  intro.addEventListener('click', end); // permite saltar con click
 })();
 
 const PIEZAS = {
