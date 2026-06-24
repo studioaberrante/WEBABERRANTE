@@ -55,7 +55,17 @@ const PIEZAS = {
   '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Emotivo'] },
 
   // --- Aberrante Selects (creadores externos que curamos) ---
-  '1204119921': { titulo: 'A World Without a Phone', tipo: 'Cortometraje', autor: 'Talat Nasreddin', label: 'Aberrante Selects', likes: 0, tags: ['Selects', 'Invitado'] }
+  '1204119921': {
+    titulo: 'A World Without a Phone',
+    tipo: 'Cortometraje',
+    autor: 'Talat Nasreddin',
+    pais: 'Indonesia',
+    label: 'Aberrante Selects',
+    likes: 0,
+    tags: ['Selects', 'Invitado'],
+    descripcion: 'Un niño que crece en un pueblo donde todos viven pegados a sus teléfonos nunca ha conocido un mundo sin pantallas. Su vida cambia cuando se encuentra con un misterioso anciano que lo transporta a una época anterior a que las pantallas dominaran la vida cotidiana. Juntos recorren un pasado vibrante donde los niños llenaban las calles de risas, las amistades se construían cara a cara y el pueblo rebosaba de alegría. Al ver todo lo que se perdió, el niño regresa con un recordatorio simple pero poderoso: alguna vez existió un mundo sin teléfonos.',
+    redes: [{ red: 'LinkedIn', url: 'https://www.linkedin.com/in/nasreddintalat/' }]
+  }
 };
 
 const ORIGINALS = ['1203128705', '1203129093', '1203129625', '1203130346', '1203147533'];
@@ -226,14 +236,20 @@ function makeCard(id, posters) {
   });
 })();
 
-/* ---- VISTA DE DETALLE ---- */
+/* ---- VISTA DE DETALLE (estilo Netflix) ---- */
 const detail      = document.getElementById('tvDetail');
+const dStage      = document.getElementById('tvDetailStage');
+const dCoverImg   = document.getElementById('tvDetailCoverImg');
+const dBigPlay    = document.getElementById('tvDetailBigPlay');
 const dIframe     = document.getElementById('tvDetailIframe');
 const dScroll     = document.getElementById('tvDetailScroll');
 const dTitle      = document.getElementById('tvDetailTitle');
 const dType       = document.getElementById('tvDetailType');
+const dPlay       = document.getElementById('tvDetailPlay');
+const dDesc       = document.getElementById('tvDetailDesc');
 const dAuthor     = document.getElementById('tvDetailAuthor');
-const dLabel      = document.getElementById('tvDetailLabel');
+const dCountry    = document.getElementById('tvDetailCountry');
+const dSocials    = document.getElementById('tvDetailSocials');
 const dLike       = document.getElementById('tvDetailLike');
 const dLikeCount  = document.getElementById('tvDetailLikeCount');
 const dTags       = document.getElementById('tvDetailTags');
@@ -241,15 +257,35 @@ const dRelated    = document.getElementById('tvRelated');
 const likedSet    = new Set();
 let currentId = null;
 
+// Render de redes sociales del creador (array de { red, url })
+function renderSocials(redes) {
+  if (!redes || !redes.length) return '';
+  return redes.map(r =>
+    `<a class="tv-social" href="${r.url}" target="_blank" rel="noopener">${r.red} ↗</a>`
+  ).join('');
+}
+
 function openDetail(id) {
   const p = PIEZAS[id];
   if (!p) return;
   currentId = id;
-  dIframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&badge=0`;
+
+  // Portada grande (aún no se reproduce el video)
+  dStage.classList.remove('playing');
+  dIframe.src = '';
+  dCoverImg.alt = p.titulo;
+  applyThumb(dCoverImg, id, '1280x720');
+
   dTitle.textContent = p.titulo;
-  dType.textContent = p.tipo;
+  dType.textContent = p.label ? `${p.tipo} · ${p.label}` : p.tipo;
+
+  dDesc.textContent = p.descripcion || '';
+  dDesc.style.display = p.descripcion ? '' : 'none';
+
   dAuthor.textContent = p.autor;
-  dLabel.textContent = p.label;
+  dCountry.textContent = p.pais ? `· ${p.pais}` : '';
+  dSocials.innerHTML = renderSocials(p.redes);
+
   const liked = likedSet.has(id);
   dLike.classList.toggle('liked', liked);
   dLikeCount.textContent = p.likes + (liked ? 1 : 0);
@@ -264,8 +300,18 @@ function openDetail(id) {
   dScroll.scrollTop = 0;
 }
 
+function playVideo() {
+  if (!currentId) return;
+  dIframe.src = `https://player.vimeo.com/video/${currentId}?autoplay=1&badge=0`;
+  dStage.classList.add('playing');
+  dStage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+dPlay.addEventListener('click', playVideo);
+dBigPlay.addEventListener('click', playVideo);
+
 function closeDetail() {
   detail.classList.remove('open');
+  dStage.classList.remove('playing');
   dIframe.src = '';
   document.body.style.overflow = '';
 }

@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=21">
+  <link rel="stylesheet" href="tv.css?v=25">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -194,18 +194,30 @@
       <button class="tv-detail-back" id="tvDetailBack">← Volver</button>
     </header>
     <div class="tv-detail-scroll" id="tvDetailScroll">
-      <div class="tv-detail-player">
-        <iframe id="tvDetailIframe" src="" frameborder="0"
-          allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      <!-- Escenario: portada grande -> al reproducir se cambia por el video -->
+      <div class="tv-detail-stage" id="tvDetailStage">
+        <div class="tv-detail-cover" id="tvDetailCover">
+          <img id="tvDetailCoverImg" alt="">
+          <div class="tv-detail-cover-grad"></div>
+          <button class="tv-detail-bigplay" id="tvDetailBigPlay" aria-label="Reproducir">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="tv-detail-player" id="tvDetailPlayer">
+          <iframe id="tvDetailIframe" src="" frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
       </div>
+
       <div class="tv-detail-info">
         <h1 class="tv-detail-title" id="tvDetailTitle"></h1>
         <p class="tv-detail-type" id="tvDetailType"></p>
-        <p class="tv-detail-author">
-          <strong id="tvDetailAuthor"></strong>
-          <span id="tvDetailLabel"></span>
-        </p>
+
         <div class="tv-detail-actions">
+          <button class="tv-detail-play" id="tvDetailPlay">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Reproducir
+          </button>
           <button class="tv-detail-like" id="tvDetailLike">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
             <span id="tvDetailLikeCount">0</span>
@@ -215,8 +227,19 @@
             Compartir
           </button>
         </div>
+
+        <p class="tv-detail-desc" id="tvDetailDesc"></p>
+
+        <div class="tv-detail-credit" id="tvDetailCredit">
+          <span class="tv-detail-credit-label">Creado por</span>
+          <strong class="tv-detail-credit-name" id="tvDetailAuthor"></strong>
+          <span class="tv-detail-credit-country" id="tvDetailCountry"></span>
+          <div class="tv-detail-socials" id="tvDetailSocials"></div>
+        </div>
+
         <div class="tv-detail-tags" id="tvDetailTags"></div>
       </div>
+
       <div class="tv-detail-related">
         <h2>Relacionados</h2>
         <div class="tv-track" id="tvRelated"></div>
@@ -228,6 +251,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=24"></script>
+  <script src="tv.js?v=26"></script>
 </body>
 </html>
