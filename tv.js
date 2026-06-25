@@ -54,6 +54,9 @@ const PIEZAS = {
   '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Música'] },
   '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Emotivo'] },
 
+  // --- Tráiler de Aberrante TV (destacado en el Hero) ---
+  '1204431007': { titulo: 'Aberrante TV+', tipo: 'Tráiler', autor: 'Studio Aberrante', label: 'Tráiler oficial', likes: 0, tags: ['Tráiler'], descripcion: 'Un vistazo a todo lo que se viene en Aberrante TV+: nuestros Originals, los creadores que elegimos y mucho más por descubrir.' },
+
   // --- Aberrante Selects (creadores externos que curamos) ---
   '1204119921': {
     titulo: 'A World Without a Phone',
@@ -70,8 +73,8 @@ const PIEZAS = {
 
 const ORIGINALS = ['1203128705', '1203129093', '1203129625', '1203130346', '1203147533'];
 
-// Hero: los Originals (se reproducen en silencio y rotan)
-const DESTACADOS = ORIGINALS;
+// Tráiler de Aberrante TV (se muestra primero en el Hero)
+const TRAILER_ID = '1204431007';
 
 const FILAS = [
   { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ORIGINALS },
@@ -80,7 +83,15 @@ const FILAS = [
   { id: 'row-cat',       titulo: 'Categorías',           sub: '',                                       posters: false, comingSoon: true }
 ];
 
-const SLIDE_MS = 6000;
+const SLIDE_MS   = 6000;   // duración de cada Original en el Hero
+const TRAILER_MS = 30000;  // duración del tráiler en el Hero (~30s)
+
+// Hero: primero el tráiler de Aberrante TV, luego rotan los Originals.
+// Cada slide tiene su propia duración.
+const HERO = [
+  { id: TRAILER_ID, dur: TRAILER_MS },
+  ...ORIGINALS.map(id => ({ id, dur: SLIDE_MS }))
+];
 
 /* ---- THUMBNAILS DE VIMEO ---- */
 const rawCache = {};
@@ -137,8 +148,8 @@ function makeCard(id, posters) {
   const progress = document.getElementById('tvHeroProgress');
   let i = 0, timer;
 
-  // Construir segmentos de progreso (uno por Original)
-  const segs = DESTACADOS.map((_, idx) => {
+  // Construir segmentos de progreso (uno por slide del Hero)
+  const segs = HERO.map((_, idx) => {
     const seg = document.createElement('span');
     seg.className = 'seg';
     seg.innerHTML = '<span class="seg-fill"></span>';
@@ -153,10 +164,10 @@ function makeCard(id, posters) {
       fill.style.transition = 'none';
       fill.style.width = '0%';
       if (k === i) {
-        // El que se reproduce: barra que se llena durante SLIDE_MS
+        // El que se reproduce: barra que se llena durante la duración del slide
         seg.classList.add('active');
         void fill.offsetWidth; // reflow
-        fill.style.transition = `width ${SLIDE_MS}ms linear`;
+        fill.style.transition = `width ${HERO[i].dur}ms linear`;
         fill.style.width = '100%';
       } else {
         // El resto: puntos
@@ -166,8 +177,8 @@ function makeCard(id, posters) {
   }
 
   function show(idx) {
-    i = (idx + DESTACADOS.length) % DESTACADOS.length;
-    const id = DESTACADOS[i];
+    i = (idx + HERO.length) % HERO.length;
+    const id = HERO[i].id;
     const p = PIEZAS[id];
     // Imagen de respaldo mientras carga el video
     loadImageWithFallback(id, '1280x720', (url) => { bg.style.backgroundImage = `url(${url})`; });
@@ -180,7 +191,7 @@ function makeCard(id, posters) {
     paintSegments();
     restartTimer();
   }
-  function restartTimer() { clearTimeout(timer); timer = setTimeout(() => show(i + 1), SLIDE_MS); }
+  function restartTimer() { clearTimeout(timer); timer = setTimeout(() => show(i + 1), HERO[i].dur); }
 
   show(0);
 })();
@@ -293,9 +304,9 @@ function openDetail(id) {
   dLikeCount.textContent = p.likes + (liked ? 1 : 0);
   dTags.innerHTML = p.tags.map(t => `<span>${t}</span>`).join('');
 
-  // Relacionados: otras piezas
+  // Relacionados: otras piezas (sin el tráiler)
   dRelated.innerHTML = '';
-  Object.keys(PIEZAS).filter(k => k !== id).forEach(rid => dRelated.appendChild(makeCard(rid, false)));
+  Object.keys(PIEZAS).filter(k => k !== id && k !== TRAILER_ID).forEach(rid => dRelated.appendChild(makeCard(rid, false)));
 
   detail.classList.add('open');
   document.body.style.overflow = 'hidden';
