@@ -37,13 +37,7 @@
     intro.addEventListener('click', end); // permite saltar con click
   }
 
-  // Si hay pantalla de acceso (pre-lanzamiento), la intro espera al desbloqueo
-  // para no reproducirse ni sonar detrás del bloqueo.
-  if (window.__tvGate === false) {
-    document.addEventListener('tv:unlock', start, { once: true });
-  } else {
-    start();
-  }
+  start();
 })();
 
 const PIEZAS = {
