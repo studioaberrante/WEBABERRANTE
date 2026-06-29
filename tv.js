@@ -76,7 +76,8 @@ const PIEZAS = {
     label: 'Aberrante Selects',
     likes: 0,
     tags: ['Selects', 'Invitado'],
-    descripcion: 'Una versión surrealista y satírica del formato "Get Ready With Me", que traslada la rutina matutina privada habitual a un mundo exterior inquietante. El video sigue a distintos personajes a través de rituales extraños y exagerados, usando el humor y la absurdidad cinematográfica para reinterpretar la autopresentación cotidiana y la performance de estar "lista".'
+    descripcion: 'Una versión surrealista y satírica del formato "Get Ready With Me", que traslada la rutina matutina privada habitual a un mundo exterior inquietante. El video sigue a distintos personajes a través de rituales extraños y exagerados, usando el humor y la absurdidad cinematográfica para reinterpretar la autopresentación cotidiana y la performance de estar "lista".',
+    redes: [{ red: 'Instagram', url: 'https://www.instagram.com/chaudsoleil' }]
   }
 };
 
