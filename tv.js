@@ -68,6 +68,15 @@ const PIEZAS = {
     tags: ['Selects', 'Invitado'],
     descripcion: 'Un niño que crece en un pueblo donde todos viven pegados a sus teléfonos nunca ha conocido un mundo sin pantallas. Su vida cambia cuando se encuentra con un misterioso anciano que lo transporta a una época anterior a que las pantallas dominaran la vida cotidiana. Juntos recorren un pasado vibrante donde los niños llenaban las calles de risas, las amistades se construían cara a cara y el pueblo rebosaba de alegría. Al ver todo lo que se perdió, el niño regresa con un recordatorio simple pero poderoso: alguna vez existió un mundo sin teléfonos.',
     redes: [{ red: 'LinkedIn', url: 'https://www.linkedin.com/in/nasreddintalat/' }]
+  },
+  '1205321697': {
+    titulo: 'Get Ready With Me',
+    tipo: 'Cortometraje',
+    autor: 'Nina Menzel',
+    label: 'Aberrante Selects',
+    likes: 0,
+    tags: ['Selects', 'Invitado'],
+    descripcion: 'Una versión surrealista y satírica del formato "Get Ready With Me", que traslada la rutina matutina privada habitual a un mundo exterior inquietante. El video sigue a distintos personajes a través de rituales extraños y exagerados, usando el humor y la absurdidad cinematográfica para reinterpretar la autopresentación cotidiana y la performance de estar "lista".'
   }
 };
 
@@ -79,7 +88,7 @@ const TRAILER_ID = '1204431007';
 const FILAS = [
   { id: 'row-originals', titulo: 'Aberrante Originals', sub: 'Contenido original creado por nosotros', posters: true,  ids: ORIGINALS },
   { id: 'row-staff',     titulo: 'Staff Picks',          sub: 'Selección del equipo',                  posters: false, ids: ['1203129093', '1204119921'] },
-  { id: 'row-selects',   titulo: 'Aberrante Selects',     sub: 'Creadores que elegimos',                posters: false, ids: ['1204119921'] },
+  { id: 'row-selects',   titulo: 'Aberrante Selects',     sub: 'Creadores que elegimos',                posters: false, ids: ['1204119921', '1205321697'] },
   { id: 'row-cat',       titulo: 'Categorías',           sub: '',                                       posters: false, comingSoon: true }
 ];
 
