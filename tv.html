@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
   <title>Aberrante TV — Contenido cinematográfico con IA</title>
   <meta name="description" content="Aberrante TV — cortometrajes y contenido cinematográfico de entretenimiento creado con inteligencia artificial.">
 
@@ -17,9 +18,10 @@
   <meta property="og:image" content="https://studioaberrante.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="tv.css?v=28">
+  <link rel="stylesheet" href="tv.css?v=29">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://qsjzfjulpijkptdqxune.supabase.co">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://player.vimeo.com/api/player.js" rel="preload" as="script">
 </head>
@@ -103,6 +105,7 @@
         <textarea class="tv-form-input tv-form-textarea" name="mensaje" placeholder="Cuéntanos sobre tu pieza (opcional)"></textarea>
         <button class="tv-form-submit" type="submit">Enviar pieza</button>
       </form>
+      <p class="tv-form-error" id="tvFormError">Hubo un problema al enviar. Escríbenos a <a href="mailto:contacto@studioaberrante.com">contacto@studioaberrante.com</a></p>
       <div class="tv-form-success" id="tvFormSuccess">¡Recibido! Si encaja con Aberrante TV, te contactamos.</div>
     </div>
   </div>
@@ -127,6 +130,7 @@
         <h4>Aberrante TV</h4>
         <a href="#row-originals">Originales</a>
         <a href="#row-staff">Staff Picks</a>
+        <a href="#row-selects">Selects</a>
         <a href="#row-cat">Categorías</a>
       </div>
       <div class="tv-footer-col">
@@ -209,6 +213,6 @@
   <div class="tv-toast" id="tvToast">Enlace copiado</div>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="tv.js?v=30"></script>
+  <script src="tv.js?v=31"></script>
 </body>
 </html>

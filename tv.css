@@ -405,6 +405,13 @@ button { font-family: inherit; }
   scroll-snap-align: start;
 }
 
+/* Navegación con teclado */
+.tv-card:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.85);
+  outline-offset: 4px;
+  border-radius: 18px;
+}
+
 .tv-card-thumb {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -632,6 +639,16 @@ button { font-family: inherit; }
   padding: 8px 0;
 }
 .tv-form-success.show { display: block; }
+
+.tv-form-error {
+  display: none;
+  font-size: 13px;
+  color: #ff5a4d;
+  line-height: 1.5;
+  margin-top: 14px;
+}
+.tv-form-error.show { display: block; }
+.tv-form-error a { text-decoration: underline; }
 
 @media (max-width: 600px) {
   .tv-form-row { grid-template-columns: 1fr; }
@@ -933,7 +950,24 @@ button { font-family: inherit; }
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
-  .tv-nav { display: none; }
+  /* Header en dos filas: logo + enlace arriba, navegación deslizable abajo */
+  .tv-header {
+    height: auto;
+    flex-wrap: wrap;
+    padding-top: 14px;
+    padding-bottom: 10px;
+    row-gap: 10px;
+  }
+  .tv-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .tv-nav::-webkit-scrollbar { display: none; }
+  .tv-nav a { padding: 7px 16px; font-size: 13px; flex-shrink: 0; }
   /* En móvil mandamos solo con la altura; anulamos el aspect-ratio 21/9
      (si no, el navegador calcula el ancho desde la altura y desborda) */
   .tv-hero { aspect-ratio: auto; height: 76vh; max-height: none; }

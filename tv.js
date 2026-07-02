@@ -1,12 +1,15 @@
 /* ============================================
    ABERRANTE TV — lógica
-   Contenido de muestra (reemplazar con piezas cinematográficas reales)
    ============================================ */
 
 /* ---- INTRO DE ENTRADA (se reproduce al entrar a Aberrante TV) ---- */
 (function initIntro() {
   const intro = document.getElementById('tvIntro');
   if (!intro) return;
+
+  // Si llega con enlace directo a una pieza (#pieza/...), saltamos la intro
+  // para que lo compartido se vea de inmediato.
+  if (/^#pieza\//.test(location.hash)) { intro.remove(); return; }
 
   const video = document.getElementById('tvIntroVideo');
 
@@ -42,14 +45,14 @@
 
 const PIEZAS = {
   // --- Aberrante Originals (solo en Aberrante TV) ---
-  '1203128705': { titulo: 'Final Day', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
-  '1203129093': { titulo: 'Route 5',   tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
-  '1203129625': { titulo: '847 Días',  tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Original'] },
-  '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Música'] },
-  '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', likes: 0, tags: ['Cinemático', 'Emotivo'] },
+  '1203128705': { titulo: 'Final Day', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', tags: ['Cinemático', 'Original'] },
+  '1203129093': { titulo: 'Route 5',   tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', tags: ['Cinemático', 'Original'] },
+  '1203129625': { titulo: '847 Días',  tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', tags: ['Cinemático', 'Original'] },
+  '1203130346': { titulo: 'Better Days with Music', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', tags: ['Cinemático', 'Música'] },
+  '1203147533': { titulo: 'Para cuando ya no esté', tipo: 'Cortometraje', autor: 'Studio Aberrante', label: 'Aberrante Originals', tags: ['Cinemático', 'Emotivo'] },
 
   // --- Tráiler de Aberrante TV (destacado en el Hero) ---
-  '1204431007': { titulo: 'Aberrante TV+', tipo: 'Tráiler', autor: 'Studio Aberrante', label: 'Tráiler oficial', likes: 0, tags: ['Tráiler'], descripcion: 'Un vistazo a todo lo que se viene en Aberrante TV+: nuestros Originals, los creadores que elegimos y mucho más por descubrir.' },
+  '1204431007': { titulo: 'Aberrante TV+', tipo: 'Tráiler', autor: 'Studio Aberrante', label: 'Tráiler oficial', tags: ['Tráiler'], descripcion: 'Un vistazo a todo lo que se viene en Aberrante TV+: nuestros Originals, los creadores que elegimos y mucho más por descubrir.' },
 
   // --- Aberrante Selects (creadores externos que curamos) ---
   '1204119921': {
@@ -58,7 +61,6 @@ const PIEZAS = {
     autor: 'Talat Nasreddin',
     pais: 'Indonesia',
     label: 'Aberrante Selects',
-    likes: 0,
     tags: ['Selects', 'Invitado'],
     descripcion: 'Un niño que crece en un pueblo donde todos viven pegados a sus teléfonos nunca ha conocido un mundo sin pantallas. Su vida cambia cuando se encuentra con un misterioso anciano que lo transporta a una época anterior a que las pantallas dominaran la vida cotidiana. Juntos recorren un pasado vibrante donde los niños llenaban las calles de risas, las amistades se construían cara a cara y el pueblo rebosaba de alegría. Al ver todo lo que se perdió, el niño regresa con un recordatorio simple pero poderoso: alguna vez existió un mundo sin teléfonos.',
     redes: [{ red: 'LinkedIn', url: 'https://www.linkedin.com/in/nasreddintalat/' }]
@@ -68,7 +70,6 @@ const PIEZAS = {
     tipo: 'Cortometraje',
     autor: 'Nina Menzel',
     label: 'Aberrante Selects',
-    likes: 0,
     tags: ['Selects', 'Invitado'],
     descripcion: 'Una versión surrealista y satírica del formato "Get Ready With Me", que traslada la rutina matutina privada habitual a un mundo exterior inquietante. El video sigue a distintos personajes a través de rituales extraños y exagerados, usando el humor y la absurdidad cinematográfica para reinterpretar la autopresentación cotidiana y la performance de estar "lista".',
     redes: [{ red: 'Instagram', url: 'https://www.instagram.com/chaudsoleil' }]
@@ -96,6 +97,45 @@ const HERO = [
   { id: TRAILER_ID, dur: TRAILER_MS },
   ...ORIGINALS.map(id => ({ id, dur: SLIDE_MS }))
 ];
+
+/* ---- ESTADÍSTICAS (Supabase): likes y visualizaciones reales ---- */
+const SB_URL = 'https://qsjzfjulpijkptdqxune.supabase.co';
+const SB_KEY = 'sb_publishable_G0uJX-43eW2LtJtcsstrag_uoBFwdle';
+const SB_HEADERS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
+const STATS = {}; // id -> { likes, views }
+function statScore(id) { const s = STATS[id]; return s ? s.views + s.likes * 3 : 0; }
+
+function sbRpc(fn, body) {
+  return fetch(`${SB_URL}/rest/v1/rpc/${fn}`, { method: 'POST', headers: SB_HEADERS, body: JSON.stringify(body) })
+    .then(r => { if (!r.ok) throw new Error(fn); return r.json(); });
+}
+
+// Carga inicial de contadores; si falla, la web sigue funcionando con 0
+const statsReady = fetch(`${SB_URL}/rest/v1/tv_stats?select=id,likes,views`, { headers: SB_HEADERS })
+  .then(r => r.json())
+  .then(rows => { rows.forEach(r => { STATS[r.id] = { likes: r.likes, views: r.views }; }); })
+  .catch(() => {});
+
+// Likes del usuario en este dispositivo (para pintar el corazón y evitar dobles)
+const LIKES_KEY = 'aberrante_tv_likes';
+let likedSet;
+try { likedSet = new Set(JSON.parse(localStorage.getItem(LIKES_KEY) || '[]')); }
+catch (e) { likedSet = new Set(); }
+function saveLiked() { try { localStorage.setItem(LIKES_KEY, JSON.stringify([...likedSet])); } catch (e) {} }
+
+// Una visualización por pieza por visita (se cuenta al presionar Reproducir)
+const viewedSession = new Set();
+function countView(id) {
+  if (viewedSession.has(id)) return;
+  viewedSession.add(id);
+  sbRpc('tv_view', { piece_id: id })
+    .then(n => {
+      if (!STATS[id]) STATS[id] = { likes: 0, views: 0 };
+      STATS[id].views = n;
+    })
+    .catch(() => {});
+}
 
 /* ---- THUMBNAILS DE VIMEO ---- */
 const rawCache = {};
@@ -126,6 +166,9 @@ function makeCard(id, posters) {
   const card = document.createElement('div');
   card.className = 'tv-card';
   card.dataset.vimeo = id;
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `${p.titulo} — ${p.tipo} de ${p.autor}`);
   card.innerHTML = `
     <div class="tv-card-thumb">
       <img alt="${p.titulo}" loading="lazy">
@@ -195,7 +238,14 @@ function makeCard(id, posters) {
     paintSegments();
     restartTimer();
   }
-  function restartTimer() { clearTimeout(timer); timer = setTimeout(() => show(i + 1), HERO[i].dur); }
+  // Sin auto-rotación si el usuario prefiere menos movimiento (accesibilidad);
+  // los puntos siguen permitiendo cambiar de slide a mano.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function restartTimer() {
+    clearTimeout(timer);
+    if (reduceMotion) return;
+    timer = setTimeout(() => show(i + 1), HERO[i].dur);
+  }
 
   show(0);
 })();
@@ -217,7 +267,6 @@ function makeCard(id, posters) {
       </div>
       ${fila.comingSoon ? '' : `
       <div class="tv-row-nav">
-        <span class="tv-row-viewall">Ver todo →</span>
         <div class="tv-row-arrows">
           <button data-dir="-1" aria-label="Anterior">‹</button>
           <button data-dir="1" aria-label="Siguiente">›</button>
@@ -245,11 +294,44 @@ function makeCard(id, posters) {
         track.scrollBy({ left: track.clientWidth * 0.8 * Number(btn.dataset.dir), behavior: 'smooth' });
       });
     });
-    head.querySelector('.tv-row-viewall').addEventListener('click', () => {
-      track.scrollBy({ left: track.scrollWidth, behavior: 'smooth' });
-    });
   });
 })();
+
+/* ---- FILA "TENDENCIAS" (recomendación real según likes y vistas) ---- */
+statsReady.then(() => {
+  const ids = Object.keys(PIEZAS)
+    .filter(id => id !== TRAILER_ID && statScore(id) > 0)
+    .sort((a, b) => statScore(b) - statScore(a))
+    .slice(0, 8);
+  if (ids.length < 2) return; // aún no hay datos suficientes para recomendar
+
+  const section = document.createElement('section');
+  section.className = 'tv-row';
+  section.id = 'row-tendencias';
+  section.innerHTML = `
+    <div class="tv-row-head">
+      <div class="tv-row-titles">
+        <h2>Tendencias</h2>
+        <p>Lo más visto en Aberrante TV</p>
+      </div>
+      <div class="tv-row-nav">
+        <div class="tv-row-arrows">
+          <button data-dir="-1" aria-label="Anterior">‹</button>
+          <button data-dir="1" aria-label="Siguiente">›</button>
+        </div>
+      </div>
+    </div>`;
+  const track = document.createElement('div');
+  track.className = 'tv-track';
+  ids.forEach(id => track.appendChild(makeCard(id, false)));
+  section.appendChild(track);
+  section.querySelectorAll('.tv-row-arrows button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      track.scrollBy({ left: track.clientWidth * 0.8 * Number(btn.dataset.dir), behavior: 'smooth' });
+    });
+  });
+  document.getElementById('row-originals').after(section);
+});
 
 /* ---- VISTA DE DETALLE (estilo Netflix) ---- */
 const detail      = document.getElementById('tvDetail');
@@ -270,7 +352,6 @@ const dLike       = document.getElementById('tvDetailLike');
 const dLikeCount  = document.getElementById('tvDetailLikeCount');
 const dTags       = document.getElementById('tvDetailTags');
 const dRelated    = document.getElementById('tvRelated');
-const likedSet    = new Set();
 let currentId = null;
 
 // Render de redes sociales del creador (array de { red, url })
@@ -281,10 +362,15 @@ function renderSocials(redes) {
   ).join('');
 }
 
-function openDetail(id) {
+function openDetail(id, fromHistory) {
   const p = PIEZAS[id];
   if (!p) return;
   currentId = id;
+
+  // URL propia por pieza: permite compartir enlaces directos y que el
+  // botón atrás del navegador cierre el detalle en vez de salir del sitio.
+  // (sin duplicar la entrada si ya estamos en esa pieza)
+  if (!fromHistory && location.hash !== '#pieza/' + id) history.pushState({ pieza: id }, '', '#pieza/' + id);
 
   // Portada grande (aún no se reproduce el video)
   dStage.classList.remove('playing');
@@ -293,7 +379,11 @@ function openDetail(id) {
   applyThumb(dCoverImg, id, '1280x720');
 
   dTitle.textContent = p.titulo;
-  dType.textContent = p.label ? `${p.tipo} · ${p.label}` : p.tipo;
+  const s = STATS[id];
+  const views = s && s.views > 0
+    ? `${s.views.toLocaleString('es-CL')} ${s.views === 1 ? 'visualización' : 'visualizaciones'}`
+    : '';
+  dType.textContent = [p.label ? `${p.tipo} · ${p.label}` : p.tipo, views].filter(Boolean).join(' · ');
 
   dDesc.textContent = p.descripcion || '';
   dDesc.style.display = p.descripcion ? '' : 'none';
@@ -303,14 +393,16 @@ function openDetail(id) {
   dSocials.innerHTML = renderSocials(p.redes);
   dContact.style.display = (p.redes && p.redes.length) ? '' : 'none';
 
-  const liked = likedSet.has(id);
-  dLike.classList.toggle('liked', liked);
-  dLikeCount.textContent = p.likes + (liked ? 1 : 0);
+  dLike.classList.toggle('liked', likedSet.has(id));
+  dLikeCount.textContent = s ? s.likes : 0;
   dTags.innerHTML = p.tags.map(t => `<span>${t}</span>`).join('');
 
-  // Relacionados: otras piezas (sin el tráiler)
+  // Relacionados: otras piezas (sin el tráiler), las más populares primero
   dRelated.innerHTML = '';
-  Object.keys(PIEZAS).filter(k => k !== id && k !== TRAILER_ID).forEach(rid => dRelated.appendChild(makeCard(rid, false)));
+  Object.keys(PIEZAS)
+    .filter(k => k !== id && k !== TRAILER_ID)
+    .sort((a, b) => statScore(b) - statScore(a))
+    .forEach(rid => dRelated.appendChild(makeCard(rid, false)));
 
   detail.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -319,6 +411,7 @@ function openDetail(id) {
 
 function playVideo() {
   if (!currentId) return;
+  countView(currentId);
   dIframe.src = `https://player.vimeo.com/video/${currentId}?autoplay=1&badge=0`;
   dStage.classList.add('playing');
   dStage.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -326,23 +419,42 @@ function playVideo() {
 dPlay.addEventListener('click', playVideo);
 dBigPlay.addEventListener('click', playVideo);
 
-function closeDetail() {
+function closeDetail(fromHistory) {
+  // Si el detalle dejó una entrada en el historial, retrocedemos para
+  // mantener el historial limpio; popstate hace el cierre real.
+  if (!fromHistory && /^#pieza\//.test(location.hash)) { history.back(); return; }
   detail.classList.remove('open');
   dStage.classList.remove('playing');
   dIframe.src = '';
   document.body.style.overflow = '';
+  currentId = null;
 }
 
-document.getElementById('tvDetailBack').addEventListener('click', closeDetail);
+document.getElementById('tvDetailBack').addEventListener('click', () => closeDetail());
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && detail.classList.contains('open')) closeDetail(); });
 
-// Like (local, demostrativo)
+// Botón atrás/adelante del navegador: abre o cierra el detalle según el hash
+window.addEventListener('popstate', () => {
+  const m = location.hash.match(/^#pieza\/(\d+)$/);
+  if (m && PIEZAS[m[1]]) openDetail(m[1], true);
+  else if (detail.classList.contains('open')) closeDetail(true);
+});
+
+// Like real (persistente en Supabase, con actualización optimista)
 dLike.addEventListener('click', () => {
   if (!currentId) return;
-  const liked = likedSet.has(currentId);
-  if (liked) likedSet.delete(currentId); else likedSet.add(currentId);
+  const id = currentId;
+  const liked = likedSet.has(id);
+  const delta = liked ? -1 : 1;
+  if (liked) likedSet.delete(id); else likedSet.add(id);
+  saveLiked();
   dLike.classList.toggle('liked', !liked);
-  dLikeCount.textContent = PIEZAS[currentId].likes + (likedSet.has(currentId) ? 1 : 0);
+  if (!STATS[id]) STATS[id] = { likes: 0, views: 0 };
+  STATS[id].likes = Math.max(STATS[id].likes + delta, 0);
+  dLikeCount.textContent = STATS[id].likes;
+  sbRpc('tv_like', { piece_id: id, delta })
+    .then(n => { STATS[id].likes = n; if (currentId === id) dLikeCount.textContent = n; })
+    .catch(() => {});
 });
 
 // Compartir
@@ -354,24 +466,41 @@ function showToast(msg) {
 }
 document.getElementById('tvDetailShare').addEventListener('click', async () => {
   const p = PIEZAS[currentId];
-  const data = { title: `${p.titulo} — Aberrante TV`, text: `Mira "${p.titulo}" en Aberrante TV`, url: location.href };
+  // Enlace directo a la pieza: quien lo abra llega directo a este detalle
+  const shareUrl = location.origin + location.pathname + '#pieza/' + currentId;
+  const data = { title: `${p.titulo} — Aberrante TV`, text: `Mira "${p.titulo}" en Aberrante TV`, url: shareUrl };
   if (navigator.share) {
     try { await navigator.share(data); } catch (e) {}
   } else {
-    try { await navigator.clipboard.writeText(location.href); showToast('Enlace copiado'); }
+    try { await navigator.clipboard.writeText(shareUrl); showToast('Enlace copiado'); }
     catch (e) { showToast('Copia el enlace desde la barra'); }
   }
 });
 
-// Click en tarjeta (filas o relacionados) -> detalle
-document.getElementById('tvRows').addEventListener('click', (e) => {
+// Click o teclado (Enter/Espacio) en tarjeta -> detalle
+function cardActivate(e) {
+  if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
   const card = e.target.closest('.tv-card');
-  if (card) openDetail(card.dataset.vimeo);
-});
-dRelated.addEventListener('click', (e) => {
-  const card = e.target.closest('.tv-card');
-  if (card) openDetail(card.dataset.vimeo);
-});
+  if (!card) return;
+  if (e.type === 'keydown') e.preventDefault();
+  openDetail(card.dataset.vimeo);
+}
+document.getElementById('tvRows').addEventListener('click', cardActivate);
+document.getElementById('tvRows').addEventListener('keydown', cardActivate);
+dRelated.addEventListener('click', cardActivate);
+dRelated.addEventListener('keydown', cardActivate);
+
+// Enlace directo compartido: abre la pieza de inmediato, dejando el home
+// como paso previo en el historial (así "Volver" no saca del sitio).
+(function initDeepLink() {
+  const m = location.hash.match(/^#pieza\/(\d+)$/);
+  if (m && PIEZAS[m[1]]) {
+    history.replaceState(null, '', location.pathname + location.search);
+    openDetail(m[1]);
+    // Refresca likes/vistas cuando lleguen las estadísticas
+    statsReady.then(() => { if (currentId === m[1]) openDetail(m[1], true); });
+  }
+})();
 
 /* ---- NAV TUBELIGHT ---- */
 (function initTube() {
@@ -494,13 +623,15 @@ window.addEventListener('scroll', () => {
   modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
 
+  const formError = document.getElementById('tvFormError');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    formError.classList.remove('show');
     fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
       .then(res => {
         if (res.ok) { form.style.display = 'none'; success.classList.add('show'); }
         else throw new Error();
       })
-      .catch(() => alert('Hubo un problema al enviar. Escríbenos a contacto@studioaberrante.com'));
+      .catch(() => formError.classList.add('show'));
   });
 })();
