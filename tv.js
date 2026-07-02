@@ -137,27 +137,38 @@ function countView(id) {
     .catch(() => {});
 }
 
-/* ---- THUMBNAILS DE VIMEO ---- */
-const rawCache = {};
-function getRaw(id) {
-  if (rawCache[id]) return Promise.resolve(rawCache[id]);
+/* ---- DATOS DE VIMEO (miniatura, duración, fecha) ---- */
+const infoCache = {};
+function getInfo(id) {
+  if (infoCache[id]) return Promise.resolve(infoCache[id]);
   return fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`)
     .then(r => r.json())
-    .then(d => { rawCache[id] = d.thumbnail_url || ''; return rawCache[id]; })
-    .catch(() => '');
+    .then(d => {
+      infoCache[id] = {
+        thumb: d.thumbnail_url || '',
+        duration: d.duration || 0,
+        date: d.upload_date ? d.upload_date.slice(0, 10) : ''
+      };
+      return infoCache[id];
+    })
+    .catch(() => ({ thumb: '', duration: 0, date: '' }));
+}
+function fmtDur(sec) {
+  if (!sec) return '';
+  return sec < 60 ? '1 min' : Math.round(sec / 60) + ' min';
 }
 function loadImageWithFallback(id, size, onReady) {
-  getRaw(id).then(raw => {
-    if (!raw) return;
-    const big = raw.replace(/_\d+x\d+/, '_' + size);
+  getInfo(id).then(info => {
+    if (!info.thumb) return;
+    const big = info.thumb.replace(/_\d+x\d+/, '_' + size);
     const img = new Image();
     img.onload = () => onReady(big);
-    img.onerror = () => onReady(raw);
+    img.onerror = () => onReady(info.thumb);
     img.src = big;
   });
 }
 function applyThumb(imgEl, id, size) {
-  getRaw(id).then(raw => { if (raw) imgEl.src = raw.replace(/_\d+x\d+/, '_' + size); });
+  getInfo(id).then(info => { if (info.thumb) imgEl.src = info.thumb.replace(/_\d+x\d+/, '_' + size); });
 }
 
 /* ---- TARJETA (reutilizable) ---- */
@@ -181,6 +192,9 @@ function makeCard(id, posters) {
       <p class="tv-card-sub">${p.tipo} · ${p.autor}</p>
     </div>`;
   applyThumb(card.querySelector('img'), id, posters ? '540x720' : '640x360');
+  getInfo(id).then(info => {
+    if (info.duration) card.querySelector('.tv-card-sub').textContent = `${p.tipo} · ${p.autor} · ${fmtDur(info.duration)}`;
+  });
   return card;
 }
 
@@ -383,7 +397,13 @@ function openDetail(id, fromHistory) {
   const views = s && s.views > 0
     ? `${s.views.toLocaleString('es-CL')} ${s.views === 1 ? 'visualización' : 'visualizaciones'}`
     : '';
-  dType.textContent = [p.label ? `${p.tipo} · ${p.label}` : p.tipo, views].filter(Boolean).join(' · ');
+  const baseType = p.label ? `${p.tipo} · ${p.label}` : p.tipo;
+  dType.textContent = [baseType, views].filter(Boolean).join(' · ');
+  // Completa con duración y año cuando responde Vimeo
+  getInfo(id).then(info => {
+    if (currentId !== id) return;
+    dType.textContent = [baseType, fmtDur(info.duration), info.date.slice(0, 4), views].filter(Boolean).join(' · ');
+  });
 
   dDesc.textContent = p.descripcion || '';
   dDesc.style.display = p.descripcion ? '' : 'none';
@@ -501,6 +521,33 @@ dRelated.addEventListener('keydown', cardActivate);
     statsReady.then(() => { if (currentId === m[1]) openDetail(m[1], true); });
   }
 })();
+
+/* ---- DATOS ESTRUCTURADOS (SEO: Google indexa cada pieza como video) ---- */
+Promise.all(
+  Object.keys(PIEZAS).map(id => getInfo(id).then(info => {
+    const p = PIEZAS[id];
+    return {
+      '@type': 'VideoObject',
+      name: p.titulo,
+      description: p.descripcion || `${p.tipo} de ${p.autor} en Aberrante TV.`,
+      thumbnailUrl: info.thumb || undefined,
+      uploadDate: info.date || undefined,
+      duration: info.duration ? `PT${Math.floor(info.duration / 60)}M${info.duration % 60}S` : undefined,
+      embedUrl: `https://player.vimeo.com/video/${id}`,
+      url: `https://studioaberrante.com/tv#pieza/${id}`
+    };
+  }))
+).then(videos => {
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Aberrante TV',
+    itemListElement: videos.map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: v }))
+  });
+  document.head.appendChild(script);
+});
 
 /* ---- NAV TUBELIGHT ---- */
 (function initTube() {

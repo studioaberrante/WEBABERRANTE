@@ -595,6 +595,7 @@ button { font-family: inherit; }
 
 .tv-form-title { font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
 .tv-form-sub { font-size: 14px; font-weight: 300; color: var(--tv-muted); margin-top: 8px; margin-bottom: 26px; }
+.tv-form-sub a { color: rgba(255,255,255,0.85); text-decoration: underline; }
 
 .tv-form { display: flex; flex-direction: column; gap: 12px; }
 .tv-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -653,6 +654,37 @@ button { font-family: inherit; }
 @media (max-width: 600px) {
   .tv-form-row { grid-template-columns: 1fr; }
 }
+
+/* ============================================
+   PÁGINA DE TEXTO (términos para creadores)
+   ============================================ */
+.tv-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 140px var(--tv-gutter) 90px;
+}
+.tv-page h1 {
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+.tv-page h2 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 36px 0 10px;
+}
+.tv-page p, .tv-page li {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.78);
+}
+.tv-page ul { padding-left: 22px; }
+.tv-page li { margin-bottom: 8px; }
+.tv-page a { color: #fff; text-decoration: underline; }
+.tv-page-intro { font-size: 16px; }
+.tv-page-contact { margin-top: 40px; }
 
 /* ============================================
    FOOTER
