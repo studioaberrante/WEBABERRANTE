@@ -1925,3 +1925,57 @@ body.cursor-hidden * {
   .nosotros-title { font-size: 52px; }
   .footer-title { font-size: clamp(40px, 13vw, 64px); }
 }
+
+/* ============================================
+   FAQ (preguntas frecuentes)
+   ============================================ */
+.faq {
+  padding: 120px 48px;
+  border-top: 1px solid var(--border);
+}
+.faq-inner { max-width: 880px; }
+.faq-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  font-size: clamp(38px, 5.5vw, 80px);
+  margin-bottom: 48px;
+}
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 0;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.25s ease;
+}
+.faq-item summary:hover { color: rgba(255,255,255,0.8); }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--text-mid);
+  flex-shrink: 0;
+  transition: transform 0.3s var(--ease-premium);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p {
+  padding: 0 0 26px;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--text-mid);
+  max-width: 720px;
+}
+.faq-item a { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .faq { padding: 80px 24px; }
+}
