@@ -144,10 +144,17 @@ function getInfo(id) {
   return fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`)
     .then(r => r.json())
     .then(d => {
+      // Fecha en ISO 8601 completo con zona horaria (Google lo exige en VideoObject)
+      let iso = '';
+      if (d.upload_date) {
+        iso = d.upload_date.includes(' ')
+          ? d.upload_date.replace(' ', 'T') + '+00:00'
+          : d.upload_date + 'T00:00:00+00:00';
+      }
       infoCache[id] = {
         thumb: d.thumbnail_url || '',
         duration: d.duration || 0,
-        date: d.upload_date ? d.upload_date.slice(0, 10) : ''
+        date: iso
       };
       return infoCache[id];
     })
