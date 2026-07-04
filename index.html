@@ -67,7 +67,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="style.css?v=18">
+  <link rel="stylesheet" href="style.css?v=19">
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -176,152 +176,149 @@
     </div>
   </section>
 
-  <!-- SERVICIOS (scroll horizontal) -->
-  <section class="servicios" id="servicios">
-    <div class="servicios-pin">
-      <div class="servicios-hscroll" id="serviciosTrack">
+  <!-- SHOWCASE: servicios + portafolio en collage.
+       Cada fila = video autoreproduciéndose + tarjeta del servicio
+       con cifras que se "calculan" al entrar en pantalla. -->
+  <section class="showcase" id="servicios">
+    <div id="portafolio" class="showcase-anchor" aria-hidden="true"></div>
 
-        <div class="servicio-item servicio-intro">
-          <p class="section-label">Lo que hacemos</p>
-          <h2 class="servicios-title">Servicios</h2>
-        </div>
-
-        <article class="servicio-item">
-          <span class="servicio-num">01</span>
-          <h3 class="servicio-name">Video cinematográfico con IA</h3>
-          <p class="servicio-desc">Piezas de alto nivel visual, producidas íntegramente con inteligencia artificial, con la calidad y la emoción de un comercial de cine.</p>
-        </article>
-
-        <article class="servicio-item">
-          <span class="servicio-num">02</span>
-          <h3 class="servicio-name">Spots publicitarios y campañas</h3>
-          <p class="servicio-desc">Producción completa de comerciales y campañas, de principio a fin, sin las limitaciones de locaciones, viajes o producciones imposibles.</p>
-        </article>
-
-        <article class="servicio-item">
-          <span class="servicio-num">03</span>
-          <h3 class="servicio-name">Fotografía con IA</h3>
-          <p class="servicio-desc">Imágenes de alta calidad para campañas, catálogos y redes, generadas íntegramente con inteligencia artificial.</p>
-        </article>
-
-        <article class="servicio-item">
-          <span class="servicio-num">04</span>
-          <h3 class="servicio-name">Clonación digital, avatares y modelos</h3>
-          <p class="servicio-desc">Recreamos personas reales y creamos avatares y modelos a medida, para integrarlos dentro de las piezas audiovisuales.</p>
-        </article>
-
-        <article class="servicio-item">
-          <span class="servicio-num">05</span>
-          <h3 class="servicio-name">Dirección creativa y consultoría</h3>
-          <p class="servicio-desc">Acompañamos a la marca y vemos juntos cómo llevarla al siguiente nivel de la mano de la IA, asesorándola en cómo sacarle el máximo provecho.</p>
-        </article>
-
-      </div>
-
-      <!-- Indicador: desliza / scroll -->
-      <div class="servicios-hint" id="serviciosHint">
-        <span>Desliza</span>
-        <span class="servicios-hint-arrow">→</span>
-      </div>
-
-      <!-- Barra de progreso horizontal -->
-      <div class="servicios-progress">
-        <span class="servicios-progress-fill" id="serviciosProgress"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- PORTAFOLIO -->
-  <section class="portfolio" id="portafolio">
     <div class="portfolio-header">
-      <p class="section-label">Nuestro trabajo</p>
-      <h2 class="portfolio-title">Portafolio</h2>
+      <p class="section-label">Servicios + Portafolio</p>
+      <h2 class="portfolio-title">Lo que<br>hacemos</h2>
     </div>
-    <div class="portfolio-grid" id="portfolioGrid">
 
-      <div class="portfolio-item" data-vimeo="1169366177">
-        <div class="portfolio-thumb">
-          <img class="portfolio-thumb-img" src="" alt="Alo Yoga x Josefa Sorel">
-          <div class="portfolio-thumb-overlay"></div>
-          <div class="portfolio-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-        </div>
-        <div class="portfolio-info">
-          <h3 class="portfolio-name">Alo Yoga x Josefa Sorel</h3>
-          <p class="portfolio-tag">Campaña Publicitaria</p>
-        </div>
-      </div>
+    <div class="showcase-rows" id="portfolioGrid">
 
-      <div class="portfolio-item" data-vimeo="1199573268">
-        <div class="portfolio-thumb">
-          <img class="portfolio-thumb-img" src="" alt="The Candle Shop">
-          <div class="portfolio-thumb-overlay"></div>
-          <div class="portfolio-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <article class="showcase-row">
+        <div class="portfolio-item showcase-video" data-vimeo="1199576480">
+          <iframe src="https://player.vimeo.com/video/1199576480?background=1&autoplay=1&loop=1&muted=1&badge=0" frameborder="0" loading="lazy" allow="autoplay; fullscreen" title="Nike — video cinematográfico con IA"></iframe>
+          <span class="showcase-play-hint">Ver con sonido ↗</span>
+        </div>
+        <div class="showcase-card">
+          <p class="showcase-eyebrow">Servicio 01</p>
+          <h3 class="showcase-name">Video cinematográfico con IA</h3>
+          <p class="showcase-desc">Piezas de alto nivel visual, producidas íntegramente con inteligencia artificial, con la calidad y la emoción de un comercial de cine.</p>
+          <div class="showcase-stats">
+            <div class="stat">
+              <span class="stat-num" data-count="70" data-prefix="-" data-suffix="%">-70%</span>
+              <span class="stat-label">costo vs. producción tradicional</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="10" data-suffix="x">10x</span>
+              <span class="stat-label">más rápido de idea a pieza final</span>
+            </div>
           </div>
+          <p class="showcase-project">Proyecto — Nike</p>
         </div>
-        <div class="portfolio-info">
-          <h3 class="portfolio-name">The Candle Shop</h3>
-          <p class="portfolio-tag">Campaña Publicitaria</p>
-        </div>
-      </div>
+      </article>
 
-      <div class="portfolio-item" data-vimeo="1199576480">
-        <div class="portfolio-thumb">
-          <img class="portfolio-thumb-img" src="" alt="Nike">
-          <div class="portfolio-thumb-overlay"></div>
-          <div class="portfolio-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <article class="showcase-row showcase-row--flip">
+        <div class="portfolio-item showcase-video" data-vimeo="1199573953">
+          <iframe src="https://player.vimeo.com/video/1199573953?background=1&autoplay=1&loop=1&muted=1&badge=0" frameborder="0" loading="lazy" allow="autoplay; fullscreen" title="Salcobrand — spot publicitario con IA"></iframe>
+          <span class="showcase-play-hint">Ver con sonido ↗</span>
+        </div>
+        <div class="showcase-card">
+          <p class="showcase-eyebrow">Servicio 02</p>
+          <h3 class="showcase-name">Spots publicitarios y campañas</h3>
+          <p class="showcase-desc">Producción completa de comerciales y campañas, de principio a fin, sin las limitaciones de locaciones, viajes o producciones imposibles.</p>
+          <div class="showcase-stats">
+            <div class="stat">
+              <span class="stat-num" data-count="0">0</span>
+              <span class="stat-label">días de rodaje necesarios</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="48" data-suffix="h">48h</span>
+              <span class="stat-label">para el primer corte</span>
+            </div>
           </div>
+          <p class="showcase-project">Proyecto — Salcobrand · Agencia Pedro Juan y Diego</p>
         </div>
-        <div class="portfolio-info">
-          <h3 class="portfolio-name">Nike</h3>
-          <p class="portfolio-tag">Campaña Publicitaria</p>
-        </div>
-      </div>
+      </article>
 
-      <div class="portfolio-item" data-vimeo="1199573953">
-        <div class="portfolio-thumb">
-          <img class="portfolio-thumb-img" src="" alt="Salcobrand">
-          <div class="portfolio-thumb-overlay"></div>
-          <div class="portfolio-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <article class="showcase-row">
+        <div class="portfolio-item showcase-video" data-vimeo="1199573268">
+          <iframe src="https://player.vimeo.com/video/1199573268?background=1&autoplay=1&loop=1&muted=1&badge=0" frameborder="0" loading="lazy" allow="autoplay; fullscreen" title="The Candle Shop — fotografía con IA"></iframe>
+          <span class="showcase-play-hint">Ver con sonido ↗</span>
+        </div>
+        <div class="showcase-card">
+          <p class="showcase-eyebrow">Servicio 03</p>
+          <h3 class="showcase-name">Fotografía con IA</h3>
+          <p class="showcase-desc">Imágenes de alta calidad para campañas, catálogos y redes, generadas íntegramente con inteligencia artificial.</p>
+          <div class="showcase-stats">
+            <div class="stat">
+              <span class="stat-num" data-count="100" data-prefix="+">+100</span>
+              <span class="stat-label">imágenes por campaña</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="80" data-prefix="-" data-suffix="%">-80%</span>
+              <span class="stat-label">costo por fotografía</span>
+            </div>
           </div>
+          <p class="showcase-project">Proyecto — The Candle Shop</p>
         </div>
-        <div class="portfolio-info">
-          <h3 class="portfolio-name">Salcobrand</h3>
-          <p class="portfolio-tag">Campaña Publicitaria · Agencia Pedro Juan y Diego</p>
-        </div>
-      </div>
+      </article>
 
-      <div class="portfolio-item" data-vimeo="1199572315">
-        <div class="portfolio-thumb">
-          <img class="portfolio-thumb-img" src="" alt="Hypnos">
-          <div class="portfolio-thumb-overlay"></div>
-          <div class="portfolio-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <article class="showcase-row showcase-row--flip">
+        <div class="portfolio-item showcase-video" data-vimeo="1169366177">
+          <iframe src="https://player.vimeo.com/video/1169366177?background=1&autoplay=1&loop=1&muted=1&badge=0" frameborder="0" loading="lazy" allow="autoplay; fullscreen" title="Alo Yoga x Josefa Sorel — clonación digital"></iframe>
+          <span class="showcase-play-hint">Ver con sonido ↗</span>
+        </div>
+        <div class="showcase-card">
+          <p class="showcase-eyebrow">Servicio 04</p>
+          <h3 class="showcase-name">Clonación digital, avatares y modelos</h3>
+          <p class="showcase-desc">Recreamos personas reales y creamos avatares y modelos a medida, para integrarlos dentro de las piezas audiovisuales.</p>
+          <div class="showcase-stats">
+            <div class="stat">
+              <span class="stat-num" data-count="1">1</span>
+              <span class="stat-label">sesión de captura basta</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="30" data-prefix="+">+30</span>
+              <span class="stat-label">variantes por avatar</span>
+            </div>
           </div>
+          <p class="showcase-project">Proyecto — Alo Yoga x Josefa Sorel</p>
         </div>
-        <div class="portfolio-info">
-          <h3 class="portfolio-name">Hypnos</h3>
-          <p class="portfolio-tag">Campaña Publicitaria</p>
-        </div>
-      </div>
+      </article>
 
-      <div class="portfolio-item" data-vimeo="1202693340">
-        <div class="portfolio-thumb">
-          <img class="portfolio-thumb-img" src="" alt="Spotify">
-          <div class="portfolio-thumb-overlay"></div>
-          <div class="portfolio-play">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <article class="showcase-row">
+        <div class="portfolio-item showcase-video" data-vimeo="1202693340">
+          <iframe src="https://player.vimeo.com/video/1202693340?background=1&autoplay=1&loop=1&muted=1&badge=0" frameborder="0" loading="lazy" allow="autoplay; fullscreen" title="Spotify — dirección creativa con IA"></iframe>
+          <span class="showcase-play-hint">Ver con sonido ↗</span>
+        </div>
+        <div class="showcase-card">
+          <p class="showcase-eyebrow">Servicio 05</p>
+          <h3 class="showcase-name">Dirección creativa y consultoría</h3>
+          <p class="showcase-desc">Acompañamos a la marca y vemos juntos cómo llevarla al siguiente nivel de la mano de la IA, asesorándola en cómo sacarle el máximo provecho.</p>
+          <div class="showcase-stats">
+            <div class="stat">
+              <span class="stat-num" data-count="1">1</span>
+              <span class="stat-label">equipo para todas las etapas</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="20" data-prefix="+">+20</span>
+              <span class="stat-label">herramientas de IA en uso</span>
+            </div>
           </div>
+          <p class="showcase-project">Proyecto — Spotify</p>
         </div>
-        <div class="portfolio-info">
-          <h3 class="portfolio-name">Spotify</h3>
-          <p class="portfolio-tag">Campaña Publicitaria</p>
+      </article>
+
+      <article class="showcase-row showcase-row--flip">
+        <div class="portfolio-item showcase-video" data-vimeo="1199572315">
+          <iframe src="https://player.vimeo.com/video/1199572315?background=1&autoplay=1&loop=1&muted=1&badge=0" frameborder="0" loading="lazy" allow="autoplay; fullscreen" title="Hypnos — campaña publicitaria con IA"></iframe>
+          <span class="showcase-play-hint">Ver con sonido ↗</span>
         </div>
-      </div>
+        <div class="showcase-card showcase-card--cta">
+          <p class="showcase-eyebrow">¿Y ahora?</p>
+          <h3 class="showcase-name">Tu marca podría ser la siguiente.</h3>
+          <p class="showcase-desc">Cuéntanos qué quieres lograr y te mostramos cómo la IA lo hace posible — sin rodajes, sin límites, sin excusas.</p>
+          <div class="showcase-cta-wrap">
+            <a href="#contacto" class="showcase-cta">Envíanos tu idea →</a>
+          </div>
+          <p class="showcase-project">Proyecto — Hypnos</p>
+        </div>
+      </article>
 
     </div>
 
@@ -335,6 +332,7 @@
       </div>
     </div>
   </section>
+
 
   <!-- NOSOTROS -->
   <section class="nosotros" id="nosotros">
@@ -513,7 +511,7 @@
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=16"></script>
+  <script src="main.js?v=17"></script>
 
 </body>
 </html>

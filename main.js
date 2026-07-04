@@ -514,3 +514,46 @@ ScrollTrigger.create({
 });
 
 /* (Cursor personalizado retirado: se usa el puntero normal del sistema) */
+
+/* ---- SHOWCASE: revelado de tarjetas + cifras que se calculan ---- */
+(function initShowcase() {
+  const cards = document.querySelectorAll('.showcase-card');
+  if (!cards.length) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function finalText(el) {
+    return (el.dataset.prefix || '') + el.dataset.count + (el.dataset.suffix || '');
+  }
+
+  function animateNum(el) {
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const dur = 1500;
+    let t0 = null;
+    function tick(t) {
+      if (t0 === null) t0 = t;
+      const p = Math.min((t - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // frena al final, como cálculo que converge
+      el.textContent = prefix + Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      entry.target.classList.add('in');
+      entry.target.querySelectorAll('.stat-num[data-count]').forEach((n, i) => {
+        if (reduceMotion) { n.textContent = finalText(n); return; }
+        n.textContent = (n.dataset.prefix || '') + '0' + (n.dataset.suffix || '');
+        setTimeout(() => animateNum(n), 300 + i * 200);
+      });
+    });
+  }, { threshold: 0.35 });
+
+  cards.forEach((c) => io.observe(c));
+})();
