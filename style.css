@@ -2368,11 +2368,17 @@ body { font-family: var(--font-sans); }
   align-items: stretch;
 }
 
+.showcase-row > * { min-width: 0; }
+
 .showcase-row--flip .showcase-video { order: 2; }
 
-/* Video autoreproduciéndose con bordes redondeados */
+/* Video autoreproduciéndose con bordes redondeados.
+   align-self evita que el stretch de la fila infle su ancho
+   vía aspect-ratio y se solape con la tarjeta. */
 .showcase-video {
   position: relative;
+  align-self: center;
+  width: 100%;
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid var(--border);
