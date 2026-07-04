@@ -1979,3 +1979,304 @@ body.cursor-hidden * {
 @media (max-width: 768px) {
   .faq { padding: 80px 24px; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   REDISEÑO 2026 — "Cine-glow"
+   Lenguaje visual refinado (tipografía Satoshi, un solo acento,
+   glow sutil, movimiento respirado) sobre la base oscura
+   cinematográfica de Aberrante. Capa de overrides: gana por
+   cascada sin tocar la lógica de GSAP ni el layout base.
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  --accent: #ff3b1d;
+  --accent-soft: rgba(255, 59, 29, 0.16);
+  --accent-glow: rgba(255, 59, 29, 0.10);
+  --card: #0d0d10;
+  --border: rgba(255, 255, 255, 0.09);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --font-sans: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body { font-family: var(--font-sans); }
+
+/* ---- Tipografía: Satoshi en todo (titulares en 900) ---- */
+.hero-title,
+.qh-title,
+.servicios-title,
+.portfolio-title,
+.nosotros-title,
+.footer-title,
+.faq-title {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.servicio-name { font-family: var(--font-sans); font-weight: 700; }
+.qh-intro      { font-family: var(--font-sans); font-weight: 500; }
+.manifesto-text { font-family: var(--font-sans); font-weight: 500; }
+.contacto-input { font-family: var(--font-sans); }
+
+/* ---- Keyframes del lenguaje nuevo ---- */
+@keyframes cta-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.0), 0 8px 30px -12px rgba(255, 59, 29, 0.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.045), 0 14px 44px -10px rgba(255, 59, 29, 0.5); }
+}
+
+@keyframes liquid-float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(4%, -6%, 0) scale(1.08); }
+  66%      { transform: translate3d(-5%, 4%, 0) scale(0.95); }
+}
+
+@keyframes liquid-float-reverse {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(-4%, 5%, 0) scale(0.94); }
+  66%      { transform: translate3d(5%, -4%, 0) scale(1.06); }
+}
+
+/* ---- Loader con acento ---- */
+.loader-bar-fill { background: var(--accent); }
+
+/* ---- Header: nav más suave ---- */
+.header-nav a { transition: color 0.35s var(--ease-premium), opacity 0.35s var(--ease-premium); }
+
+/* ---- Hero: brillo ambiental del acento ---- */
+.hero-overlay {
+  background:
+    radial-gradient(60% 50% at 18% 100%, rgba(255, 59, 29, 0.10) 0%, transparent 65%),
+    linear-gradient(to top, rgba(0,0,0,0.74) 0%, transparent 52%),
+    linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 30%);
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.72);
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px 2px rgba(255, 59, 29, 0.5);
+  flex-shrink: 0;
+}
+
+/* ---- Marquee de marcas: bordes desvanecidos ---- */
+.brands { padding: 36px 0; }
+.brands-track-wrap {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* ---- Section labels con punto de acento ---- */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ---- Qué hacemos: orbe ambiental flotante ---- */
+.que-hacemos {
+  position: relative;
+  overflow: hidden;
+  padding: 180px 48px;
+}
+
+.que-hacemos::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 780px;
+  max-height: 780px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 59, 29, 0.07) 0%, transparent 62%);
+  filter: blur(40px);
+  animation: liquid-float 16s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.qh-inner { position: relative; }
+
+/* ---- Servicios: de texto suelto a tarjetas con glow ---- */
+.servicio-item:not(.servicio-intro) {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(32px, 3.5vw, 52px);
+  gap: 24px;
+  transition: border-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium), transform 0.5s var(--ease-premium);
+}
+
+.servicio-item:not(.servicio-intro):hover {
+  border-color: rgba(255, 59, 29, 0.28);
+  box-shadow: 0 0 0 1px rgba(255, 59, 29, 0.12), 0 30px 90px -30px rgba(255, 59, 29, 0.22);
+  transform: translateY(-6px);
+}
+
+.servicio-num { font-size: clamp(36px, 4vw, 60px); }
+
+/* ---- Portfolio: tarjetas redondeadas con glow ---- */
+.portfolio-grid { gap: 28px; }
+
+.portfolio-thumb {
+  border-radius: var(--radius-lg);
+  transition: border-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium), transform 0.5s var(--ease-premium);
+}
+
+.portfolio-item:hover .portfolio-thumb {
+  border-color: rgba(255, 59, 29, 0.3);
+  box-shadow: 0 0 0 1px rgba(255, 59, 29, 0.14), 0 32px 90px -28px rgba(255, 59, 29, 0.25);
+  transform: translateY(-4px);
+}
+
+.portfolio-play {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.portfolio-item:hover .portfolio-play {
+  border-color: rgba(255, 59, 29, 0.75);
+  background: rgba(255, 59, 29, 0.2);
+}
+
+.portfolio-info { border-bottom: none; padding: 18px 6px 10px; }
+
+/* ---- Nosotros: halo en las fotos ---- */
+.nosotros-foto {
+  transition: border-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium);
+}
+
+.nosotros-foto:hover {
+  border-color: rgba(255, 59, 29, 0.35);
+  box-shadow: 0 0 60px -10px rgba(255, 59, 29, 0.25);
+}
+
+/* ---- Manifesto ---- */
+.manifesto { position: relative; overflow: hidden; }
+
+.manifesto-text { color: rgba(255, 255, 255, 0.85); }
+
+/* ---- FAQ: tarjetas acordeón ---- */
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0 26px;
+  margin-bottom: 14px;
+  transition: border-color 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium);
+}
+
+.faq-item:hover { border-color: rgba(255, 255, 255, 0.18); }
+
+.faq-item[open] {
+  border-color: rgba(255, 59, 29, 0.32);
+  box-shadow: 0 20px 60px -30px rgba(255, 59, 29, 0.2);
+}
+
+.faq-item summary { padding: 24px 0; }
+
+.faq-item[open] summary::after { color: var(--accent); }
+
+/* ---- Footer: orbe + formulario redondeado + CTA que respira ---- */
+.footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  bottom: -25%;
+  left: -12%;
+  width: 60vw;
+  height: 60vw;
+  max-width: 860px;
+  max-height: 860px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 59, 29, 0.06) 0%, transparent 60%);
+  filter: blur(50px);
+  animation: liquid-float-reverse 18s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.footer-content, .footer-bottom { position: relative; }
+
+.contacto-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.contacto-input:focus {
+  border-color: rgba(255, 59, 29, 0.55);
+  border-bottom-color: rgba(255, 59, 29, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 59, 29, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.contacto-btn {
+  border-radius: 999px;
+  padding: 16px 34px;
+  animation: cta-breathe 3.4s ease-in-out infinite;
+  transition: background 0.25s ease, opacity 0.25s ease, transform 0.3s var(--ease-premium);
+}
+
+.contacto-btn:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  background: var(--accent);
+  color: #fff;
+}
+
+.footer-cta {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.3s ease, background 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-cta:hover {
+  border-color: rgba(255, 59, 29, 0.45);
+  background: var(--accent-soft);
+  opacity: 1;
+}
+
+/* ---- Accesibilidad: sin animación ambiental si se prefiere ---- */
+@media (prefers-reduced-motion: reduce) {
+  .contacto-btn,
+  .que-hacemos::before,
+  .footer::before { animation: none; }
+}
+
+/* ---- Ajustes móviles del rediseño ---- */
+@media (max-width: 768px) {
+  .que-hacemos { padding: 110px 24px; }
+  .servicio-item:not(.servicio-intro) { padding: 28px 24px; }
+  .portfolio-grid { gap: 24px; }
+  .faq-item { padding: 0 18px; }
+}
