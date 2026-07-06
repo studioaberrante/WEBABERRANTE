@@ -67,7 +67,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="style.css?v=19">
+  <link rel="stylesheet" href="style.css?v=20">
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -181,6 +181,13 @@
        con cifras que se "calculan" al entrar en pantalla. -->
   <section class="showcase" id="servicios">
     <div id="portafolio" class="showcase-anchor" aria-hidden="true"></div>
+
+    <!-- Fondo de onda animada (el mismo gradiente del CTA de Aberrante TV);
+         sticky: acompaña el scroll durante toda la sección -->
+    <div class="showcase-bg" aria-hidden="true">
+      <canvas class="showcase-wave" id="showcaseWave"></canvas>
+      <div class="showcase-bg-overlay"></div>
+    </div>
 
     <div class="portfolio-header">
       <p class="section-label">Servicios + Portafolio</p>
@@ -511,7 +518,7 @@
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=17"></script>
+  <script src="main.js?v=18"></script>
 
 </body>
 </html>
