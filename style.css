@@ -2543,3 +2543,41 @@ body { font-family: var(--font-sans); }
   .showcase-video { border-radius: 18px; }
   .showcase-card { border-radius: 18px; }
 }
+
+/* ---- FAQ y contacto centrados (como la referencia) ---- */
+.faq-inner {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.faq-inner .section-label { justify-content: center; }
+
+.faq-item summary { text-align: left; }
+
+.faq-item p {
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-content {
+  max-width: 760px;
+  margin: 0 auto 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.contacto-form {
+  width: 100%;
+  max-width: 720px;
+}
+
+.contacto-field { text-align: left; }
+
+.contacto-btn { align-self: center; }
+
+.contacto-success-msg { text-align: left; }
+
+.footer-links { justify-content: center; }
