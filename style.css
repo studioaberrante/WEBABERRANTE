@@ -2581,3 +2581,16 @@ body { font-family: var(--font-sans); }
 .contacto-success-msg { text-align: left; }
 
 .footer-links { justify-content: center; }
+
+/* ---- Posters del showcase: miniatura visible hasta que el video corre ---- */
+.showcase-video {
+  background-size: cover;
+  background-position: center;
+}
+
+.showcase-video iframe {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.showcase-video.playing iframe { opacity: 1; }

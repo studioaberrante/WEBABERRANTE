@@ -557,3 +557,40 @@ ScrollTrigger.create({
 
   cards.forEach((c) => io.observe(c));
 })();
+
+/* ---- POSTERS DEL SHOWCASE ----
+   Mientras cada video de Vimeo carga/arranca, se ve su miniatura al
+   instante; cuando el video realmente se reproduce, aparece con un
+   fundido. Nunca hay huecos negros ni players en pausa. */
+(function initShowcasePosters() {
+  const videos = document.querySelectorAll('.showcase-video[data-vimeo]');
+  if (!videos.length) return;
+
+  videos.forEach((wrap) => {
+    const id = wrap.dataset.vimeo;
+
+    // Miniatura inmediata de fondo
+    fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.thumbnail_url) {
+          wrap.style.backgroundImage = `url(${d.thumbnail_url.replace(/_\d+x\d+/, '_1280x720')})`;
+        }
+      })
+      .catch(() => {});
+
+    // El iframe se revela solo cuando el video está reproduciéndose
+    const iframe = wrap.querySelector('iframe');
+    if (!iframe) return;
+    const show = () => wrap.classList.add('playing');
+    if (typeof Vimeo !== 'undefined') {
+      try {
+        const player = new Vimeo.Player(iframe);
+        player.on('play', show);
+        player.on('playing', show);
+        return;
+      } catch (e) { /* cae al respaldo de abajo */ }
+    }
+    iframe.addEventListener('load', () => setTimeout(show, 600));
+  });
+})();
