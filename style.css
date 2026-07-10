@@ -2425,6 +2425,38 @@ body { font-family: var(--font-sans); }
 
 .showcase-video:hover .showcase-play-hint { opacity: 1; transform: none; }
 
+/* ---- Fila destacada: glow permanente + insignia (pieza más pro) ---- */
+.showcase-row--featured .showcase-video {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 90px -26px rgba(255, 255, 255, 0.2);
+}
+
+.showcase-row--featured .showcase-video:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 36px 100px -24px rgba(255, 255, 255, 0.3);
+}
+
+.showcase-row--featured .showcase-card {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.02));
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.showcase-featured-badge {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  z-index: 1;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #080808;
+  background: #fff;
+  padding: 8px 16px;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+}
+
 /* Tarjeta de servicio (vidrio oscuro, se revela al entrar en pantalla) */
 .showcase-card {
   display: flex;
