@@ -195,7 +195,7 @@ a {
   width: 100%;
   height: 100svh;
   overflow: hidden;
-  background: #000;
+  background: #000 url('https://i.vimeocdn.com/video/2153752174-3bd80c53d376070d32008368a15ad9b9ca78c124fc51e79970373a43354ceccd-d_1920x1080?region=us') center / cover no-repeat;
 }
 
 .hero-video-wrap {

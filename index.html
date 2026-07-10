@@ -7,14 +7,21 @@
   <meta name="description" content="Agencia y estudio de IA en Chile. Generación de contenido, spots publicitarios, fotografía y avatares con inteligencia artificial para marcas como Nike, Claro y Salcobrand.">
   <link rel="canonical" href="https://studioaberrante.com/">
 
-  <!-- Preload logos de marcas (prioridad sobre el video hero) -->
-  <link rel="preload" as="image" href="assets/marcas/claro-wordmark.svg" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/marcas/nike.svg" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/marcas/salcobrand.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/marcas/candleshop.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/marcas/hypnos.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/marcas/preunic.png" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/marcas/global66.png" fetchpriority="high">
+  <!-- Prioridad máxima: el video del hero (antes competía con los logos de marcas) -->
+  <link rel="preconnect" href="https://player.vimeo.com">
+  <link rel="preconnect" href="https://i.vimeocdn.com">
+  <link rel="preconnect" href="https://f.vimeocdn.com">
+  <link rel="preload" as="image" href="https://i.vimeocdn.com/video/2153752174-3bd80c53d376070d32008368a15ad9b9ca78c124fc51e79970373a43354ceccd-d_1920x1080?region=us" fetchpriority="high">
+  <link rel="preload" as="script" href="https://player.vimeo.com/api/player.js">
+
+  <!-- Preload logos de marcas (debajo del hero, no compiten por prioridad) -->
+  <link rel="preload" as="image" href="assets/marcas/claro-wordmark.svg">
+  <link rel="preload" as="image" href="assets/marcas/nike.svg">
+  <link rel="preload" as="image" href="assets/marcas/salcobrand.webp">
+  <link rel="preload" as="image" href="assets/marcas/candleshop.webp">
+  <link rel="preload" as="image" href="assets/marcas/hypnos.webp">
+  <link rel="preload" as="image" href="assets/marcas/preunic.png">
+  <link rel="preload" as="image" href="assets/marcas/global66.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -67,7 +74,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=24">
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
