@@ -186,7 +186,7 @@ function makeCard(id, posters) {
   card.dataset.vimeo = id;
   card.tabIndex = 0;
   card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `${p.titulo} — ${p.tipo} de ${p.autor}`);
+  card.setAttribute('aria-label', `${p.titulo}: ${p.tipo} de ${p.autor}`);
   card.innerHTML = `
     <div class="tv-card-thumb">
       <img alt="${p.titulo}" loading="lazy">
@@ -495,7 +495,7 @@ document.getElementById('tvDetailShare').addEventListener('click', async () => {
   const p = PIEZAS[currentId];
   // Enlace directo a la pieza: quien lo abra llega directo a este detalle
   const shareUrl = location.origin + location.pathname + '#pieza/' + currentId;
-  const data = { title: `${p.titulo} — Aberrante TV`, text: `Mira "${p.titulo}" en Aberrante TV`, url: shareUrl };
+  const data = { title: `${p.titulo} en Aberrante TV`, text: `Mira "${p.titulo}" en Aberrante TV`, url: shareUrl };
   if (navigator.share) {
     try { await navigator.share(data); } catch (e) {}
   } else {
