@@ -557,3 +557,63 @@ ScrollTrigger.create({
 
   cards.forEach((c) => io.observe(c));
 })();
+
+/* ---- CARÁTULAS DEL SHOWCASE (miniatura mientras carga, video al reproducir) ----
+   Clave: la miniatura de cada video se pide solo cuando esa fila está por
+   entrar en pantalla (IntersectionObserver con margen amplio), NUNCA todas
+   de una vez al cargar la página. Así no compiten con el video del hero. */
+(function initShowcasePosters() {
+  const videos = document.querySelectorAll('.showcase-video[data-vimeo]');
+  if (!videos.length) return;
+
+  function loadPoster(wrap) {
+    const id = wrap.dataset.vimeo;
+    fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.thumbnail_url) {
+          wrap.style.backgroundImage = `url(${d.thumbnail_url.replace(/_\d+x\d+/, '_1920x1080')})`;
+        }
+      })
+      .catch(() => {});
+  }
+
+  function revealOnPlay(wrap) {
+    const iframe = wrap.querySelector('iframe');
+    if (!iframe) return;
+    const show = () => wrap.classList.add('playing');
+    if (typeof Vimeo !== 'undefined') {
+      try {
+        const player = new Vimeo.Player(iframe);
+        player.on('play', show);
+        player.on('playing', show);
+        return;
+      } catch (e) { /* cae al respaldo de abajo */ }
+    }
+    iframe.addEventListener('load', () => setTimeout(show, 600));
+  }
+
+  const pending = new Set(videos);
+  function handle(wrap) {
+    if (!pending.has(wrap)) return;
+    pending.delete(wrap);
+    loadPoster(wrap);
+    revealOnPlay(wrap);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      handle(entry.target);
+    });
+  }, { rootMargin: '800px 0px', threshold: 0 });
+
+  videos.forEach((v) => io.observe(v));
+
+  // Red de seguridad: si por algún motivo el observer no llegara a disparar
+  // para alguna fila (nunca debería pasar con una pestaña visible normal),
+  // igual se cargan carátula y video pasado un tiempo prudente, ya lejos
+  // de la carga inicial del hero.
+  setTimeout(() => pending.forEach(handle), 12000);
+})();
