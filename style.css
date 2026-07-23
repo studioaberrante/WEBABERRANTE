@@ -427,6 +427,7 @@ a {
 }
 
 .brand-logo[src*="uc-christus"] {
+  filter: brightness(0) invert(1);
   height: 24px;
 }
 
