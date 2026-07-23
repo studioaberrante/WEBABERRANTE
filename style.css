@@ -422,6 +422,14 @@ a {
   height: 20px;
 }
 
+.brand-logo[src*="fabula"] {
+  height: 20px;
+}
+
+.brand-logo[src*="uc-christus"] {
+  height: 24px;
+}
+
 .brand-logo:hover {
   opacity: 0.9;
 }
