@@ -2399,6 +2399,15 @@ body { font-family: var(--font-sans); }
   transition: border-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium), transform 0.5s var(--ease-premium);
 }
 
+/* Hypnos y Spotify son videos nativos 2.39:1 (cinemascope), no 16:9.
+   Con el marco en 16:9, Vimeo rellenaba arriba/abajo con una versión
+   borrosa del video, viéndose mal. Se ajusta el marco a su proporción
+   real para que el video llene el cuadro sin recortes ni relleno. */
+.showcase-video[data-vimeo="1199572315"],
+.showcase-video[data-vimeo="1202693340"] {
+  aspect-ratio: 2.39 / 1;
+}
+
 /* La carátula (fondo) se ve hasta que el video realmente empieza a
    reproducirse; recién ahí el iframe se funde encima. */
 .showcase-video iframe {
