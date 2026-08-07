@@ -431,6 +431,10 @@ a {
   height: 16px;
 }
 
+.brand-logo[src*="airmooding"] {
+  height: 16px;
+}
+
 .brand-logo:hover {
   opacity: 0.9;
 }
