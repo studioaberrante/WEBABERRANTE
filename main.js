@@ -133,7 +133,7 @@ async function loadContent() {
   const wordEl = document.getElementById('reelWord');
   if (!wordEl) return;
   const wrap = wordEl.parentElement; // .reel-word-wrap
-  const words = ['Automotriz', 'Moda', 'Retail', 'Tecnología', 'Música', 'Bienestar'];
+  const words = ['Clonamos', 'Animamos', 'Diseñamos', 'Generamos', 'Creamos'];
   let idx = 0;
 
   // Fija el ancho del hueco al de la palabra más larga para que el

@@ -423,7 +423,7 @@ a {
 .reel-word {
   display: inline-block;
   line-height: 0.96;
-  color: #ff3b1d;
+  color: #fff;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 
@@ -436,6 +436,19 @@ a {
   transform: translateY(110%);
   opacity: 0;
   transition: none;
+}
+
+.reel-title-muted {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.reel-sub {
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.8vw, 19px);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 22px;
+  max-width: 480px;
 }
 
 .reel-cta {
