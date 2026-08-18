@@ -128,6 +128,50 @@ async function loadContent() {
   setInterval(nextWord, 2000);
 })();
 
+/* ---- REEL: rubros rotativos ---- */
+(function initReelWordCycle() {
+  const wordEl = document.getElementById('reelWord');
+  if (!wordEl) return;
+  const wrap = wordEl.parentElement; // .reel-word-wrap
+  const words = ['Automotriz', 'Moda', 'Retail', 'Tecnología', 'Música', 'Bienestar'];
+  let idx = 0;
+
+  // Fija el ancho del hueco al de la palabra más larga para que el
+  // texto no salte de tamaño cada vez que cambia la palabra.
+  function sizeWrap() {
+    const cs = getComputedStyle(wordEl);
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;' +
+      'font-family:' + cs.fontFamily + ';font-size:' + cs.fontSize +
+      ';font-weight:' + cs.fontWeight + ';letter-spacing:' + cs.letterSpacing +
+      ';text-transform:' + cs.textTransform + ';';
+    document.body.appendChild(probe);
+    let max = 0;
+    words.forEach(w => { probe.textContent = w; max = Math.max(max, probe.offsetWidth); });
+    probe.remove();
+    wrap.style.width = Math.ceil(max) + 'px';
+  }
+
+  sizeWrap();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeWrap);
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(sizeWrap, 150); });
+
+  function nextWord() {
+    idx = (idx + 1) % words.length;
+    wordEl.classList.add('exit');
+    setTimeout(() => {
+      wordEl.textContent = words[idx];
+      wordEl.classList.remove('exit');
+      wordEl.classList.add('enter');
+      void wordEl.offsetWidth;
+      wordEl.classList.remove('enter');
+    }, 420);
+  }
+
+  setInterval(nextWord, 2200);
+})();
+
 /* ---- MARQUEE DE MARCAS (relleno automático sin huecos) ---- */
 (function initBrandsMarquee() {
   const track = document.getElementById('brandsTrack');

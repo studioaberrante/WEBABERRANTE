@@ -345,6 +345,117 @@ a {
 }
 
 /* ============================================
+   REEL: segundo banner con video + palabra rotativa
+   ============================================ */
+.reel {
+  position: relative;
+  width: 100%;
+  height: 80svh;
+  min-height: 520px;
+  overflow: hidden;
+  background: #000 url('https://i.vimeocdn.com/video/2191168351-50d3a55406d65b6bc2fe585aa9b228a2582702fb46e0756ae93eb69d82d24c69-d_1920x1080?region=us') center / cover no-repeat;
+}
+
+.reel-video-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.reel-video-wrap iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 177.78vh;
+  height: 56.25vw;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.reel-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 45%),
+    linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 35%);
+  pointer-events: none;
+}
+
+.reel-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px;
+}
+
+.reel-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 18px;
+}
+
+.reel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 6.5vw, 88px);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+
+.reel-word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 0.96;
+  vertical-align: top;
+  text-align: center;
+}
+
+.reel-word {
+  display: inline-block;
+  line-height: 0.96;
+  color: #ff3b1d;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.reel-word.exit {
+  transform: translateY(-110%);
+  opacity: 0;
+}
+
+.reel-word.enter {
+  transform: translateY(110%);
+  opacity: 0;
+  transition: none;
+}
+
+.reel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #080808;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 14px 28px;
+  margin-top: 34px;
+  transition: opacity 0.25s ease, transform 0.3s var(--ease-premium);
+}
+
+.reel-cta:hover { opacity: 0.85; transform: translateY(-2px); }
+
+/* ============================================
    BRANDS MARQUEE
    ============================================ */
 .brands {
@@ -1907,6 +2018,7 @@ body.cursor-hidden * {
    ============================================ */
 .hero-title,
 .qh-title,
+.reel-title,
 .servicios-title,
 .portfolio-title,
 .nosotros-title,
@@ -1927,6 +2039,7 @@ body.cursor-hidden * {
 /* Tamaños reajustados para Inter (más ancho que la condensada Bebas) */
 .hero-title   { font-size: clamp(44px, 7vw, 104px); }
 .qh-title     { font-size: clamp(38px, 6vw, 90px); line-height: 0.96; }
+.reel-title   { font-size: clamp(34px, 5.4vw, 80px); line-height: 0.96; }
 .portfolio-title,
 .nosotros-title { font-size: clamp(44px, 5.5vw, 88px); }
 .footer-title { font-size: clamp(46px, 7.5vw, 108px); }
@@ -2140,6 +2253,10 @@ body { font-family: var(--font-sans); }
   transform: translateX(-50%);
   margin-bottom: 0;
 }
+
+/* ---- Reel: banner secundario más bajo en mobile ---- */
+.reel { height: 70svh; min-height: 460px; }
+.reel-content { padding: 32px; }
 
 /* ---- Marquee de marcas: bordes desvanecidos ---- */
 .brands { padding: 36px 0; }
