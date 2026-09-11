@@ -19,6 +19,16 @@
   font-display: swap;
 }
 
+/* La Futura Light es muy delgada y no hay un peso Book/Medium: un trazo
+   fino sobre el texto liviano lo acerca a un "Book". Los pesos Bold se
+   excluyen para que no engorden. */
+body { -webkit-text-stroke: 0.3px currentColor; }
+
+h1, h2, h3, strong, b,
+[class*="-title"], [class*="-word"],
+.halo-msg, .header-cta, .reel-cta, .nosotros-nombre, .reel-sub,
+.loader-claim, .header-nav a, .servicio-name { -webkit-text-stroke: 0; }
+
 /* ============================================
    STUDIO ABERRANTE — style.css
    Dark Editorial / AI Studio
