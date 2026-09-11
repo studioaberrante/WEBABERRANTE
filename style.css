@@ -178,11 +178,19 @@ a {
   transition: background 0.4s ease, border-color 0.4s ease;
 }
 
-.header.scrolled {
-  background: rgba(8, 8, 8, 0.82);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+/* El header nunca pinta una franja: solo flotan logo, píldora y CTA. La
+   franja transparente no captura clics, así el contenido que pasa por
+   debajo sigue siendo clickeable. */
+.header { pointer-events: none; }
+.header > * { pointer-events: auto; }
+
+/* Con scroll, la píldora gana algo de fondo para leerse sobre imágenes
+   claras (solo escritorio: en móvil .header-nav es el menú a pantalla completa) */
+@media (min-width: 769px) {
+  .header.scrolled .header-nav {
+    background: rgba(8, 8, 8, 0.55);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
 }
 
 .logo-img {
