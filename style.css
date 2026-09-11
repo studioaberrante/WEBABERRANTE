@@ -2571,3 +2571,15 @@ body { font-family: var(--font-sans); font-weight: 400; }
   .footer-title,
   .halo-title { font-size: 36px; }
 }
+
+/* ---- Hero FX (WebGL): el titular real queda transparente y el canvas lo
+        dibuja encima generándose desde ruido. Sin WebGL, nada cambia. ---- */
+.hero-text { position: relative; }
+
+.hero-fx {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero.fx-on .hero-title { color: transparent; }
