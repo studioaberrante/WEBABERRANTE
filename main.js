@@ -774,6 +774,24 @@ ScrollTrigger.create({
 
 /* (Cursor personalizado retirado: se usa el puntero normal del sistema) */
 
+/* ---- REEL: de tarjeta a pantalla completa con el scroll ----
+   El reel entra como una tarjeta con márgenes negros y bordes redondeados;
+   la máscara (clip-path) se abre siguiendo el scroll hasta ocupar toda la
+   pantalla, y se vuelve a cerrar si subes. Solo clip-path: barato en GPU. */
+(function initReelReveal() {
+  const reel = document.querySelector('.reel');
+  if (!reel || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const mobile = window.matchMedia('(max-width: 768px)').matches;
+  gsap.fromTo(reel,
+    { clipPath: mobile ? 'inset(6% 5% round 22px)' : 'inset(12% 7% round 32px)' },
+    {
+      clipPath: 'inset(0% 0% round 0px)',
+      ease: 'none',
+      scrollTrigger: { trigger: reel, start: 'top 92%', end: 'top 22%', scrub: 0.5 },
+    });
+})();
+
 /* ---- NOSOTROS: carátulas de los videos del equipo ---- */
 (function initNosotrosPosters() {
   const videos = document.querySelectorAll('.nosotros-video[data-vimeo]');
