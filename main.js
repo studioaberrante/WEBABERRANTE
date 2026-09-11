@@ -424,26 +424,20 @@ loadContent().then(() => {
     }, HOLD_MS);
   }
 
-  /* ── arrastre ── */
-  const drag = { left: 0, top: 0, angle: 0, x: 0, y: 0, moved: 0, card: null };
-
-  function pointerAngle(e) {
-    // Normalizar por los radios "desaplasta" la elipse: arrastrar por el lado
-    // plano gira lo mismo que por el lado alto.
-    return Math.atan2(
-      (e.clientY - drag.top - h / 2) / (ry || 1),
-      (e.clientX - drag.left - w * cx) / (rx || 1)
-    );
-  }
+  /* ── arrastre ──
+     Deslizar en horizontal gira el anillo: un recorrido de ~0.6 anchos de
+     tarjeta avanza una tarjeta. Se usa la distancia en X y no el ángulo
+     respecto al centro, porque un swipe horizontal sobre la tarjeta del
+     frente pasa por el eje de la elipse y el ángulo casi no cambia; el gesto
+     vertical, que sí lo cambiaría, se reserva para el scroll de la página
+     (touch-action: pan-y). */
+  const drag = { lastX: 0, x0: 0, y0: 0, moved: 0, card: null };
 
   stage.addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    const rect = stage.getBoundingClientRect();
-    drag.left = rect.left;
-    drag.top = rect.top;
-    drag.angle = pointerAngle(e);
-    drag.x = e.clientX;
-    drag.y = e.clientY;
+    drag.lastX = e.clientX;
+    drag.x0 = e.clientX;
+    drag.y0 = e.clientY;
     drag.moved = 0;
     drag.card = e.target.closest('.halo-card');
     dragging = true;
@@ -454,13 +448,12 @@ loadContent().then(() => {
 
   stage.addEventListener('pointermove', (e) => {
     if (!dragging) return;
-    drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.x, e.clientY - drag.y));
-    const angle = pointerAngle(e);
-    // Envuelto a (−π, π] para que cruzar la costura de atrás sea un delta chico
-    // y no una vuelta entera al revés.
-    const delta = ((angle - drag.angle + Math.PI * 3) % TAU) - Math.PI;
-    drag.angle = angle;
-    state.r += delta;
+    drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0));
+    const dx = e.clientX - drag.lastX;
+    drag.lastX = e.clientX;
+    // dx negativo (swipe a la izquierda) avanza a la siguiente tarjeta,
+    // igual que el autoplay.
+    state.r += (dx / (cardW * 0.6)) * step;
     render();
   });
 
