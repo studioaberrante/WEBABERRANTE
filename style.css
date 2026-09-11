@@ -419,7 +419,7 @@ a {
   height: 80svh;
   min-height: 520px;
   overflow: hidden;
-  background: #000 url('https://i.vimeocdn.com/video/2191181393-c44d5337318b44979fae26ae9b8c5f945d97b5a3a9779f3701612cea0fda9992-d_1920x1080?region=us') center / cover no-repeat;
+  background: #000 center / cover no-repeat;
 }
 
 .reel-video-wrap {
@@ -1460,6 +1460,9 @@ a {
   .nosotros-persona {
     flex: none;
   }
+
+  /* Poster del hero más liviano en móvil (47 KB vs 84 KB) */
+  .hero { background-image: url('https://i.vimeocdn.com/video/2186824497-013728e59f3c077977eed63e45e0d94417c7b0bad58ad437393bca804c455716-d_1280x720?region=us'); }
 
   /* Apilado: cada video mantiene su 4:5 completo en vez de recortarse */
   .nosotros-video {

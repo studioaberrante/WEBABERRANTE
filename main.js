@@ -68,6 +68,41 @@ async function loadContent() {
   }
 }
 
+/* ---- CARGA DIFERIDA (carátulas e iframes bajo el pliegue) ----
+   Las carátulas (data-bg) y los reproductores de Vimeo (data-src) del reel y
+   de Nosotros se cargan recién cuando la sección se acerca a la pantalla.
+   Al abrir la página solo carga el hero. Los iframes avisan con el evento
+   "lazyloaded" para que quien los necesite se enganche después. */
+function whenIframeReady(iframe, cb) {
+  if (iframe.getAttribute('src')) { cb(); return; }
+  iframe.addEventListener('lazyloaded', cb, { once: true });
+}
+
+(function initLazyMedia() {
+  const bgs = document.querySelectorAll('[data-bg]');
+  const frames = document.querySelectorAll('iframe[data-src]');
+  const loadBg = (el) => { el.style.backgroundImage = `url('${el.dataset.bg}')`; el.removeAttribute('data-bg'); };
+  const loadFrame = (f) => { f.src = f.dataset.src; f.removeAttribute('data-src'); f.dispatchEvent(new Event('lazyloaded')); };
+  if (!('IntersectionObserver' in window)) { bgs.forEach(loadBg); frames.forEach(loadFrame); return; }
+  // Las tarjetas del anillo que están "atrás" quedan fuera de pantalla y
+  // el observador nunca las vería: se cargan todas juntas cuando la sección
+  // del portafolio se acerca.
+  const stage = document.getElementById('haloStage');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      if (e.target === stage) { stage.querySelectorAll('[data-bg]').forEach(loadBg); return; }
+      if (e.target.dataset.bg) loadBg(e.target);
+      const f = e.target.tagName === 'IFRAME' ? e.target : null;
+      if (f && f.dataset.src) loadFrame(f);
+    });
+  }, { rootMargin: '80% 0px' });
+  if (stage) io.observe(stage);
+  bgs.forEach((el) => { if (!stage || !stage.contains(el)) io.observe(el); });
+  frames.forEach((f) => io.observe(f));
+})();
+
 /* ---- HERO WORD CYCLING ---- */
 (function initWordCycle() {
   const words    = ['Human', 'Traditional', 'Physical', 'Natural', 'Real'];
@@ -839,7 +874,7 @@ ScrollTrigger.create({
    pantalla y se reanudan al volver. */
 (function initOffscreenPause() {
   if (typeof Vimeo === 'undefined' || !('IntersectionObserver' in window)) return;
-  document.querySelectorAll('.hero-video-wrap iframe, .reel-video-wrap iframe, .nosotros-video iframe').forEach((iframe) => {
+  document.querySelectorAll('.hero-video-wrap iframe, .reel-video-wrap iframe, .nosotros-video iframe').forEach((iframe) => whenIframeReady(iframe, () => {
     let player;
     try { player = new Vimeo.Player(iframe); } catch (e) { return; }
     const target = iframe.closest('section') || iframe;
@@ -848,7 +883,7 @@ ScrollTrigger.create({
       const p = visible ? player.play() : player.pause();
       if (p && p.catch) p.catch(() => {});
     }, { rootMargin: '15% 0px' }).observe(target);
-  });
+  }));
 })();
 
 /* ---- NOSOTROS: carátulas de los videos del equipo ---- */
@@ -859,6 +894,10 @@ ScrollTrigger.create({
   videos.forEach((wrap) => {
     const iframe = wrap.querySelector('iframe');
     if (!iframe) return;
+    whenIframeReady(iframe, () => wireNosotros(wrap, iframe));
+  });
+
+  function wireNosotros(wrap, iframe) {
     const show = () => wrap.classList.add('playing');
     let player = null;
     if (typeof Vimeo !== 'undefined') {
@@ -886,5 +925,5 @@ ScrollTrigger.create({
       }, { threshold: 0.25 });
       io.observe(wrap);
     }
-  });
+  }
 })();

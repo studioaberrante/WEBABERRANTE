@@ -1,0 +1,10 @@
+# Caché larga para lo que no cambia de nombre sin cambiar de versión.
+# HTML, style.css y main.js llevan ?v= y siguen revalidándose.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+/*.png
+  Cache-Control: public, max-age=2592000
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
