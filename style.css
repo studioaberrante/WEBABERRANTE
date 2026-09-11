@@ -25,12 +25,12 @@
    ============================================ */
 
 :root {
-  --bg: #080808;
-  --bg-2: #0f0f0f;
-  --text: #ffffff;
-  --text-muted: rgba(255, 255, 255, 0.38);
-  --text-mid: rgba(255, 255, 255, 0.65);
-  --border: rgba(255, 255, 255, 0.07);
+  --bg: #ffffff;
+  --bg-2: #f5f5f7;
+  --text: #0a0a0a;
+  --text-muted: rgba(0, 0, 0, 0.38);
+  --text-mid: rgba(0, 0, 0, 0.65);
+  --border: rgba(0, 0, 0, 0.07);
   --header-h: 64px;
   --font-mono: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -73,7 +73,7 @@ a {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #080808;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,7 +89,7 @@ a {
 
 /* Al terminar la carga: fundido a negro puro, se apaga el logo y aparece
    la frase antes de entrar a la web. */
-.loader.claim { background-color: #000; }
+.loader.claim { background-color: #ffffff; }
 
 .loader.claim .loader-logo,
 .loader.claim .loader-bar,
@@ -111,7 +111,7 @@ a {
   font-size: clamp(22px, 3vw, 42px);
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: #0a0a0a;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.9s ease 0.35s, transform 0.9s ease 0.35s;
@@ -127,7 +127,7 @@ a {
 
 .loader-logo {
   height: 36px;
-  filter: invert(1);
+  filter: none;
   opacity: 0;
   animation: loader-fade-in 0.8s ease 0.2s forwards;
 }
@@ -139,14 +139,14 @@ a {
 .loader-bar {
   width: 160px;
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(0, 0, 0,0.1);
   overflow: hidden;
 }
 
 .loader-bar-fill {
   height: 100%;
   width: 0%;
-  background: #fff;
+  background: #0a0a0a;
   transition: width 0.1s linear;
 }
 
@@ -156,7 +156,7 @@ a {
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: lowercase;
-  color: rgba(255,255,255,0.35);
+  color: rgba(0, 0, 0,0.35);
   animation: loader-fade-in 0.8s ease 0.4s forwards;
   opacity: 0;
 }
@@ -188,20 +188,20 @@ a {
    claras (solo escritorio: en móvil .header-nav es el menú a pantalla completa) */
 @media (min-width: 769px) {
   .header.scrolled .header-nav {
-    background: rgba(8, 8, 8, 0.55);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(0, 0, 0, 0.12);
   }
 }
 
 .logo-img {
   height: 26px;
-  filter: invert(1);
+  filter: none;
   opacity: 0.9;
   transition: filter 0.4s ease;
 }
 
 .header.scrolled .logo-img {
-  filter: invert(1);
+  filter: none;
 }
 
 .header-nav {
@@ -216,20 +216,20 @@ a {
   font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
+  color: rgba(0, 0, 0,0.6);
   transition: color 0.35s var(--ease-premium);
 }
 
 .header.scrolled .header-nav a {
-  color: rgba(255,255,255,0.6);
+  color: rgba(0, 0, 0,0.6);
 }
 
 .header-nav a:hover {
-  color: #fff;
+  color: #0a0a0a;
 }
 
 .header.scrolled .header-nav a:hover {
-  color: #fff;
+  color: #0a0a0a;
 }
 
 /* Botón hamburguesa (solo móvil) */
@@ -250,7 +250,7 @@ a {
   display: block;
   width: 100%;
   height: 1.5px;
-  background: #fff;
+  background: #0a0a0a;
   transition: transform 0.3s ease;
 }
 
@@ -564,13 +564,13 @@ a {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 0, 0, 0.55);
   padding: 0 32px;
   transition: color 0.25s ease;
 }
 
 .brand-item:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .brand-logo {
@@ -583,7 +583,7 @@ a {
 }
 
 .brand-logo[src*="nike"] {
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
 }
 
 .brand-logo[src*="claro"] {
@@ -591,7 +591,7 @@ a {
 }
 
 .brand-logo[src*="preunic"] {
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
   height: 20px;
 }
 
@@ -609,7 +609,7 @@ a {
 }
 
 .brand-logo[src*="global66"] {
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
   height: 20px;
 }
 
@@ -618,7 +618,7 @@ a {
 }
 
 .brand-logo[src*="uc-christus"] {
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
   height: 16px;
 }
 
@@ -632,7 +632,7 @@ a {
 
 .brand-sep {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.18);
+  color: rgba(0, 0, 0, 0.18);
   line-height: 1;
 }
 
@@ -1199,7 +1199,7 @@ a {
 .contacto-input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(0, 0, 0,0.15);
   padding: 12px 0;
   color: var(--text);
   font-family: var(--font-sans);
@@ -1211,11 +1211,11 @@ a {
 }
 
 .contacto-input::placeholder {
-  color: rgba(255,255,255,0.2);
+  color: rgba(0, 0, 0,0.2);
 }
 
 .contacto-input:focus {
-  border-bottom-color: rgba(255,255,255,0.6);
+  border-bottom-color: rgba(0, 0, 0,0.6);
 }
 
 .contacto-textarea {
@@ -1228,8 +1228,8 @@ a {
   align-items: center;
   gap: 10px;
   align-self: flex-start;
-  background: #fff;
-  color: #080808;
+  background: #0a0a0a;
+  color: #ffffff;
   border: none;
   padding: 15px 30px;
   font-family: var(--font-mono);
@@ -1268,7 +1268,7 @@ a {
   font-weight: 300;
   color: var(--text-mid);
   letter-spacing: 0.02em;
-  border-left: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(0, 0, 0,0.3);
   padding-left: 20px;
 }
 
@@ -1287,7 +1287,7 @@ a {
   font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--text);
-  border-bottom: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(0, 0, 0,0.3);
   padding-bottom: 6px;
   transition: border-color 0.25s ease, opacity 0.25s ease;
 }
@@ -1307,7 +1307,7 @@ a {
 
 .footer-logo {
   height: 22px;
-  filter: invert(1);
+  filter: none;
   opacity: 0.4;
 }
 
@@ -1343,7 +1343,7 @@ a {
   .header-nav {
     position: fixed;
     inset: 0;
-    background: rgba(8, 8, 8, 0.97);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     flex-direction: column;
@@ -1364,7 +1364,7 @@ a {
   .header-nav a {
     font-size: 22px;
     letter-spacing: 0.16em;
-    color: rgba(255,255,255,0.85);
+    color: rgba(0, 0, 0,0.85);
   }
 
   .nav-toggle {
@@ -1523,7 +1523,7 @@ a {
   font-size: clamp(32px, 5vw, 64px);
   line-height: 0.92;
   letter-spacing: 0.01em;
-  color: #fff;
+  color: #0a0a0a;
   margin-bottom: 16px;
 }
 
@@ -1578,13 +1578,13 @@ a {
   object-fit: cover;
   object-position: center top;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(0, 0, 0,0.07);
   display: block;
 }
 
 .av-card-back {
   background: var(--bg-2);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(0, 0, 0,0.1);
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
@@ -1597,7 +1597,7 @@ a {
 .av-card-back h3 {
   font-size: 12px;
   font-weight: 600;
-  color: #fff;
+  color: #0a0a0a;
   margin-bottom: 5px;
   letter-spacing: 0.02em;
 }
@@ -1652,7 +1652,7 @@ a {
   left: 50%;
   transform: translateX(-50%);
   background: linear-gradient(90deg, #b8860b, #ffd700, #daa520);
-  color: #000;
+  color: #ffffff;
   font-size: 7px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -1899,7 +1899,7 @@ a {
 
 .avd-tag:hover {
   color: var(--text);
-  border-color: rgba(255,255,255,0.3);
+  border-color: rgba(0, 0, 0,0.3);
 }
 
 .avd-cta {
@@ -1911,7 +1911,7 @@ a {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text);
-  border-bottom: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(0, 0, 0,0.3);
   padding-bottom: 6px;
   transition: border-color 0.25s, opacity 0.25s;
   text-decoration: none;
@@ -1976,7 +1976,7 @@ a {
 
 .avd-gallery-placeholder {
   aspect-ratio: 3/4;
-  border: 1px dashed rgba(255,255,255,0.1);
+  border: 1px dashed rgba(0, 0, 0,0.1);
   border-radius: 2px;
   display: flex;
   flex-direction: column;
@@ -1996,7 +1996,7 @@ a {
 
 .avd-gallery-placeholder .avd-plus {
   font-size: 24px;
-  color: rgba(255,255,255,0.1);
+  color: rgba(0, 0, 0,0.1);
   line-height: 1;
 }
 
@@ -2065,7 +2065,7 @@ a {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #0a0a0a;
   mix-blend-mode: difference;
   pointer-events: none;
   z-index: 99999;
@@ -2159,7 +2159,7 @@ body.cursor-hidden * {
   color: var(--text);
   transition: color 0.25s ease;
 }
-.faq-item summary:hover { color: rgba(255,255,255,0.8); }
+.faq-item summary:hover { color: rgba(0, 0, 0,0.8); }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary::after {
   content: '+';
@@ -2192,11 +2192,11 @@ body.cursor-hidden * {
    ════════════════════════════════════════════════════════════ */
 
 :root {
-  --accent: rgba(255, 255, 255, 0.9);
-  --accent-soft: rgba(255, 255, 255, 0.10);
-  --accent-glow: rgba(255, 255, 255, 0.07);
-  --card: #0d0d10;
-  --border: rgba(255, 255, 255, 0.09);
+  --accent: rgba(0, 0, 0, 0.9);
+  --accent-soft: rgba(0, 0, 0, 0.10);
+  --accent-glow: rgba(0, 0, 0, 0.07);
+  --card: #f5f5f7;
+  --border: rgba(0, 0, 0, 0.09);
   --radius-lg: 20px;
   --radius-md: 14px;
   --font-sans: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -2224,8 +2224,8 @@ body { font-family: var(--font-sans); font-weight: 400; }
 
 /* ---- Keyframes del lenguaje nuevo ---- */
 @keyframes cta-breathe {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.0), 0 8px 30px -12px rgba(255, 255, 255, 0.35); }
-  50%      { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.045), 0 14px 44px -10px rgba(255, 255, 255, 0.5); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.0), 0 8px 30px -12px rgba(0, 0, 0, 0.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.045), 0 14px 44px -10px rgba(0, 0, 0, 0.5); }
 }
 
 @keyframes liquid-float {
@@ -2247,7 +2247,7 @@ body { font-family: var(--font-sans); font-weight: 400; }
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(0, 0, 0, 0.04);
     border: 1px solid var(--border);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -2276,8 +2276,8 @@ body { font-family: var(--font-sans); font-weight: 400; }
   }
 
   .header-nav a:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(0, 0, 0, 0.1);
+    color: #0a0a0a;
   }
 }
 
@@ -2290,8 +2290,8 @@ body { font-family: var(--font-sans); font-weight: 400; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
-  color: #080808;
+  background: #0a0a0a;
+  color: #ffffff;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 700;
@@ -2361,7 +2361,7 @@ body { font-family: var(--font-sans); font-weight: 400; }
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(0, 0, 0, 0.45);
   flex-shrink: 0;
 }
 
@@ -2382,7 +2382,7 @@ body { font-family: var(--font-sans); font-weight: 400; }
   max-width: 780px;
   max-height: 780px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 62%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.07) 0%, transparent 62%);
   filter: blur(40px);
   animation: liquid-float 16s ease-in-out infinite;
   pointer-events: none;
@@ -2401,8 +2401,8 @@ body { font-family: var(--font-sans); font-weight: 400; }
 }
 
 .servicio-item:not(.servicio-intro):hover {
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 30px 90px -30px rgba(255, 255, 255, 0.22);
+  border-color: rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12), 0 30px 90px -30px rgba(0, 0, 0, 0.22);
   transform: translateY(-6px);
 }
 
@@ -2411,7 +2411,7 @@ body { font-family: var(--font-sans); font-weight: 400; }
 /* ---- Manifesto ---- */
 .manifesto { position: relative; overflow: hidden; }
 
-.manifesto-text { color: rgba(255, 255, 255, 0.85); }
+.manifesto-text { color: rgba(0, 0, 0, 0.85); }
 
 /* ---- FAQ: tarjetas acordeón ---- */
 .faq-item {
@@ -2424,11 +2424,11 @@ body { font-family: var(--font-sans); font-weight: 400; }
   transition: border-color 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium);
 }
 
-.faq-item:hover { border-color: rgba(255, 255, 255, 0.18); }
+.faq-item:hover { border-color: rgba(0, 0, 0, 0.18); }
 
 .faq-item[open] {
-  border-color: rgba(255, 255, 255, 0.32);
-  box-shadow: 0 20px 60px -30px rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.32);
+  box-shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.2);
 }
 
 .faq-item summary { padding: 24px 0; }
@@ -2451,7 +2451,7 @@ body { font-family: var(--font-sans); font-weight: 400; }
   max-width: 860px;
   max-height: 860px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 0%, transparent 60%);
   filter: blur(50px);
   animation: liquid-float-reverse 18s ease-in-out infinite;
   pointer-events: none;
@@ -2460,7 +2460,7 @@ body { font-family: var(--font-sans); font-weight: 400; }
 .footer-content, .footer-bottom { position: relative; }
 
 .contacto-input {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 14px 18px;
@@ -2468,10 +2468,10 @@ body { font-family: var(--font-sans); font-weight: 400; }
 }
 
 .contacto-input:focus {
-  border-color: rgba(255, 255, 255, 0.55);
-  border-bottom-color: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 0, 0, 0.55);
+  border-bottom-color: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .contacto-btn {
@@ -2490,13 +2490,13 @@ body { font-family: var(--font-sans); font-weight: 400; }
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 12px 22px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
   border-bottom: 1px solid var(--border);
   transition: border-color 0.3s ease, background 0.3s ease, opacity 0.3s ease;
 }
 
 .footer-cta:hover {
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: rgba(0, 0, 0, 0.45);
   background: var(--accent-soft);
   opacity: 1;
 }
@@ -2516,10 +2516,10 @@ body { font-family: var(--font-sans); font-weight: 400; }
 }
 
 /* ---- Sin acento naranjo: neutraliza los rojos pre-existentes ---- */
-.qh-word { color: #fff; }
-.servicio-num { color: rgba(255, 255, 255, 0.35); }
-.servicios-progress-fill { background: rgba(255, 255, 255, 0.85); }
-.servicios-hint-arrow { color: rgba(255, 255, 255, 0.85); }
+.qh-word { color: #0a0a0a; }
+.servicio-num { color: rgba(0, 0, 0, 0.35); }
+.servicios-progress-fill { background: rgba(0, 0, 0, 0.85); }
+.servicios-hint-arrow { color: rgba(0, 0, 0, 0.85); }
 
 /* ---- FAQ y contacto centrados (como la referencia) ---- */
 .faq-inner {
@@ -2570,4 +2570,50 @@ body { font-family: var(--font-sans); font-weight: 400; }
   .nosotros-title,
   .footer-title,
   .halo-title { font-size: 36px; }
+}
+
+/* ============================================
+   VERSIÓN BLANCA (prueba): ajustes que no salen de invertir colores
+   ============================================ */
+html { color-scheme: light; }
+
+/* Logos de marcas: todos en negro monocromo, sea cual sea el archivo */
+.brand-logo { filter: brightness(0); opacity: 0.55; }
+.brand-logo:hover { opacity: 0.9; }
+
+/* Nombre y cargo van sobre el video: siguen en blanco */
+.nosotros-video-info .nosotros-nombre { color: #fff; }
+.nosotros-video-info .nosotros-cargo { color: rgba(255, 255, 255, 0.7); }
+
+/* Sombra de las tarjetas del portafolio, más suave sobre fondo claro */
+.halo-card { box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.35); }
+
+/* Píldora del menú: cristal claro sobre imágenes */
+@media (min-width: 769px) {
+  .header.scrolled .header-nav { background: rgba(255, 255, 255, 0.72); }
+}
+
+/* Orbes ambientales más discretos sobre blanco */
+.que-hacemos::before,
+.footer::before { opacity: 0.6; }
+
+/* Logo y hamburguesa: blancos con blend "difference", así son negros sobre
+   las secciones blancas y blancos sobre los videos (hero, reel, Nosotros). */
+.logo-img,
+.header.scrolled .logo-img { filter: none; }
+
+.header-logo,
+.nav-toggle {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.header-logo { display: inline-flex; align-items: center; padding: 8px 14px; }
+.nav-toggle span { background: #0a0a0a; }
+
+/* Píldora con cristal claro también sobre el hero */
+@media (min-width: 769px) {
+  .header-nav { background: rgba(255, 255, 255, 0.55); border-color: rgba(0, 0, 0, 0.08); }
 }
