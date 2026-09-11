@@ -2595,23 +2595,3 @@ html.lenis, html.lenis body { height: auto; }
   will-change: opacity, filter;
 }
 
-/* ---- Mini clips dentro del texto ---- */
-.chip {
-  display: inline-block;
-  width: 2.8em;
-  height: 1.9em;
-  margin: 0 0.18em;
-  border-radius: 0.5em;
-  overflow: hidden;
-  vertical-align: -0.55em;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  will-change: opacity, filter;
-}
-
-.chip video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}

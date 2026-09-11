@@ -284,10 +284,10 @@ async function loadContent() {
 })();
 
 /* ---- REVELADO PALABRA POR PALABRA ----
-   Cada palabra (y cada mini clip) pasa de borrosa y apagada a nítida
-   siguiendo el scroll; si subes, se vuelve a apagar. Se envuelven solo los
-   nodos de texto, así los <br> y los clips quedan intactos y el texto sigue
-   siendo texto para Google y lectores de pantalla. */
+   Cada palabra pasa de borrosa y apagada a nítida siguiendo el scroll; si
+   subes, se vuelve a apagar. Se envuelven solo los nodos de texto, así los
+   <br> quedan intactos y el texto sigue siendo texto para Google y lectores
+   de pantalla. */
 function initWordReveal(el) {
   if (!el || el.dataset.revealed) return;
   el.dataset.revealed = '1';
@@ -306,7 +306,7 @@ function initWordReveal(el) {
     });
     node.parentNode.replaceChild(frag, node);
   });
-  const items = el.querySelectorAll('.rv-w, .chip');
+  const items = el.querySelectorAll('.rv-w');
   if (!items.length) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   gsap.fromTo(items,
