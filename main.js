@@ -216,12 +216,17 @@ async function loadContent() {
     fill.style.width = progress + '%';
   }, 150);
 
+  // Tiempo que se sostiene la frase "100% inteligencia artificial" antes
+  // de entrar (incluye su fade de entrada).
+  const CLAIM_MS = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1800 : 2600;
+
   function hideLoader() {
     if (hidden) return;
     hidden = true;
     clearInterval(interval);
     fill.style.width = '100%';
-    setTimeout(() => loader.classList.add('hidden'), 300);
+    setTimeout(() => loader.classList.add('claim'), 350);
+    setTimeout(() => loader.classList.add('hidden'), 350 + CLAIM_MS);
   }
 
   // Se oculta APENAS el video del hero empieza a reproducirse → sin pantalla negra.
