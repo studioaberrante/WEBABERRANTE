@@ -5,6 +5,20 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ---- SCROLL SUAVE (Lenis) ----
+   Inercia al scroll y anclas suaves. Se engancha al ticker de GSAP para que
+   ScrollTrigger y Lenis compartan el mismo reloj. En touch se deja el scroll
+   nativo del sistema (más natural y compatible con la sección fijada). */
+(function initSmoothScroll() {
+  if (typeof Lenis === 'undefined') return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const lenis = new Lenis({ lerp: 0.09, anchors: true });
+  window.lenis = lenis;
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+})();
+
 /* ---- CONTENT LOADER ---- */
 async function loadContent() {
   let data;
@@ -269,8 +283,45 @@ async function loadContent() {
   });
 })();
 
+/* ---- REVELADO PALABRA POR PALABRA ----
+   Cada palabra (y cada mini clip) pasa de borrosa y apagada a nítida
+   siguiendo el scroll; si subes, se vuelve a apagar. Se envuelven solo los
+   nodos de texto, así los <br> y los clips quedan intactos y el texto sigue
+   siendo texto para Google y lectores de pantalla. */
+function initWordReveal(el) {
+  if (!el || el.dataset.revealed) return;
+  el.dataset.revealed = '1';
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) if (walker.currentNode.nodeValue.trim()) nodes.push(walker.currentNode);
+  nodes.forEach((node) => {
+    const frag = document.createDocumentFragment();
+    node.nodeValue.split(/(\s+)/).forEach((part) => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+      const s = document.createElement('span');
+      s.className = 'rv-w';
+      s.textContent = part;
+      frag.appendChild(s);
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+  const items = el.querySelectorAll('.rv-w, .chip');
+  if (!items.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  gsap.fromTo(items,
+    { opacity: 0.16, filter: 'blur(5px)' },
+    {
+      opacity: 1, filter: 'blur(0px)', ease: 'none',
+      stagger: { each: 1, from: 'start' },
+      scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: 0.6 },
+    });
+}
+
 /* ---- BOOTSTRAP ---- */
 loadContent().then(() => {
+  initWordReveal(document.querySelector('.qh-intro'));
+  initWordReveal(document.getElementById('manifestoText'));
   initEntranceAnimations();
   initServiciosHScroll();
   // Recalcular posiciones de scroll cuando la página termina de cargar
@@ -294,6 +345,7 @@ loadContent().then(() => {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.body.classList.add('cursor-hidden'); // cursor normal sobre el video
+    if (window.lenis) window.lenis.stop();
   }
 
   function closeModal() {
@@ -301,6 +353,7 @@ loadContent().then(() => {
     iframe.src = '';
     document.body.style.overflow = '';
     document.body.classList.remove('cursor-hidden');
+    if (window.lenis) window.lenis.start();
   }
 
   document.addEventListener('portfolio:open', (e) => openModal(e.detail.vimeoId));
