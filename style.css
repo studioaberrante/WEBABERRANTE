@@ -1,4 +1,25 @@
 /* ============================================
+   TIPOGRAFÍA: Futura (autoalojada)
+   Light cubre 300-400 y Bold 500-900, así ningún peso intermedio se
+   sintetiza a partir de otro.
+   ============================================ */
+@font-face {
+  font-family: 'Futura';
+  src: url('assets/fonts/futura-light.woff2') format('woff2');
+  font-weight: 300 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Futura';
+  src: url('assets/fonts/futura-bold.woff2') format('woff2');
+  font-weight: 500 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
    STUDIO ABERRANTE — style.css
    Dark Editorial / AI Studio
    ============================================ */
@@ -11,7 +32,7 @@
   --text-mid: rgba(255, 255, 255, 0.65);
   --border: rgba(255, 255, 255, 0.07);
   --header-h: 64px;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-mono: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -30,7 +51,7 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -265,7 +286,7 @@ a {
 }
 
 .hero-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(56px, 8.5vw, 118px);
   line-height: 0.92;
   letter-spacing: 0.01em;
@@ -405,7 +426,7 @@ a {
 }
 
 .reel-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(40px, 6.5vw, 88px);
   line-height: 1.02;
   letter-spacing: 0.01em;
@@ -591,7 +612,7 @@ a {
 }
 
 .qh-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(48px, 8vw, 128px);
   line-height: 0.95;
   letter-spacing: 0.01em;
@@ -626,7 +647,7 @@ a {
 
 .qh-intro {
   margin-top: 24px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(17px, 1.5vw, 22px);
   font-weight: 500;
   line-height: 1.4;
@@ -729,7 +750,7 @@ a {
 }
 
 .servicios-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(52px, 6vw, 100px);
   line-height: 0.9;
   letter-spacing: 0.01em;
@@ -745,11 +766,11 @@ a {
 }
 
 .servicio-name {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: clamp(30px, 3.4vw, 52px);
   line-height: 1.04;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   color: var(--text);
 }
 
@@ -964,7 +985,7 @@ a {
 }
 
 .nosotros-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(52px, 6vw, 100px);
   line-height: 0.9;
   letter-spacing: 0.01em;
@@ -1087,7 +1108,7 @@ a {
 }
 
 .footer-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(64px, 9vw, 130px);
   line-height: 0.88;
   letter-spacing: 0.01em;
@@ -1130,7 +1151,7 @@ a {
   border-bottom: 1px solid rgba(255,255,255,0.15);
   padding: 12px 0;
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 300;
   outline: none;
@@ -1447,7 +1468,7 @@ a {
 }
 
 .av-center-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(32px, 5vw, 64px);
   line-height: 0.92;
   letter-spacing: 0.01em;
@@ -1644,7 +1665,7 @@ a {
 }
 
 .av-benefits-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(48px, 5.5vw, 88px);
   line-height: 0.9;
   letter-spacing: 0.01em;
@@ -1692,7 +1713,7 @@ a {
 }
 
 .av-benefit-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(24px, 2.5vw, 36px);
   letter-spacing: 0.01em;
   line-height: 1;
@@ -1753,7 +1774,7 @@ a {
 }
 
 .avd-name {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(64px, 7vw, 110px);
   line-height: 0.88;
   letter-spacing: 0.01em;
@@ -1864,7 +1885,7 @@ a {
 }
 
 .avd-gallery-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(32px, 3.5vw, 56px);
   line-height: 0.9;
 }
@@ -2020,7 +2041,7 @@ body.cursor-hidden * {
 }
 
 /* ============================================
-   TITULARES EN INTER GRUESO (reemplaza Bebas Neue)
+   TITULARES EN FUTURA BOLD
    ============================================ */
 .hero-title,
 .qh-title,
@@ -2029,20 +2050,20 @@ body.cursor-hidden * {
 .halo-title,
 .nosotros-title,
 .footer-title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   line-height: 0.9;
 }
 
 .servicio-name {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   line-height: 1.05;
 }
 
-/* Tamaños reajustados para Inter (más ancho que la condensada Bebas) */
+/* Tamaños de titulares */
 .hero-title   { font-size: clamp(44px, 7vw, 104px); }
 .qh-title     { font-size: clamp(32px, 4.2vw, 60px); line-height: 0.96; }
 .reel-title   { font-size: clamp(34px, 5.4vw, 80px); line-height: 0.96; }
@@ -2066,9 +2087,9 @@ body.cursor-hidden * {
 }
 .faq-inner { max-width: 880px; }
 .faq-title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   line-height: 0.9;
   font-size: clamp(38px, 5.5vw, 80px);
   margin-bottom: 48px;
@@ -2113,7 +2134,7 @@ body.cursor-hidden * {
 
 /* ════════════════════════════════════════════════════════════
    REDISEÑO 2026 — "Cine-glow"
-   Lenguaje visual refinado (tipografía Satoshi, un solo acento,
+   Lenguaje visual refinado (tipografía Futura, un solo acento,
    glow sutil, movimiento respirado) sobre la base oscura
    cinematográfica de Aberrante. Capa de overrides: gana por
    cascada sin tocar la lógica de GSAP ni el layout base.
@@ -2127,12 +2148,12 @@ body.cursor-hidden * {
   --border: rgba(255, 255, 255, 0.09);
   --radius-lg: 20px;
   --radius-md: 14px;
-  --font-sans: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-body { font-family: var(--font-sans); }
+body { font-family: var(--font-sans); font-weight: 300; }
 
-/* ---- Tipografía: Satoshi en todo (titulares en 900) ---- */
+/* ---- Tipografía: Futura en todo (titulares en Bold) ---- */
 .hero-title,
 .qh-title,
 .servicios-title,
@@ -2142,11 +2163,11 @@ body { font-family: var(--font-sans); }
 .faq-title {
   font-family: var(--font-sans);
   font-weight: 900;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
 }
 
 .servicio-name { font-family: var(--font-sans); font-weight: 700; }
-.qh-intro      { font-family: var(--font-sans); font-weight: 500; }
+.qh-intro      { font-family: var(--font-sans); font-weight: 300; }
 .manifesto-text { font-family: var(--font-sans); font-weight: 500; }
 .contacto-input { font-family: var(--font-sans); }
 
