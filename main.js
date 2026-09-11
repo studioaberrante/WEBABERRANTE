@@ -518,29 +518,33 @@ loadContent().then(() => {
     }, { threshold: 0.15 }).observe(stage);
   }
 
-  /* ── scroll: la sección se fija y el scroll gira el anillo ──
-     Al llegar al portafolio la sección queda pegada; recorrer ~260px de
-     scroll por tarjeta da una vuelta completa (las 8 pasan por el frente)
-     y después la página se suelta y sigue. Así el gesto vertical mueve los
-     videos sin bloquear el scroll de la página. */
-  if (!reduceMotion && typeof ScrollTrigger !== 'undefined') {
-    const porTarjeta = () => Math.round(Math.max(220, Math.min(320, window.innerHeight * 0.36)));
-    ScrollTrigger.create({
-      trigger: stage.closest('.halo'),
-      start: 'top top',
-      end: () => '+=' + porTarjeta() * count,
-      pin: true,
-      anticipatePin: 1,
-      onToggle: (self) => { pinned = self.isActive; },
-      onUpdate: (self) => {
-        gsap.to(scroll, {
-          r: -self.progress * step * count,
-          duration: 0.45,
-          ease: 'power2.out',
-          overwrite: true,
-          onUpdate: render,
-        });
-      },
+  /* ── scroll (solo móvil): la sección se fija y el scroll gira el anillo ──
+     En teléfono el gesto vertical es el natural, pero capturarlo bloquearía
+     el scroll de la página; en cambio la sección queda pegada y ~290px de
+     scroll por tarjeta dan la vuelta completa antes de soltar la página.
+     En escritorio no hace falta: el anillo gira solo y con arrastre. */
+  if (!reduceMotion && typeof ScrollTrigger !== 'undefined' && gsap.matchMedia) {
+    gsap.matchMedia().add('(max-width: 768px)', () => {
+      const porTarjeta = () => Math.round(Math.max(220, Math.min(320, window.innerHeight * 0.36)));
+      ScrollTrigger.create({
+        trigger: stage.closest('.halo'),
+        start: 'top top',
+        end: () => '+=' + porTarjeta() * count,
+        pin: true,
+        anticipatePin: 1,
+        onToggle: (self) => { pinned = self.isActive; },
+        onUpdate: (self) => {
+          gsap.to(scroll, {
+            r: -self.progress * step * count,
+            duration: 0.45,
+            ease: 'power2.out',
+            overwrite: true,
+            onUpdate: render,
+          });
+        },
+      });
+      // Al volver a escritorio el pin se elimina solo; se limpia su rotación.
+      return () => { pinned = false; scroll.r = 0; render(); };
     });
   }
 
