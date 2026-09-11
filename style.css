@@ -2590,7 +2590,7 @@ html { color-scheme: light; }
 
 /* Píldora del menú: cristal claro sobre imágenes */
 @media (min-width: 769px) {
-  .header.scrolled .header-nav { background: rgba(255, 255, 255, 0.72); }
+  .header.scrolled .header-nav { background: rgba(255, 255, 255, 0.32); }
 }
 
 /* Orbes ambientales más discretos sobre blanco */
@@ -2599,21 +2599,21 @@ html { color-scheme: light; }
 
 /* Logo y hamburguesa: blancos con blend "difference", así son negros sobre
    las secciones blancas y blancos sobre los videos (hero, reel, Nosotros). */
-.logo-img,
+/* Logo sin fondo: blanco sobre el video del hero, negro al hacer scroll
+   sobre las secciones blancas. */
+.logo-img { filter: invert(1); }
 .header.scrolled .logo-img { filter: none; }
 
-.header-logo,
 .nav-toggle {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 999px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-.header-logo { display: inline-flex; align-items: center; padding: 8px 14px; }
 .nav-toggle span { background: #0a0a0a; }
 
 /* Píldora con cristal claro también sobre el hero */
 @media (min-width: 769px) {
-  .header-nav { background: rgba(255, 255, 255, 0.55); border-color: rgba(0, 0, 0, 0.08); }
+  .header-nav { background: rgba(255, 255, 255, 0.2); border-color: rgba(0, 0, 0, 0.08); }
 }
