@@ -1,11 +1,11 @@
 /* ============================================
-   TIPOGRAFÍA: Futura (autoalojada)
-   Light cubre 300-400 y Bold 500-900, así ningún peso intermedio se
-   sintetiza a partir de otro.
+   TIPOGRAFÍA: Futura PT (autoalojada, licencia propia)
+   Book cubre 300-400, Medium 500-600 y Bold 700-900, así ningún peso
+   intermedio se sintetiza a partir de otro.
    ============================================ */
 @font-face {
   font-family: 'Futura';
-  src: url('assets/fonts/futura-light.woff2') format('woff2');
+  src: url('assets/fonts/futura-book.woff2') format('woff2');
   font-weight: 300 400;
   font-style: normal;
   font-display: swap;
@@ -13,21 +13,19 @@
 
 @font-face {
   font-family: 'Futura';
-  src: url('assets/fonts/futura-bold.woff2') format('woff2');
-  font-weight: 500 900;
+  src: url('assets/fonts/futura-medium.woff2') format('woff2');
+  font-weight: 500 600;
   font-style: normal;
   font-display: swap;
 }
 
-/* La Futura Light es muy delgada y no hay un peso Book/Medium: un trazo
-   fino sobre el texto liviano lo acerca a un "Book". Los pesos Bold se
-   excluyen para que no engorden. */
-body { -webkit-text-stroke: 0.3px currentColor; }
-
-h1, h2, h3, strong, b,
-[class*="-title"], [class*="-word"],
-.halo-msg, .header-cta, .reel-cta, .nosotros-nombre, .reel-sub,
-.loader-claim, .header-nav a, .servicio-name { -webkit-text-stroke: 0; }
+@font-face {
+  font-family: 'Futura';
+  src: url('assets/fonts/futura-bold.woff2') format('woff2');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ============================================
    STUDIO ABERRANTE — style.css
@@ -2202,7 +2200,7 @@ body.cursor-hidden * {
   --font-sans: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-body { font-family: var(--font-sans); font-weight: 300; }
+body { font-family: var(--font-sans); font-weight: 400; }
 
 /* ---- Tipografía: Futura en todo (titulares en Bold) ---- */
 .hero-title,
