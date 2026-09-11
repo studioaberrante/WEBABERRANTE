@@ -885,12 +885,15 @@ a {
 .halo-card.playing iframe { opacity: 1; }
 
 /* Hypnos y Spotify son 2.39:1: se agranda el iframe para que cubran la
-   tarjeta 16:9 sin franjas difuminadas. */
+   tarjeta 16:9. El mínimo exacto sería 134.5%; con el redondeo a píxeles
+   asomaba 1px de la franja difuminada que Vimeo pone arriba y abajo, así
+   que se deja sobra y el video sobresale ~4% de la tarjeta (varios px
+   incluso en las tarjetas escaladas al fondo del anillo). */
 .halo-card[data-vimeo="1199572315"] iframe,
 .halo-card[data-vimeo="1202693340"] iframe {
-  inset: -17.25%;
-  width: 134.5%;
-  height: 134.5%;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
 }
 
 /* Texto a la derecha del anillo. El JS fija `left` justo donde el anillo
