@@ -963,9 +963,11 @@ a {
 
   .halo-msg { max-width: 100%; }
 
+  /* Más bajo para que, fijada, la sección completa (texto + anillo) quepa
+     en la pantalla del teléfono */
   .halo-stage {
-    height: 60svh;
-    min-height: 420px;
+    height: 52svh;
+    min-height: 380px;
   }
 }
 

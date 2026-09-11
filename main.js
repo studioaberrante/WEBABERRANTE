@@ -334,10 +334,14 @@ loadContent().then(() => {
   const mobileMq = window.matchMedia('(max-width: 768px)');
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
+  // Rotación libre (autoplay, arrastre, teclado) + rotación que aporta el
+  // scroll mientras la sección está fijada. El anillo se dibuja con la suma.
   const state = { r: 0 };
+  const scroll = { r: 0 };
+  const total = () => state.r + scroll.r;
   const step = TAU / count;
   let w = 0, h = 0, rx = 0, ry = 0, cx = 0, cardW = CARD_W, cardH = CARD_H;
-  let dragging = false, hovering = false, visible = true;
+  let dragging = false, hovering = false, visible = true, pinned = false;
   let tween = null, timer = 0, active = -1, swapToken = 0;
 
   function measure() {
@@ -369,7 +373,7 @@ loadContent().then(() => {
   function render() {
     let best = -2, bestIdx = 0;
     cards.forEach((c, i) => {
-      const t = i * step + state.r;
+      const t = i * step + total();
       const cos = Math.cos(t);
       const s = MIN_SCALE + (1 - MIN_SCALE) * ((cos + 1) / 2);
       c.style.transform = `translate3d(${(cos * rx).toFixed(1)}px, ${(Math.sin(t) * ry).toFixed(1)}px, 0) scale(${s.toFixed(4)})`;
@@ -412,14 +416,15 @@ loadContent().then(() => {
     tween = gsap.to(state, { r: target, duration, ease, onUpdate: render, onComplete });
   }
 
-  const snapped = () => Math.round(state.r / step) * step;
+  // Objetivo para state.r tal que la rotación total quede sobre una tarjeta.
+  const snapped = () => Math.round(total() / step) * step - scroll.r;
 
   // Autoplay: cada paso agenda el siguiente, así una pausa (arrastre, hover,
   // fuera de pantalla) solo cuesta volver a chequear.
   function schedule() {
     window.clearTimeout(timer);
     timer = window.setTimeout(() => {
-      if (dragging || hovering || !visible || document.hidden) { schedule(); return; }
+      if (dragging || hovering || pinned || !visible || document.hidden) { schedule(); return; }
       spinTo(snapped() - step, STEP_MS / 1000, 'power2.inOut', schedule);
     }, HOLD_MS);
   }
@@ -511,6 +516,32 @@ loadContent().then(() => {
         });
       });
     }, { threshold: 0.15 }).observe(stage);
+  }
+
+  /* ── scroll: la sección se fija y el scroll gira el anillo ──
+     Al llegar al portafolio la sección queda pegada; recorrer ~260px de
+     scroll por tarjeta da una vuelta completa (las 8 pasan por el frente)
+     y después la página se suelta y sigue. Así el gesto vertical mueve los
+     videos sin bloquear el scroll de la página. */
+  if (!reduceMotion && typeof ScrollTrigger !== 'undefined') {
+    const porTarjeta = () => Math.round(Math.max(220, Math.min(320, window.innerHeight * 0.36)));
+    ScrollTrigger.create({
+      trigger: stage.closest('.halo'),
+      start: 'top top',
+      end: () => '+=' + porTarjeta() * count,
+      pin: true,
+      anticipatePin: 1,
+      onToggle: (self) => { pinned = self.isActive; },
+      onUpdate: (self) => {
+        gsap.to(scroll, {
+          r: -self.progress * step * count,
+          duration: 0.45,
+          ease: 'power2.out',
+          overwrite: true,
+          onUpdate: render,
+        });
+      },
+    });
   }
 
   measure();
