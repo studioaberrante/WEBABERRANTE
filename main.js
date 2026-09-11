@@ -411,13 +411,13 @@ function initEntranceAnimations() {
     scrollTrigger: { trigger: '.nosotros-header', start: 'top 82%' }
   });
 
-  gsap.utils.toArray('.nosotros-item').forEach((el, i) => {
+  gsap.utils.toArray('.nosotros-video').forEach((el, i) => {
     gsap.fromTo(el, {
       y: 40, opacity: 0
     }, {
       y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
       delay: i * 0.15,
-      scrollTrigger: { trigger: '.nosotros-grid', start: 'top 82%' }
+      scrollTrigger: { trigger: '.nosotros-banner', start: 'top 82%' }
     });
   });
 
@@ -625,5 +625,43 @@ ScrollTrigger.create({
       } catch (e) { /* cae al respaldo de abajo */ }
     }
     iframe.addEventListener('load', () => setTimeout(show, 600));
+  });
+})();
+
+/* ---- NOSOTROS: carátulas de los videos del equipo ---- */
+(function initNosotrosPosters() {
+  const videos = document.querySelectorAll('.nosotros-video[data-vimeo]');
+  if (!videos.length) return;
+
+  videos.forEach((wrap) => {
+    const iframe = wrap.querySelector('iframe');
+    if (!iframe) return;
+    const show = () => wrap.classList.add('playing');
+    let player = null;
+    if (typeof Vimeo !== 'undefined') {
+      try {
+        player = new Vimeo.Player(iframe);
+        player.on('play', show);
+        player.on('playing', show);
+      } catch (e) { /* cae al respaldo de abajo */ }
+    }
+    if (!player) {
+      iframe.addEventListener('load', () => setTimeout(show, 600));
+      return;
+    }
+    // Con varios videos de fondo en la misma página el navegador a veces
+    // bloquea el autoplay de los que cargan después (hero + reel ya
+    // reproducen). Reintenta apenas la tarjeta entra en pantalla.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          player.getPaused().then((paused) => {
+            if (paused) player.play().catch(() => {});
+          });
+        });
+      }, { threshold: 0.25 });
+      io.observe(wrap);
+    }
   });
 })();
