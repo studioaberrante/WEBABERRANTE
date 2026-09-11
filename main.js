@@ -283,15 +283,27 @@ async function loadContent() {
   });
 })();
 
-/* ---- REVELADO PALABRA POR PALABRA ----
-   Cada palabra pasa de borrosa y apagada a nítida siguiendo el scroll; si
-   subes, se vuelve a apagar. Se envuelven solo los nodos de texto, así los
-   <br> quedan intactos y el texto sigue siendo texto para Google y lectores
-   de pantalla. */
+/* ---- REVELADO LETRA POR LETRA (enfoque que avanza con el scroll) ----
+   Réplica de la curva medida en butter.video: cada letra tiene su propio
+   desenfoque y, a lo largo de ~18 letras, va de blurMax a 0 de forma lineal;
+   esa ventana de enfoque recorre el texto con el scroll (y retrocede si
+   subes). El texto original queda en una copia accesible; la copia visual
+   dividida en letras va con aria-hidden. */
 function initWordReveal(el) {
   if (!el || el.dataset.revealed) return;
   el.dataset.revealed = '1';
-  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+
+  const original = el.innerHTML;
+  const sr = document.createElement('span');
+  sr.className = 'rv-sr';
+  sr.innerHTML = original;
+  const vis = document.createElement('span');
+  vis.className = 'rv-vis';
+  vis.setAttribute('aria-hidden', 'true');
+  vis.innerHTML = original;
+
+  const chars = [];
+  const walker = document.createTreeWalker(vis, NodeFilter.SHOW_TEXT);
   const nodes = [];
   while (walker.nextNode()) if (walker.currentNode.nodeValue.trim()) nodes.push(walker.currentNode);
   nodes.forEach((node) => {
@@ -299,23 +311,50 @@ function initWordReveal(el) {
     node.nodeValue.split(/(\s+)/).forEach((part) => {
       if (!part) return;
       if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
-      const s = document.createElement('span');
-      s.className = 'rv-w';
-      s.textContent = part;
-      frag.appendChild(s);
+      const w = document.createElement('span');
+      w.className = 'rv-w';
+      for (const ch of part) {
+        const c = document.createElement('span');
+        c.className = 'rv-c';
+        c.textContent = ch;
+        w.appendChild(c);
+        chars.push(c);
+      }
+      frag.appendChild(w);
     });
     node.parentNode.replaceChild(frag, node);
   });
-  const items = el.querySelectorAll('.rv-w');
-  if (!items.length) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  gsap.fromTo(items,
-    { opacity: 0.16, filter: 'blur(5px)' },
-    {
-      opacity: 1, filter: 'blur(0px)', ease: 'none',
-      stagger: { each: 1, from: 'start' },
-      scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: 0.6 },
-    });
+  el.innerHTML = '';
+  el.appendChild(sr);
+  el.appendChild(vis);
+
+  const N = chars.length;
+  if (!N || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const WINDOW = 18;                                  // letras que abarca el degradado
+  const blurMax = () => parseFloat(getComputedStyle(el).fontSize) * 0.2; // ≈8px en texto de 40px
+  const last = new Float32Array(N).fill(-1);
+
+  function render(p) {
+    const bm = blurMax();
+    const front = p * (N + WINDOW);                   // avanza de 0 a N+WINDOW
+    for (let i = 0; i < N; i++) {
+      const s = Math.min(1, Math.max(0, (front - i) / WINDOW)); // 0 borroso, 1 nítido
+      if (s === last[i]) continue;
+      last[i] = s;
+      const st = chars[i].style;
+      st.filter = s >= 1 ? 'none' : `blur(${(bm * (1 - s)).toFixed(2)}px)`;
+      st.opacity = (0.3 + 0.7 * s).toFixed(3);
+    }
+  }
+
+  render(0);
+  const proxy = { p: 0 };
+  gsap.to(proxy, {
+    p: 1, ease: 'none',
+    onUpdate: () => render(proxy.p),
+    scrollTrigger: { trigger: el, start: 'top 85%', end: 'bottom 40%', scrub: 0.5 },
+  });
 }
 
 /* ---- BOOTSTRAP ---- */

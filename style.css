@@ -2589,9 +2589,21 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-/* ---- Revelado palabra por palabra ---- */
-.rv-w {
+/* ---- Revelado letra por letra ---- */
+.rv-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.rv-w { display: inline-block; white-space: nowrap; }
+
+.rv-c {
   display: inline-block;
-  will-change: opacity, filter;
+  will-change: filter, opacity;
 }
 
