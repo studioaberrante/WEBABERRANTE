@@ -1,20 +1,12 @@
 /* ============================================
    TIPOGRAFÍA: Futura PT (autoalojada, licencia propia)
-   Book cubre 300-400, Medium 500-600 y Bold 700-900, así ningún peso
-   intermedio se sintetiza a partir de otro.
+   Medium cubre 300-600 y Bold 700-900: solo dos cortes, ninguno se
+   sintetiza a partir de otro.
    ============================================ */
 @font-face {
   font-family: 'Futura';
-  src: url('assets/fonts/futura-book.woff2') format('woff2');
-  font-weight: 300 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Futura';
   src: url('assets/fonts/futura-medium.woff2') format('woff2');
-  font-weight: 500 600;
+  font-weight: 300 600;
   font-style: normal;
   font-display: swap;
 }
