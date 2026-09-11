@@ -343,7 +343,9 @@ function initWordReveal(el) {
       if (s === last[i]) continue;
       last[i] = s;
       const st = chars[i].style;
-      st.filter = s >= 1 ? 'none' : `blur(${(bm * (1 - s)).toFixed(2)}px)`;
+      // Solo las letras dentro de la ventana llevan filtro (como en Butter):
+      // cientos de blur simultáneos hacían tironear el scroll en móvil.
+      st.filter = (s <= 0 || s >= 1) ? 'none' : `blur(${(bm * (1 - s)).toFixed(2)}px)`;
       st.opacity = (0.3 + 0.7 * s).toFixed(3);
     }
   }
@@ -478,6 +480,7 @@ loadContent().then(() => {
   function setActive(i) {
     const first = active === -1;
     active = i;
+    syncPlayers(i);
     if (!msgEl || !brandEl) return;
     const card = cards[i];
     if (first) {
@@ -580,21 +583,52 @@ loadContent().then(() => {
     c.addEventListener('pointerleave', () => { hovering = false; });
   });
 
-  /* ── carátulas: el iframe se funde encima recién cuando reproduce ── */
-  const players = [];
-  cards.forEach((card) => {
+  /* ── carátulas: el iframe se funde encima recién cuando reproduce ──
+     En móvil, 8 reproductores de Vimeo girando a la vez hacían tironear el
+     scroll: ahí solo se carga el video de la tarjeta del frente y sus dos
+     vecinas; el resto muestra su carátula. En escritorio se cargan todos. */
+  const players = new Map();
+  const lazyMobile = mobileMq.matches;
+
+  function wire(card) {
     const iframe = card.querySelector('iframe');
-    if (!iframe) return;
+    if (!iframe || players.has(card)) return;
+    if (!iframe.getAttribute('src') && iframe.dataset.src) iframe.src = iframe.dataset.src;
     const show = () => card.classList.add('playing');
     const fallback = () => iframe.addEventListener('load', () => setTimeout(show, 600));
-    if (typeof Vimeo === 'undefined') { fallback(); return; }
+    if (typeof Vimeo === 'undefined') { fallback(); players.set(card, null); return; }
     try {
       const player = new Vimeo.Player(iframe);
       player.on('play', show);
       player.on('playing', show);
-      players.push(player);
-    } catch (e) { fallback(); }
-  });
+      players.set(card, player);
+    } catch (e) { fallback(); players.set(card, null); }
+  }
+
+  function unwire(card) {
+    if (!players.has(card)) return;
+    const iframe = card.querySelector('iframe');
+    if (iframe && iframe.getAttribute('src')) { iframe.dataset.src = iframe.getAttribute('src'); iframe.removeAttribute('src'); }
+    card.classList.remove('playing');
+    players.delete(card);
+  }
+
+  function syncPlayers(activeIdx) {
+    if (!lazyMobile) return;
+    cards.forEach((card, j) => {
+      const d = Math.min(Math.abs(j - activeIdx), count - Math.abs(j - activeIdx));
+      if (d <= 1) wire(card); else unwire(card);
+    });
+  }
+
+  if (lazyMobile) {
+    cards.forEach((card) => {
+      const iframe = card.querySelector('iframe');
+      if (iframe && iframe.getAttribute('src')) { iframe.dataset.src = iframe.getAttribute('src'); iframe.removeAttribute('src'); }
+    });
+  } else {
+    cards.forEach(wire);
+  }
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver((entries) => {
@@ -604,6 +638,7 @@ loadContent().then(() => {
         // Con varios videos de fondo en la página el navegador a veces bloquea
         // el autoplay de los que cargan después: se reintenta al entrar.
         players.forEach((p) => {
+          if (!p) return;
           p.getPaused().then((paused) => { if (paused) p.play().catch(() => {}); }).catch(() => {});
         });
       });
@@ -882,6 +917,24 @@ ScrollTrigger.create({
       ease: 'none',
       scrollTrigger: { trigger: reel, start: 'top 92%', end: 'top 22%', scrub: 0.5 },
     });
+})();
+
+/* ---- VIDEOS DE FONDO: pausa fuera de pantalla ----
+   Hero, reel y los avatares de Nosotros seguían reproduciéndose aunque no
+   se vieran; en móvil eso compite con el scroll. Se pausan al salir de
+   pantalla y se reanudan al volver. */
+(function initOffscreenPause() {
+  if (typeof Vimeo === 'undefined' || !('IntersectionObserver' in window)) return;
+  document.querySelectorAll('.hero-video-wrap iframe, .reel-video-wrap iframe, .nosotros-video iframe').forEach((iframe) => {
+    let player;
+    try { player = new Vimeo.Player(iframe); } catch (e) { return; }
+    const target = iframe.closest('section') || iframe;
+    new IntersectionObserver((entries) => {
+      const visible = entries[0].isIntersecting;
+      const p = visible ? player.play() : player.pause();
+      if (p && p.catch) p.catch(() => {});
+    }, { rootMargin: '15% 0px' }).observe(target);
+  });
 })();
 
 /* ---- NOSOTROS: carátulas de los videos del equipo ---- */

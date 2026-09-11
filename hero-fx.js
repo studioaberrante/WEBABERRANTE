@@ -107,7 +107,7 @@ void main(){
     const tr = title.getBoundingClientRect();
     const hr = holder.getBoundingClientRect();
     if (!tr.width || !tr.height) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 768 ? 1.5 : 2);
     const cssW = tr.width + PAD * 2, cssH = tr.height + PAD;
     canvas.style.left = (tr.left - hr.left - PAD) + 'px';
     canvas.style.top = (tr.top - hr.top - PAD / 2) + 'px';

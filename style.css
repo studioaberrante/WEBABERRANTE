@@ -2602,8 +2602,5 @@ html.lenis, html.lenis body { height: auto; }
 
 .rv-w { display: inline-block; white-space: nowrap; }
 
-.rv-c {
-  display: inline-block;
-  will-change: filter, opacity;
-}
+.rv-c { display: inline-block; }
 
