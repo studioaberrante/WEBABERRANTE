@@ -625,14 +625,14 @@ a {
 }
 
 .qh-intro {
-  margin-top: 40px;
+  margin-top: 24px;
   font-family: 'Inter', sans-serif;
-  font-size: clamp(22px, 3vw, 40px);
-  font-weight: 600;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
-  color: var(--text);
-  max-width: 940px;
+  font-size: clamp(17px, 1.5vw, 22px);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--text-mid, var(--text));
+  max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -762,22 +762,8 @@ a {
 }
 
 /* ============================================
-   PORTFOLIO
+   PORTAFOLIO: halo de videos
    ============================================ */
-.portfolio {
-  padding: 120px 48px 100px;
-  background: var(--bg);
-}
-
-.portfolio-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 80px;
-  padding-bottom: 48px;
-  border-bottom: 1px solid var(--border);
-}
-
 .section-label {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -787,111 +773,130 @@ a {
   color: var(--text-muted);
 }
 
-.portfolio-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(52px, 6vw, 100px);
-  line-height: 0.9;
-  letter-spacing: 0.01em;
-  text-align: right;
+.halo {
+  position: relative;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
 }
 
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
+.halo-anchor { position: absolute; top: 0; }
+
+.halo-stage {
+  position: relative;
+  z-index: 0;
+  height: 82svh;
+  min-height: 560px;
+  max-height: 860px;
+  overflow: hidden;
+  outline: none;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.portfolio-item {
+.halo-stage.is-dragging { cursor: grabbing; }
+
+.halo-stage:focus-visible { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35); }
+
+.halo-ring { position: absolute; inset: 0; }
+
+.halo-card {
+  position: absolute;
+  top: 50%;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000 center / cover no-repeat;
+  box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.85);
+  will-change: transform;
   cursor: pointer;
 }
 
-.portfolio-thumb {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.3s ease;
-}
-
-.portfolio-item:hover .portfolio-thumb {
-  border-color: rgba(255,255,255,0.2);
-}
-
-.portfolio-thumb img {
+.halo-card iframe {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%);
-  transition: transform 0.7s var(--ease-premium), filter 0.7s var(--ease-premium), opacity 0.4s ease;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
-.portfolio-item:hover .portfolio-thumb img {
-  transform: scale(1.05);
-  filter: grayscale(0%);
+.halo-card.playing iframe { opacity: 1; }
+
+/* Hypnos y Spotify son 2.39:1: se agranda el iframe para que cubran la
+   tarjeta 16:9 sin franjas difuminadas. */
+.halo-card[data-vimeo="1199572315"] iframe,
+.halo-card[data-vimeo="1202693340"] iframe {
+  inset: -17.25%;
+  width: 134.5%;
+  height: 134.5%;
 }
 
-.portfolio-thumb-overlay {
+/* Texto a la derecha del anillo. El JS fija `left` justo donde el anillo
+   termina, así nunca queda debajo de las tarjetas. */
+.halo-copy {
   position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  transition: background 0.5s var(--ease-premium);
   z-index: 1;
-}
-
-.portfolio-item:hover .portfolio-thumb-overlay {
-  background: rgba(0,0,0,0.15);
-}
-
-.portfolio-play {
-  z-index: 2;
-}
-
-.portfolio-play {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.25);
+  top: 50%;
+  right: 48px;
+  transform: translateY(-50%);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255,255,255,0.6);
-  transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease, background 0.3s ease;
-  z-index: 2;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: none;
 }
 
-.portfolio-item:hover .portfolio-play {
-  border-color: rgba(255,255,255,0.8);
-  color: #fff;
-  transform: scale(1.1);
-  background: rgba(255,255,255,0.08);
-}
-
-.portfolio-info {
-  padding: 16px 4px 28px;
-  border-bottom: 1px solid var(--border);
-}
-
-.portfolio-name {
-  font-size: 15px;
-  font-weight: 500;
+.halo-title {
+  font-size: clamp(34px, 3.8vw, 64px);
+  line-height: 0.96;
   color: var(--text);
-  letter-spacing: -0.01em;
-  margin-bottom: 6px;
 }
 
-.portfolio-tag {
+.halo-msg {
+  margin-top: 14px;
+  max-width: 560px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 34px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.halo-brand {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.halo-msg.swap,
+.halo-brand.swap {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@media (max-width: 768px) {
+  .halo-copy {
+    position: static;
+    transform: none;
+    align-items: center;
+    text-align: center;
+    padding: 64px 24px 8px;
+  }
+
+  .halo-msg { max-width: 100%; }
+
+  .halo-stage {
+    height: 60svh;
+    min-height: 420px;
+  }
 }
 
 /* Modal */
@@ -1347,28 +1352,6 @@ a {
 
   .servicios-title {
     font-size: 60px;
-  }
-
-  .portfolio {
-    padding: 72px 24px 80px;
-  }
-
-  .portfolio-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-    margin-bottom: 48px;
-    padding-bottom: 32px;
-  }
-
-  .portfolio-title {
-    text-align: left;
-    font-size: 64px;
-  }
-
-  .portfolio-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
   }
 
   .nosotros {
@@ -2023,8 +2006,7 @@ body.has-custom-cursor,
 body.has-custom-cursor a,
 body.has-custom-cursor button,
 body.has-custom-cursor input,
-body.has-custom-cursor textarea,
-body.has-custom-cursor .portfolio-item {
+body.has-custom-cursor textarea {
   cursor: none;
 }
 
@@ -2044,7 +2026,7 @@ body.cursor-hidden * {
 .qh-title,
 .reel-title,
 .servicios-title,
-.portfolio-title,
+.halo-title,
 .nosotros-title,
 .footer-title {
   font-family: 'Inter', sans-serif;
@@ -2062,16 +2044,15 @@ body.cursor-hidden * {
 
 /* Tamaños reajustados para Inter (más ancho que la condensada Bebas) */
 .hero-title   { font-size: clamp(44px, 7vw, 104px); }
-.qh-title     { font-size: clamp(38px, 6vw, 90px); line-height: 0.96; }
+.qh-title     { font-size: clamp(32px, 4.2vw, 60px); line-height: 0.96; }
 .reel-title   { font-size: clamp(34px, 5.4vw, 80px); line-height: 0.96; }
-.portfolio-title,
 .nosotros-title { font-size: clamp(44px, 5.5vw, 88px); }
 .footer-title { font-size: clamp(46px, 7.5vw, 108px); }
 .servicio-name { font-size: clamp(38px, 4.6vw, 76px); }
 
 @media (max-width: 768px) {
   .servicios-title,
-  .portfolio-title,
+  .halo-title,
   .nosotros-title { font-size: 52px; }
   .footer-title { font-size: clamp(40px, 13vw, 64px); }
 }
@@ -2155,7 +2136,7 @@ body { font-family: var(--font-sans); }
 .hero-title,
 .qh-title,
 .servicios-title,
-.portfolio-title,
+.halo-title,
 .nosotros-title,
 .footer-title,
 .faq-title {
@@ -2309,7 +2290,7 @@ body { font-family: var(--font-sans); }
 .que-hacemos {
   position: relative;
   overflow: hidden;
-  padding: 180px 48px;
+  padding: 96px 48px;
 }
 
 .que-hacemos::before {
@@ -2347,33 +2328,6 @@ body { font-family: var(--font-sans); }
 }
 
 .servicio-num { font-size: clamp(36px, 4vw, 60px); }
-
-/* ---- Portfolio: tarjetas redondeadas con glow ---- */
-.portfolio-grid { gap: 28px; }
-
-.portfolio-thumb {
-  border-radius: var(--radius-lg);
-  transition: border-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium), transform 0.5s var(--ease-premium);
-}
-
-.portfolio-item:hover .portfolio-thumb {
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 32px 90px -28px rgba(255, 255, 255, 0.25);
-  transform: translateY(-4px);
-}
-
-.portfolio-play {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.portfolio-item:hover .portfolio-play {
-  border-color: rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.portfolio-info { border-bottom: none; padding: 18px 6px 10px; }
 
 /* ---- Manifesto ---- */
 .manifesto { position: relative; overflow: hidden; }
@@ -2477,9 +2431,8 @@ body { font-family: var(--font-sans); }
 
 /* ---- Ajustes móviles del rediseño ---- */
 @media (max-width: 768px) {
-  .que-hacemos { padding: 110px 24px; }
+  .que-hacemos { padding: 72px 24px; }
   .servicio-item:not(.servicio-intro) { padding: 28px 24px; }
-  .portfolio-grid { gap: 24px; }
   .faq-item { padding: 0 18px; }
 }
 
@@ -2488,254 +2441,6 @@ body { font-family: var(--font-sans); }
 .servicio-num { color: rgba(255, 255, 255, 0.35); }
 .servicios-progress-fill { background: rgba(255, 255, 255, 0.85); }
 .servicios-hint-arrow { color: rgba(255, 255, 255, 0.85); }
-
-/* ---- SHOWCASE: collage de servicios + portafolio ---- */
-.showcase {
-  position: relative;
-  padding: 120px 48px 100px;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-}
-
-.showcase-anchor { position: absolute; top: 0; }
-
-.showcase-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.showcase-row {
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 28px;
-  align-items: stretch;
-}
-
-.showcase-row > * { min-width: 0; }
-
-.showcase-row--flip .showcase-video { order: 2; }
-
-/* Video autoreproduciéndose con bordes redondeados.
-   align-self evita que el stretch de la fila infle su ancho
-   vía aspect-ratio y se solape con la tarjeta. */
-.showcase-video {
-  position: relative;
-  align-self: center;
-  width: 100%;
-  border-radius: 24px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background-color: #000;
-  background-size: cover;
-  background-position: center;
-  aspect-ratio: 16 / 9;
-  cursor: pointer;
-  transition: border-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium), transform 0.5s var(--ease-premium);
-}
-
-/* Hypnos y Spotify son videos nativos 2.39:1 (cinemascope), no 16:9.
-   Con el marco en 16:9, Vimeo rellenaba arriba/abajo con una versión
-   borrosa del video, viéndose mal. Se ajusta el marco a su proporción
-   real para que el video llene el cuadro sin recortes ni relleno. */
-.showcase-video[data-vimeo="1199572315"],
-.showcase-video[data-vimeo="1202693340"] {
-  aspect-ratio: 2.39 / 1;
-}
-
-/* La carátula (fondo) se ve hasta que el video realmente empieza a
-   reproducirse; recién ahí el iframe se funde encima. */
-.showcase-video iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* el click lo recibe la tarjeta y abre el modal con sonido */
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.showcase-video.playing iframe { opacity: 1; }
-
-.showcase-video:hover {
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: 0 30px 90px -30px rgba(255, 255, 255, 0.14);
-  transform: translateY(-4px);
-}
-
-.showcase-play-hint {
-  position: absolute;
-  left: 20px;
-  bottom: 18px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 8px 14px;
-  border-radius: 999px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.35s var(--ease-premium), transform 0.35s var(--ease-premium);
-  pointer-events: none;
-}
-
-.showcase-video:hover .showcase-play-hint { opacity: 1; transform: none; }
-
-/* ---- Fila destacada: glow permanente + insignia (pieza más pro) ---- */
-.showcase-row--featured .showcase-video {
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 90px -26px rgba(255, 255, 255, 0.2);
-}
-
-.showcase-row--featured .showcase-video:hover {
-  border-color: rgba(255, 255, 255, 0.34);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 36px 100px -24px rgba(255, 255, 255, 0.3);
-}
-
-.showcase-row--featured .showcase-card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.02));
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-.showcase-featured-badge {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-  z-index: 1;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: #080808;
-  background: #fff;
-  padding: 8px 16px;
-  border-radius: 999px;
-  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
-}
-
-/* Tarjeta de servicio (vidrio oscuro, se revela al entrar en pantalla) */
-.showcase-card {
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: clamp(28px, 3vw, 46px);
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.8s var(--ease-premium), transform 0.8s var(--ease-premium),
-              border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.showcase-card.in { opacity: 1; transform: none; }
-
-.showcase-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 24px 80px -32px rgba(255, 255, 255, 0.14);
-}
-
-.showcase-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.showcase-name {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: clamp(24px, 2.4vw, 34px);
-  letter-spacing: -0.02em;
-  line-height: 1.08;
-  margin-bottom: 14px;
-}
-
-.showcase-desc {
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 1.65;
-  color: var(--text-mid);
-  margin-bottom: 26px;
-}
-
-/* Cifras que se "calculan" al aparecer */
-.showcase-stats {
-  margin-top: auto;
-  padding-top: 26px;
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.stat-num {
-  display: block;
-  font-family: var(--font-sans);
-  font-weight: 900;
-  font-size: clamp(30px, 3vw, 44px);
-  letter-spacing: -0.03em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
-.stat-label {
-  display: block;
-  margin-top: 8px;
-  font-size: 12px;
-  font-weight: 300;
-  color: var(--text-muted);
-  line-height: 1.45;
-}
-
-.showcase-project {
-  margin-top: 24px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-/* Tarjeta CTA final */
-.showcase-cta-wrap { margin-top: auto; padding-top: 26px; }
-
-.showcase-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  color: #080808;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 999px;
-  padding: 14px 28px;
-  animation: cta-breathe 3.4s ease-in-out infinite;
-  transition: opacity 0.25s ease, transform 0.3s var(--ease-premium);
-}
-
-.showcase-cta:hover { opacity: 0.9; transform: translateY(-2px); }
-
-@media (prefers-reduced-motion: reduce) {
-  .showcase-cta { animation: none; }
-  .showcase-card { opacity: 1; transform: none; transition: none; }
-}
-
-@media (max-width: 900px) {
-  .showcase { padding: 72px 24px 64px; }
-  .showcase-rows { gap: 44px; }
-  .showcase-row { grid-template-columns: 1fr; gap: 14px; }
-  .showcase-row--flip .showcase-video { order: 0; }
-  .showcase-video { border-radius: 18px; }
-  .showcase-card { border-radius: 18px; }
-}
 
 /* ---- FAQ y contacto centrados (como la referencia) ---- */
 .faq-inner {
@@ -2774,35 +2479,3 @@ body { font-family: var(--font-sans); }
 .contacto-success-msg { text-align: left; }
 
 .footer-links { justify-content: center; }
-
-/* ---- Crédito del cliente en el showcase: más visible que un texto pequeño ---- */
-.showcase-client {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-}
-
-.showcase-client-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.showcase-client-name {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: clamp(18px, 1.8vw, 22px);
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.showcase-client-sub {
-  margin-top: 4px;
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--text-mid);
-}

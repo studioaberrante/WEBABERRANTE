@@ -277,41 +277,19 @@ loadContent().then(() => {
   setTimeout(() => ScrollTrigger.refresh(), 1500);
 });
 
-/* ---- PORTFOLIO THUMBNAILS ---- */
-(function loadPortfolioThumbnails() {
-  document.querySelectorAll('.portfolio-item[data-vimeo]').forEach(item => {
-    const id  = item.dataset.vimeo;
-    const img = item.querySelector('.portfolio-thumb-img');
-    if (!id || !img) return;
-    fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.thumbnail_url) {
-          // Pedir versión más grande reemplazando dimensiones
-          img.src = data.thumbnail_url.replace(/_\d+x\d+/, '_1280x720');
-          img.style.display = 'block';
-        }
-      })
-      .catch(() => {});
-  });
-})();
-
 /* ---- PORTFOLIO MODAL ---- */
 (function initPortfolioModal() {
-  const modal   = document.getElementById('portfolioModal');
-  const iframe  = document.getElementById('portfolioModalIframe');
+  const modal    = document.getElementById('portfolioModal');
+  const iframe   = document.getElementById('portfolioModalIframe');
   const btnClose = document.getElementById('portfolioModalClose');
+  if (!modal || !iframe || !btnClose) return;
 
-  document.getElementById('portfolioGrid').addEventListener('click', (e) => {
-    const item = e.target.closest('.portfolio-item');
-    if (!item) return;
-    const vimeoId = item.dataset.vimeo;
-    if (!vimeoId) return;
+  function openModal(vimeoId) {
     iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&badge=0&autopause=0`;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.body.classList.add('cursor-hidden'); // cursor normal sobre el video
-  });
+  }
 
   function closeModal() {
     modal.classList.remove('open');
@@ -320,9 +298,228 @@ loadContent().then(() => {
     document.body.classList.remove('cursor-hidden');
   }
 
+  document.addEventListener('portfolio:open', (e) => openModal(e.detail.vimeoId));
   btnClose.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+})();
+
+/* ---- PORTAFOLIO: halo de videos ----
+   Las tarjetas giran sobre una elipse. La tarjeta i queda en θ = i·paso + rotación:
+   x = rx·cosθ, y = ry·sinθ, escala = min + (1−min)·(cosθ+1)/2. El mismo cosθ
+   ubica, escala y apila cada tarjeta, así la que se ve más cerca siempre está
+   más cerca. Una sola rotación mueve el anillo entero (autoplay, arrastre y
+   ajuste final) tocando solo transforms, nunca el layout. */
+(function initHaloReel() {
+  const stage   = document.getElementById('haloStage');
+  const ring    = document.getElementById('haloRing');
+  const copy    = document.getElementById('haloCopy');
+  const msgEl   = document.getElementById('haloMsg');
+  const brandEl = document.getElementById('haloBrand');
+  if (!stage || !ring) return;
+
+  const cards = Array.from(ring.querySelectorAll('.halo-card'));
+  const count = cards.length;
+  if (!count) return;
+
+  const TAU = Math.PI * 2;
+  const CARD_W = 300, CARD_H = 169, MIN_SCALE = 0.42;
+  const HOLD_MS = 3200, STEP_MS = 800;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobileMq = window.matchMedia('(max-width: 768px)');
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+  const state = { r: 0 };
+  const step = TAU / count;
+  let w = 0, h = 0, rx = 0, ry = 0, cx = 0, cardW = CARD_W, cardH = CARD_H;
+  let dragging = false, hovering = false, visible = true;
+  let tween = null, timer = 0, active = -1, swapToken = 0;
+
+  function measure() {
+    w = stage.offsetWidth;
+    h = stage.offsetHeight;
+    // En mobile el anillo también cuelga del borde izquierdo, con radio de
+    // media pantalla: la tarjeta del frente queda centrada y las demás se
+    // abren en abanico hacia la izquierda.
+    const mobile = mobileMq.matches;
+    cx = 0;
+    rx = w * (mobile ? 0.5 : 0.34);
+    ry = h * (mobile ? 0.34 : 0.36);
+    // Las tarjetas se achican de forma continua para caber en la caja, no
+    // a saltos por breakpoint.
+    const fit = clamp(Math.min(w / (rx + CARD_W), h / (2 * ry + CARD_H)), 0.45, 1);
+    cardW = CARD_W * fit;
+    cardH = CARD_H * fit;
+    cards.forEach((c) => {
+      c.style.width = cardW + 'px';
+      c.style.height = cardH + 'px';
+      c.style.marginLeft = (-cardW / 2) + 'px';
+      c.style.marginTop = (-cardH / 2) + 'px';
+      c.style.left = (cx * 100) + '%';
+    });
+    if (copy) copy.style.left = mobile ? '' : Math.round(w * cx + rx + cardW / 2 + 40) + 'px';
+    render();
+  }
+
+  function render() {
+    let best = -2, bestIdx = 0;
+    cards.forEach((c, i) => {
+      const t = i * step + state.r;
+      const cos = Math.cos(t);
+      const s = MIN_SCALE + (1 - MIN_SCALE) * ((cos + 1) / 2);
+      c.style.transform = `translate3d(${(cos * rx).toFixed(1)}px, ${(Math.sin(t) * ry).toFixed(1)}px, 0) scale(${s.toFixed(4)})`;
+      c.style.zIndex = Math.round(s * 1000);
+      if (cos > best) { best = cos; bestIdx = i; }
+    });
+    if (bestIdx !== active) setActive(bestIdx);
+  }
+
+  function setActive(i) {
+    const first = active === -1;
+    active = i;
+    if (!msgEl || !brandEl) return;
+    const card = cards[i];
+    if (first) {
+      msgEl.textContent = card.dataset.msg || '';
+      brandEl.textContent = card.dataset.brand || '';
+      return;
+    }
+    const token = ++swapToken;
+    msgEl.classList.add('swap');
+    brandEl.classList.add('swap');
+    setTimeout(() => {
+      if (token !== swapToken) return;
+      msgEl.textContent = card.dataset.msg || '';
+      brandEl.textContent = card.dataset.brand || '';
+      msgEl.classList.remove('swap');
+      brandEl.classList.remove('swap');
+    }, 220);
+  }
+
+  function spinTo(target, duration, ease, onComplete) {
+    if (tween) tween.kill();
+    if (reduceMotion || !duration) {
+      state.r = target;
+      render();
+      if (onComplete) onComplete();
+      return;
+    }
+    tween = gsap.to(state, { r: target, duration, ease, onUpdate: render, onComplete });
+  }
+
+  const snapped = () => Math.round(state.r / step) * step;
+
+  // Autoplay: cada paso agenda el siguiente, así una pausa (arrastre, hover,
+  // fuera de pantalla) solo cuesta volver a chequear.
+  function schedule() {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      if (dragging || hovering || !visible || document.hidden) { schedule(); return; }
+      spinTo(snapped() - step, STEP_MS / 1000, 'power2.inOut', schedule);
+    }, HOLD_MS);
+  }
+
+  /* ── arrastre ── */
+  const drag = { left: 0, top: 0, angle: 0, x: 0, y: 0, moved: 0, card: null };
+
+  function pointerAngle(e) {
+    // Normalizar por los radios "desaplasta" la elipse: arrastrar por el lado
+    // plano gira lo mismo que por el lado alto.
+    return Math.atan2(
+      (e.clientY - drag.top - h / 2) / (ry || 1),
+      (e.clientX - drag.left - w * cx) / (rx || 1)
+    );
+  }
+
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const rect = stage.getBoundingClientRect();
+    drag.left = rect.left;
+    drag.top = rect.top;
+    drag.angle = pointerAngle(e);
+    drag.x = e.clientX;
+    drag.y = e.clientY;
+    drag.moved = 0;
+    drag.card = e.target.closest('.halo-card');
+    dragging = true;
+    stage.classList.add('is-dragging');
+    stage.setPointerCapture(e.pointerId);
+    if (tween) tween.kill();
+  });
+
+  stage.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.x, e.clientY - drag.y));
+    const angle = pointerAngle(e);
+    // Envuelto a (−π, π] para que cruzar la costura de atrás sea un delta chico
+    // y no una vuelta entera al revés.
+    const delta = ((angle - drag.angle + Math.PI * 3) % TAU) - Math.PI;
+    drag.angle = angle;
+    state.r += delta;
+    render();
+  });
+
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove('is-dragging');
+    if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+    if (drag.moved < 6 && drag.card) {
+      document.dispatchEvent(new CustomEvent('portfolio:open', { detail: { vimeoId: drag.card.dataset.vimeo } }));
+    }
+    // Se asienta sobre la tarjeta más cercana: el anillo nunca queda entre dos.
+    spinTo(snapped(), 0.5, 'expo.out');
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  stage.addEventListener('keydown', (e) => {
+    const dir = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (!dir) return;
+    e.preventDefault();
+    spinTo(snapped() - dir * step, STEP_MS / 1000, 'power2.inOut');
+  });
+
+  cards.forEach((c) => {
+    c.addEventListener('pointerenter', () => { hovering = true; });
+    c.addEventListener('pointerleave', () => { hovering = false; });
+  });
+
+  /* ── carátulas: el iframe se funde encima recién cuando reproduce ── */
+  const players = [];
+  cards.forEach((card) => {
+    const iframe = card.querySelector('iframe');
+    if (!iframe) return;
+    const show = () => card.classList.add('playing');
+    const fallback = () => iframe.addEventListener('load', () => setTimeout(show, 600));
+    if (typeof Vimeo === 'undefined') { fallback(); return; }
+    try {
+      const player = new Vimeo.Player(iframe);
+      player.on('play', show);
+      player.on('playing', show);
+      players.push(player);
+    } catch (e) { fallback(); }
+  });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        visible = entry.isIntersecting;
+        if (!visible) return;
+        // Con varios videos de fondo en la página el navegador a veces bloquea
+        // el autoplay de los que cargan después: se reintenta al entrar.
+        players.forEach((p) => {
+          p.getPaused().then((paused) => { if (paused) p.play().catch(() => {}); }).catch(() => {});
+        });
+      });
+    }, { threshold: 0.15 }).observe(stage);
+  }
+
+  measure();
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(stage);
+  else window.addEventListener('resize', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  if (!reduceMotion) schedule();
 })();
 
 /* ---- ENTRANCE ANIMATIONS ---- */
@@ -370,30 +567,15 @@ function initEntranceAnimations() {
 
   // (Servicios usa scroll horizontal propio, ver initServiciosHScroll)
 
-  // Portfolio header
-  gsap.fromTo('.portfolio-header .section-label', {
-    opacity: 0
+  // Portafolio (halo): el texto de la derecha entra al llegar a la sección.
+  // clearProps deja los estilos limpios para que el cambio de mensaje
+  // (clase .swap) siga funcionando después.
+  gsap.fromTo('.halo-copy > *', {
+    y: 24, opacity: 0
   }, {
-    opacity: 1, duration: 0.8, ease: 'power2.out',
-    scrollTrigger: { trigger: '.portfolio-header', start: 'top 82%' }
-  });
-
-  gsap.fromTo('.portfolio-title', {
-    y: 30, opacity: 0
-  }, {
-    y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: '.portfolio-header', start: 'top 82%' }
-  });
-
-  // Portfolio items
-  gsap.utils.toArray('.portfolio-item').forEach((el, i) => {
-    gsap.fromTo(el, {
-      y: 40, opacity: 0
-    }, {
-      y: 0, opacity: 1, duration: 0.75, ease: 'power3.out',
-      delay: (i % 2) * 0.1,
-      scrollTrigger: { trigger: el, start: 'top 88%' }
-    });
+    y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power3.out',
+    clearProps: 'all',
+    scrollTrigger: { trigger: '.halo', start: 'top 75%' }
   });
 
   // Nosotros
@@ -558,75 +740,6 @@ ScrollTrigger.create({
 });
 
 /* (Cursor personalizado retirado: se usa el puntero normal del sistema) */
-
-/* ---- SHOWCASE: revelado de tarjetas + cifras que se calculan ---- */
-(function initShowcase() {
-  const cards = document.querySelectorAll('.showcase-card');
-  if (!cards.length) return;
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function finalText(el) {
-    return (el.dataset.prefix || '') + el.dataset.count + (el.dataset.suffix || '');
-  }
-
-  function animateNum(el) {
-    const target = parseFloat(el.dataset.count);
-    const prefix = el.dataset.prefix || '';
-    const suffix = el.dataset.suffix || '';
-    const dur = 1500;
-    let t0 = null;
-    function tick(t) {
-      if (t0 === null) t0 = t;
-      const p = Math.min((t - t0) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3); // frena al final, como cálculo que converge
-      el.textContent = prefix + Math.round(target * eased) + suffix;
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      io.unobserve(entry.target);
-      entry.target.classList.add('in');
-      entry.target.querySelectorAll('.stat-num[data-count]').forEach((n, i) => {
-        if (reduceMotion) { n.textContent = finalText(n); return; }
-        n.textContent = (n.dataset.prefix || '') + '0' + (n.dataset.suffix || '');
-        setTimeout(() => animateNum(n), 300 + i * 200);
-      });
-    });
-  }, { threshold: 0.35 });
-
-  cards.forEach((c) => io.observe(c));
-})();
-
-/* ---- CARÁTULAS DEL SHOWCASE ----
-   La carátula de cada video va incrustada directamente en el HTML
-   (background-image inline), visible desde el primer instante sin
-   depender de ninguna llamada en vivo a Vimeo — así nunca se ve un
-   hueco negro, ni siquiera en conexiones móviles lentas. El iframe
-   se funde encima recién cuando el video realmente se reproduce. */
-(function initShowcasePosters() {
-  const videos = document.querySelectorAll('.showcase-video[data-vimeo]');
-  if (!videos.length) return;
-
-  videos.forEach((wrap) => {
-    const iframe = wrap.querySelector('iframe');
-    if (!iframe) return;
-    const show = () => wrap.classList.add('playing');
-    if (typeof Vimeo !== 'undefined') {
-      try {
-        const player = new Vimeo.Player(iframe);
-        player.on('play', show);
-        player.on('playing', show);
-        return;
-      } catch (e) { /* cae al respaldo de abajo */ }
-    }
-    iframe.addEventListener('load', () => setTimeout(show, 600));
-  });
-})();
 
 /* ---- NOSOTROS: carátulas de los videos del equipo ---- */
 (function initNosotrosPosters() {
