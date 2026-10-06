@@ -626,9 +626,9 @@ a {
 }
 
 .brand-logo[src*="latam"] { height: 24px; }
-.brand-logo[src*="hush-puppies"] { height: 20px; }
+.brand-logo[src*="hush-puppies"] { height: 22px; }
 .brand-logo[src*="geely"] { height: 18px; }
-.brand-logo[src*="capitten"] { height: 15px; }
+.brand-logo[src*="capitten"] { height: 20px; }
 
 .brand-logo:hover {
   opacity: 0.9;
