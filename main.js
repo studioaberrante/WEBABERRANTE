@@ -416,8 +416,9 @@ loadContent().then(() => {
   const btnClose = document.getElementById('portfolioModalClose');
   if (!modal || !iframe || !btnClose) return;
 
-  function openModal(vimeoId) {
-    iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&badge=0&autopause=0`;
+  function openModal(vimeoId, hash) {
+    // Los videos "no listados" de Vimeo necesitan su hash (h=) para reproducirse.
+    iframe.src = `https://player.vimeo.com/video/${vimeoId}?${hash ? 'h=' + hash + '&' : ''}autoplay=1&badge=0&autopause=0`;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.body.classList.add('cursor-hidden'); // cursor normal sobre el video
@@ -432,7 +433,7 @@ loadContent().then(() => {
     if (window.lenis) window.lenis.start();
   }
 
-  document.addEventListener('portfolio:open', (e) => openModal(e.detail.vimeoId));
+  document.addEventListener('portfolio:open', (e) => openModal(e.detail.vimeoId, e.detail.hash));
   btnClose.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
@@ -598,7 +599,7 @@ loadContent().then(() => {
     stage.classList.remove('is-dragging');
     if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
     if (drag.moved < 6 && drag.card) {
-      document.dispatchEvent(new CustomEvent('portfolio:open', { detail: { vimeoId: drag.card.dataset.vimeo } }));
+      document.dispatchEvent(new CustomEvent('portfolio:open', { detail: { vimeoId: drag.card.dataset.vimeo, hash: drag.card.dataset.hash } }));
     }
     // Se asienta sobre la tarjeta más cercana: el anillo nunca queda entre dos.
     spinTo(snapped(), 0.5, 'expo.out');
