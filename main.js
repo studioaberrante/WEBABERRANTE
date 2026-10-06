@@ -513,6 +513,11 @@ loadContent().then(() => {
     if (bestIdx !== active) setActive(bestIdx);
   }
 
+  function brandHtml(card) {
+    const tag = card.dataset.tag ? `<span class="halo-tag">${card.dataset.tag}</span>` : '';
+    return tag + (card.dataset.brand || '');
+  }
+
   function setActive(i) {
     const first = active === -1;
     active = i;
@@ -521,7 +526,7 @@ loadContent().then(() => {
     const card = cards[i];
     if (first) {
       msgEl.textContent = card.dataset.msg || '';
-      brandEl.textContent = card.dataset.brand || '';
+      brandEl.innerHTML = brandHtml(card);
       return;
     }
     const token = ++swapToken;
@@ -530,7 +535,7 @@ loadContent().then(() => {
     setTimeout(() => {
       if (token !== swapToken) return;
       msgEl.textContent = card.dataset.msg || '';
-      brandEl.textContent = card.dataset.brand || '';
+      brandEl.innerHTML = brandHtml(card);
       msgEl.classList.remove('swap');
       brandEl.classList.remove('swap');
     }, 220);

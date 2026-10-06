@@ -955,6 +955,36 @@ a {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* "Último trabajo": chip junto a la marca y cinta sobre la tarjeta */
+.halo-tag {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff;
+  color: #080808;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  vertical-align: middle;
+}
+
+.halo-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #080808;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .halo-msg.swap,
 .halo-brand.swap {
   opacity: 0;
